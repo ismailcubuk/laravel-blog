@@ -6,9 +6,19 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    public function show($slug)
+    public function index()
     {
-        $post = Post::where('slug',$slug)->firstOrFail();
-        return view('posts.show', compact('post'));
+        // banner posts
+        $bannerPosts = Post::with('category')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // normal posts
+        $posts = Post::with('category')
+            ->latest()
+            ->get();
+
+        return view('welcome', compact('posts', 'bannerPosts'));
     }
 }

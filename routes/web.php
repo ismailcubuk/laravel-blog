@@ -6,3 +6,4 @@ use App\Http\Controllers\PostController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/post/{slug}', [PostController::class, 'show'])->name('post.show');
+

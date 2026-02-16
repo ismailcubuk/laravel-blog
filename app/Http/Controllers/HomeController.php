@@ -8,7 +8,17 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $posts = Post::latest()->paginate(6);
-        return view('pages.home', compact('posts'));
+        // banner posts
+        $bannerPosts = Post::with('category')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // normal posts
+        $posts = Post::with('category')
+            ->latest()
+            ->paginate(6);
+
+        return view('pages.home', compact('posts', 'bannerPosts'));
     }
 }
