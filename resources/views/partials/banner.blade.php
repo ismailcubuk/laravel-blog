@@ -18,7 +18,7 @@
                             </div>
 
                             {{-- title --}}
-                            <a href="#">
+                            <a href="{{ route('post.show', $post->slug) }}">
                                 <h4>{{ $post->title }}</h4>
                             </a>
 

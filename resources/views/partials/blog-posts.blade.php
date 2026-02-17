@@ -6,8 +6,11 @@
                 <div class="blog-post">
 
                     <div class="blog-thumb">
-                        <img src="{{ asset('assets/images/blog-post-01.jpg') }}" alt="">
+                        <a href="{{ route('post.show', $post->slug) }}">
+                            <img src="{{ asset('assets/images/blog-post-01.jpg') }}" alt="">
+                        </a>
                     </div>
+
 
                     <div class="down-content">
 
@@ -15,7 +18,7 @@
                         <span>{{ $post->category->name }}</span>
 
                         {{-- title --}}
-                        <a href="#">
+                        <a href="{{ route('post.show', $post->slug) }}">
                             <h4>{{ $post->title }}</h4>
                         </a>
 
@@ -38,7 +41,9 @@
                         </p>
 
                         <div class="main-button">
-                            <a href="#">Read More</a>
+                            <a href="{{ route('post.show', $post->slug) }}">
+                                Read More
+                            </a>
                         </div>
 
                     </div>
