@@ -1,41 +1,55 @@
 <div class="sidebar">
     <div class="row">
 
+        {{-- SEARCH --}}
         <div class="col-lg-12">
             <div class="sidebar-item search">
-                <form method="GET" action="#">
-                    <input type="text" name="q" class="searchText" placeholder="type to search..." autocomplete="on">
+                <form method="GET" action="{{ route('blog') }}">
+                    <input type="text" name="search" class="searchText" placeholder="type to search..." autocomplete="on">
                 </form>
             </div>
         </div>
 
+        {{-- RECENT POSTS --}}
         <div class="col-lg-12">
             <div class="sidebar-item recent-posts">
-                <div class="sidebar-heading"><h2>Recent Posts</h2></div>
+                <div class="sidebar-heading">
+                    <h2>Recent Posts</h2>
+                </div>
                 <div class="content">
                     <ul>
-                        <li><a href="#"><h5>Vestibulum id turpis porttitor</h5><span>May 31, 2020</span></a></li>
-                        <li><a href="#"><h5>Suspendisse et metus nec libero</h5><span>May 28, 2020</span></a></li>
-                        <li><a href="#"><h5>Swag hella echo park leggings</h5><span>May 14, 2020</span></a></li>
+                        @foreach($recentPosts as $recent)
+                            <li>
+                                <a href="{{ route('post.show', ['slug' => $recent->slug]) }}">
+                                    <h5>{{ $recent->title }}</h5>
+                                    <span>{{ $recent->created_at->format('d M Y') }}</span>
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
         </div>
 
+        {{-- CATEGORIES --}}
         <div class="col-lg-12">
             <div class="sidebar-item categories">
                 <div class="sidebar-heading"><h2>Categories</h2></div>
                 <div class="content">
                     <ul>
-                        <li><a href="#">- Nature Lifestyle</a></li>
-                        <li><a href="#">- Awesome Layouts</a></li>
-                        <li><a href="#">- Creative Ideas</a></li>
-                        <li><a href="#">- Responsive Templates</a></li>
+                        @foreach($categories as $category)
+                            <li>
+                                <a href="{{ route('blog', ['category' => $category->id]) }}">
+                                    - {{ $category->name }}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
         </div>
 
+        {{-- DUMMY TAG CLOUDS --}}
         <div class="col-lg-12">
             <div class="sidebar-item tags">
                 <div class="sidebar-heading"><h2>Tag Clouds</h2></div>
