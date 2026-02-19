@@ -30,10 +30,37 @@
                         <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
                     </li>
 
-                    {{-- Admin Giriş --}}
-                    <li class="nav-item {{ request()->routeIs('admin.login') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('admin.login') }}">Admin Login</a>
-                    </li>
+                    {{-- ADMIN --}}
+                    @auth
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="#"
+                                id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                    Dashboard
+                                </a>
+
+                                <form method="POST" action="{{ route('admin.logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    @else
+                        <li class="nav-item {{ request()->routeIs('admin.login') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.login') }}">
+                                Admin Login
+                            </a>
+                        </li>
+                    @endauth
+
+
 
                 </ul>
 

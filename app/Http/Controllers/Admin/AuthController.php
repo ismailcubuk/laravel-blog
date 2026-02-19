@@ -51,7 +51,7 @@ public function logout(Request $request)
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    return redirect()->route('admin.login');
+    return redirect()->route('home');
 }
 
     // REGISTER PAGE
