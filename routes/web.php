@@ -20,8 +20,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Login
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 
+     // Login post
+    Route::post('/login', [AuthController::class, 'login'])
+        ->name('login.post');
+
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
+
+        
     // Register
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
     // Forgot Password
     Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request');
@@ -29,10 +39,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Reset Password
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 
-    // Logout
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('admin.dashboard');
+        ->name('dashboard');
 });

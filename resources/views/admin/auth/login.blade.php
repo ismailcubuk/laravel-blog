@@ -7,15 +7,29 @@
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <h1 class="mb-0"><b>Blog</b> Admin</h1>
+                <a href="{{ route('home') }}" class="text-decoration-none">
+                    <h1 class="mb-0"><b>Blog</b> Admin</h1>
+                </a>
             </div>
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Admin paneline giriş yap</p>
-                <form>
+                {{-- VALİDATİON --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form method="POST" action="{{ route('admin.login.post') }}" novalidate>
+                    @csrf
+
                     <!-- Email -->
                     <div class="input-group mb-3">
                         <div class="form-floating">
-                            <input type="email" class="form-control" placeholder="Email">
+                            <input type="email" name="email" value="{{ old('email') }}" class="form-control"
+                                placeholder="Email">
                             <label>Email</label>
                         </div>
                         <div class="input-group-text">
@@ -26,7 +40,7 @@
                     <!-- Password -->
                     <div class="input-group mb-3">
                         <div class="form-floating">
-                            <input type="password" class="form-control" placeholder="Password">
+                            <input type="password" name="password" class="form-control" placeholder="Password">
                             <label>Password</label>
                         </div>
                         <div class="input-group-text">
@@ -38,7 +52,7 @@
                     <div class="row mb-3">
                         <div class="col-8">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input">
+                                <input type="checkbox" name="remember" class="form-check-input">
                                 <label class="form-check-label">
                                     Beni Hatırla
                                 </label>
@@ -54,8 +68,9 @@
                         </div>
                     </div>
                 </form>
+
                 <p class="mb-1">
-                    <a href="{{ route('admin.password.request') }}">Şifremi Unuttum</a>
+                    <a href="{{ route('admin.password.request') }}">I forgot my password</a>
                 </p>
             </div>
         </div>

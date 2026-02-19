@@ -15,27 +15,24 @@
                 <ul class="navbar-nav ml-auto">
 
                     <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('home') }}">
-                            Home
-                        </a>
+                        <a class="nav-link" href="{{ route('home') }}">Home</a>
                     </li>
 
                     <li class="nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('about') }}">
-                            About Us
-                        </a>
+                        <a class="nav-link" href="{{ route('about') }}">About Us</a>
                     </li>
 
                     <li class="nav-item {{ request()->routeIs('blog') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('blog') }}">
-                            Blog Entries
-                        </a>
+                        <a class="nav-link" href="{{ route('blog') }}">Blog Entries</a>
                     </li>
 
                     <li class="nav-item {{ request()->routeIs('contact') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('contact') }}">
-                            Contact Us
-                        </a>
+                        <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
+                    </li>
+
+                    {{-- Admin Giriş --}}
+                    <li class="nav-item {{ request()->routeIs('admin.login') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('admin.login') }}">Admin Login</a>
                     </li>
 
                 </ul>
