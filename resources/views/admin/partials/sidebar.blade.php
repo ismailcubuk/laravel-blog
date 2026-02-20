@@ -11,35 +11,18 @@
         <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
                 {{--Home--}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fa-solid fa-house"></i>
-                        <p>
-                            Home
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>ChartJS</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Flot</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                {{--User Blogs--}}
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fa-solid fa-house"></i>
+                    <p>
+                        Home
+                    </p>
+                </a>
+                {{--Content--}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-newspaper"></i>
                         <p>
-                            User Blogs
+                            Content
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
@@ -47,17 +30,84 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>ChartJS</p>
+                                <p>Posts</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Flot</p>
+                                <p>Categories</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Comment</p>
                             </a>
                         </li>
                     </ul>
                 </li>
+                {{--Web Site--}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa-solid fa-file-lines"></i>
+                        <p>
+                            Pages
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>About Us</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Contact Us</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Privacy Policy</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {{--Users--}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa-solid fa-user"></i>
+                        <p>
+                            Users
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Roles</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Permissions</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {{--Analytics--}}
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fa-solid fa-chart-line"></i>
+                    <p>
+                        Analytics
+                    </p>
+                </a>
                 {{--Settings--}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -71,65 +121,24 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>ChartJS</p>
+                                <p>General Settings</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Flot</p>
+                                <p>Social Media</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Mail Settings</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                  {{--Web Site--}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fa-solid fa-globe"></i>
-                        <p>
-                            Web Site
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>ChartJS</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Flot</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                 {{--Admin Users--}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fa-solid fa-user"></i>
-                        <p>
-                            Admin Users
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>ChartJS</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Flot</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+
                 <li class="nav-item">
                     <a href="{{ route('admin.logout') }}" class="nav-link">
                         <i class="nav-icon fa-solid fa-sign-out-alt"></i>
