@@ -11,7 +11,7 @@
         <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
                 {{--Home--}}
-                <a href="#" class="nav-link">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link">
                     <i class="nav-icon fa-solid fa-house"></i>
                     <p>
                         Home
@@ -28,19 +28,19 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.content.posts') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Posts</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.content.categories') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Categories</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.content.comments') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Comment</p>
                             </a>
@@ -58,19 +58,19 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.pages.about') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>About Us</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.pages.contact') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Contact Us</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.pages.privacy') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Privacy Policy</p>
                             </a>
@@ -88,13 +88,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.users.roles') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Roles</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.users.permissions') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Permissions</p>
                             </a>
@@ -119,19 +119,19 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.settings.general') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>General Settings</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.settings.social') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Social Media</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.settings.mail') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Mail Settings</p>
                             </a>

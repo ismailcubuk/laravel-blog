@@ -11,7 +11,7 @@
 <div class="row">
     @php
         $stats = [
-            ['bg' => 'info', 'icon' => 'fa-globe', 'count' => 6, 'label' => 'Site Pages'],
+            ['bg' => 'info', 'icon' => 'fa-file-lines', 'count' => 6, 'label' => 'Site Pages'],
             ['bg' => 'success', 'icon' => 'fa-users', 'count' => 5, 'label' => 'Users'],
             ['bg' => 'warning', 'icon' => 'fa-file-lines', 'count' => 8, 'label' => 'Blog Posts'],
             ['bg' => 'danger', 'icon' => 'fa-chart-line', 'count' => 12, 'label' => 'Website Visits'],
