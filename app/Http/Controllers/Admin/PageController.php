@@ -1,53 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Post;
+use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    // ================= FRONTEND =================
-
-    // About Us sayfası (frontend)
+    // SHOW About Us 
     public function about()
     {
-        // Eğer DB'de yoksa default verilerle oluştur
         $aboutPage = Page::firstOrCreate(
             ['slug' => 'about'],
             [
-                'title' => 'About',
+                'title' => 'About Us',
                 'description' => 'Bu bizim hakkımızda yazısı',
-                'hero_image' => '/assets/images/about.jpg'
+                'hero_image' => '/assets/images/about-us.jpg'
             ]
         );
 
-        // View'e page objesini gönder
-        return view('pages.about', [
-            'page' => $aboutPage
+        return view('admin.pages.about', [
+            'aboutPage' => $aboutPage
         ]);
     }
 
-    // Contact sayfası (frontend)
-    public function contact()
-    {
-        return view('pages.contact');
-    }
-
-    // Blog sayfası (frontend)
-    public function blog()
-    {
-        $posts = Post::with('category')
-            ->latest()
-            ->paginate(6);
-
-        return view('pages.blog', compact('posts'));
-    }
-
-    // ================= ADMIN =================
-
-    // Admin panelinde About Us sayfasını güncelle
+    // UPDATE About
 public function updateAbout(Request $request)
 {
     $request->validate([
@@ -56,14 +34,8 @@ public function updateAbout(Request $request)
         'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
     ]);
 
-    // DB'den About sayfasını al
-    $aboutPage = Page::where('slug', 'about')->first();
+    $aboutPage = Page::firstOrCreate(['slug' => 'about']);
 
-    if (!$aboutPage) {
-        abort(404, 'Page not found');
-    }
-
-    // Eğer yeni resim yüklenmişse kaydet
     if ($request->hasFile('hero_image')) {
         $file = $request->file('hero_image');
         $filename = time().'_'.$file->getClientOriginalName();

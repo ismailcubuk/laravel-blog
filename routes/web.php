@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
@@ -41,7 +42,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/comments', 'admin.content.comments')->name('content.comments');
 
         // Pages
-        Route::view('/about-us', 'admin.pages.about')->name('pages.about');
+        Route::get('/about-us', [AdminPageController::class, 'about'])->name('pages.about');
+        Route::put('/about-us', [AdminPageController::class, 'updateAbout'])->name('pages.about.update');
         Route::view('/contact-us', 'admin.pages.contact')->name('pages.contact');
         Route::view('/privacy-policy', 'admin.pages.privacy')->name('pages.privacy');
 

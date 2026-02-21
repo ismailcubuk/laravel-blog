@@ -9,14 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-      Schema::table('posts', function (Blueprint $table) {
-         $table->foreignId('category_id')
-          ->constrained()
-          ->cascadeOnDelete();
-});
-    }
+public function up(): void
+{
+    Schema::table('posts', function (Blueprint $table) {
+        if (!Schema::hasColumn('posts', 'category_id')) {
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+        }
+    });
+}
 
     /**
      * Reverse the migrations.
