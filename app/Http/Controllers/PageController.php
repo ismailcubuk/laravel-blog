@@ -8,6 +8,7 @@ use App\Models\PageSection;
 use App\Models\Post;
 
 class PageController extends Controller
+// BLOG PAGE
 {
     public function blog()
     {
@@ -17,11 +18,25 @@ class PageController extends Controller
 
         return view('pages.blog', compact('posts'));
     }
-    public function contact()
-{
-    return view('pages.contact');
-}
+// CONTACT PAGE
 
+public function contact()
+{
+
+    $page = Page::firstOrCreate(
+        ['slug' => 'contact'],
+        [
+            'title' => 'Contact',
+            'contact_phone' => '',
+            'contact_email' => '',
+            'contact_address' => '',
+            'contact_map_iframe' => ''
+        ]
+    );
+
+    return view('pages.contact', compact('page'));
+}
+// ABOUT PAGE
     public function about()
     {
 

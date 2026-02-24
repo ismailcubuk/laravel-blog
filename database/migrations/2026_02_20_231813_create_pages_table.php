@@ -11,14 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
-            $table->id();
-            $table->string('slug')->unique();        
-            $table->string('title')->nullable();     
-            $table->longText('description')->nullable();
-            $table->string('hero_image')->nullable();  
-            $table->timestamps();
-        });
+       Schema::create('pages', function (Blueprint $table) {
+
+    $table->id();
+
+    $table->string('slug')->unique();
+
+    $table->string('title')->nullable();
+
+    $table->longText('description')->nullable();
+
+    $table->string('hero_image')->nullable();
+
+
+    // CONTACT 
+    $table->string('contact_phone')->nullable();
+
+    $table->string('contact_email')->nullable();
+
+    $table->longText('contact_address')->nullable();
+
+    $table->string('contact_map_src')->nullable();
+
+
+    $table->timestamps();
+
+});
     }
 
     /**

@@ -44,7 +44,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Pages
         Route::get('/about-us', [AdminPageController::class, 'about'])->name('pages.about');
         Route::put('/about-us', [AdminPageController::class, 'updateAbout'])->name('pages.about.update');
-        Route::view('/contact-us', 'admin.pages.contact')->name('pages.contact');
+        
+        // CONTACT PAGE
+        Route::get('/contact-us', [AdminPageController::class, 'contact'])->name('pages.contact');
+        Route::put('/contact-us', [AdminPageController::class, 'updateContact'])->name('pages.contact.update');
+        
         Route::view('/privacy-policy', 'admin.pages.privacy')->name('pages.privacy');
 
         // Users
