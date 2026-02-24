@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\AdminPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;

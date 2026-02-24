@@ -2,40 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Http\Controllers\Controller;
 use App\Models\Page;
-use Illuminate\Http\Request;
+use App\Models\PageSection;
+use App\Models\Post;
 
 class PageController extends Controller
 {
-    // ================= FRONTEND =================
-
-    // About Us sayfası (frontend)
-    public function about()
-    {
-        // Eğer DB'de yoksa default verilerle oluştur
-        $aboutPage = Page::firstOrCreate(
-            ['slug' => 'about'],
-            [
-                'title' => 'About',
-                'description' => 'Bu bizim hakkımızda yazısı',
-                'hero_image' => '/assets/images/about.jpg'
-            ]
-        );
-
-        // View'e page objesini gönder
-        return view('pages.about', [
-            'page' => $aboutPage
-        ]);
-    }
-
-    // Contact sayfası (frontend)
-    public function contact()
-    {
-        return view('pages.contact');
-    }
-
-    // Blog sayfası (frontend)
     public function blog()
     {
         $posts = Post::with('category')
@@ -44,37 +17,36 @@ class PageController extends Controller
 
         return view('pages.blog', compact('posts'));
     }
-
-    // ================= ADMIN =================
-
-    // Admin panelinde About Us sayfasını güncelle
-public function updateAbout(Request $request)
+    public function contact()
 {
-    $request->validate([
-        'title' => 'nullable|string',
-        'description' => 'required|string',
-        'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-    ]);
-
-    // DB'den About sayfasını al
-    $aboutPage = Page::where('slug', 'about')->first();
-
-    if (!$aboutPage) {
-        abort(404, 'Page not found');
-    }
-
-    // Eğer yeni resim yüklenmişse kaydet
-    if ($request->hasFile('hero_image')) {
-        $file = $request->file('hero_image');
-        $filename = time().'_'.$file->getClientOriginalName();
-        $file->move(public_path('uploads'), $filename);
-        $aboutPage->hero_image = '/uploads/' . $filename;
-    }
-
-    $aboutPage->title = $request->input('title');
-    $aboutPage->description = $request->input('description');
-    $aboutPage->save();
-
-    return redirect()->route('admin.pages.about')->with('success', 'About Us page updated!');
+    return view('pages.contact');
 }
+
+    public function about()
+    {
+
+        // PAGE
+        $page = Page::firstOrCreate(
+            ['slug' => 'about-us'],
+            [
+                'title' => 'About Us',
+                'description' => 'ABOUT US',
+                'hero_image' => '/assets/images/about-us.jpg'
+            ]
+        );
+
+
+        // SECTİONS
+        $sections = PageSection::where('page_id', $page->id)
+            ->orderBy('section_order')
+            ->orderBy('column_index')
+            ->get()
+            ->groupBy('section_order');
+
+
+        // VİEWS
+       return view('pages.about', compact('page', 'sections'));
+
+    }
+
 }
