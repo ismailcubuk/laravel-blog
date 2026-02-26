@@ -31,9 +31,11 @@
                                 <div class="blog-post">
 
                                     {{-- image --}}
-                                    <div class="blog-thumb">
-                                        <img src="{{ asset('assets/images/blog-post-02.jpg') }}" alt="">
-                                    </div>
+                                    @if($post->image)
+                                        <div class="blog-thumb">
+                                            <img src="{{ asset($post->image) }}" alt="{{ $post->title }}">
+                                        </div>
+                                    @endif
 
                                     <div class="down-content">
 
@@ -45,33 +47,28 @@
 
                                         {{-- info --}}
                                         <ul class="post-info">
-                                            <li><a href="#">Admin</a></li>
+                                            <li><a href="#">{{ $post->user->name ?? 'Admin' }}</a></li>
                                             <li><a href="#">{{ $post->created_at->format('d M Y') }}</a></li>
                                         </ul>
 
                                         {{-- content --}}
                                         <p>{!! nl2br(e($post->content)) !!}</p>
 
-                                        {{-- tags dummy --}}
-                                        <div class="post-options">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <ul class="post-tags">
-                                                        <li><i class="fa fa-tags"></i></li>
-                                                        <li><a href="#">Laravel</a>,</li>
-                                                        <li><a href="#">PHP</a>,</li>
-                                                        <li><a href="#">Blog</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-6">
-                                                    <ul class="post-share">
-                                                        <li><i class="fa fa-share-alt"></i></li>
-                                                        <li><a href="#">Facebook</a>,</li>
-                                                        <li><a href="#">Twitter</a></li>
-                                                    </ul>
+                                        {{-- tags dynamic if you have a tags table --}}
+                                        @if($post->tags && $post->tags->count())
+                                            <div class="post-options">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <ul class="post-tags">
+                                                            <li><i class="fa fa-tags"></i></li>
+                                                            @foreach($post->tags as $tag)
+                                                                <li><a href="#">{{ $tag->name }}</a>@if(!$loop->last),@endif</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
 
                                         {{-- COMMENTS --}}
                                         <div class="sidebar-item comments mt-5">
@@ -113,7 +110,7 @@
                                                 <h2>Leave a Comment</h2>
                                             </div>
                                             <div class="content">
-                                                <form method="POST" action="#">
+                                                <form >
                                                     @csrf
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-12">

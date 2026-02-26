@@ -36,13 +36,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
- // Posts (tek blade üzerinden)
-    Route::get('/posts', [AdminPostController::class, 'index'])->name('content.posts'); // Liste
-    Route::post('/posts', [AdminPostController::class, 'store'])->name('content.posts.store'); // Create
-    Route::get('/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('content.posts.edit'); // Edit form
-    Route::put('/posts/{post}', [AdminPostController::class, 'update'])->name('content.posts.update'); // Update
-    Route::delete('/posts/{post}', [AdminPostController::class, 'destroy'])->name('content.posts.destroy'); // Delete
-        
+// Posts (tek blade üzerinden)
+Route::get('/posts', [AdminPostController::class, 'index'])->name('content.posts.index'); // Liste
+Route::get('/posts/create', [AdminPostController::class, 'create'])->name('content.posts.create'); // Create form
+Route::post('/posts', [AdminPostController::class, 'store'])->name('content.posts.store'); // Store
+Route::get('/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('content.posts.edit'); // Edit form
+Route::put('/posts/{post}', [AdminPostController::class, 'update'])->name('content.posts.update'); // Update
+Route::delete('/posts/{post}', [AdminPostController::class, 'destroy'])->name('content.posts.destroy'); // Delete
+
     Route::get('/categories', function() {
             return view('admin.content.categories');
         })->name('content.categories');

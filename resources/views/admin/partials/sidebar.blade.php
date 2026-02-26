@@ -28,7 +28,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('admin.content.posts') }}" class="nav-link">
+                            <a href="{{ route('admin.content.posts.index') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Posts</p>
                             </a>
