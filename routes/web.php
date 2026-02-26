@@ -1,24 +1,25 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\AdminPageController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\Admin\AdminPostController; 
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\PostController;
+use App\Http\Controllers\Frontend\PageController;
 
+// ================= FRONTEND =================
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/post/{slug}', [PostController::class, 'show'])->name('post.show');
-
-Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/blog', [PageController::class, 'blog'])->name('blog');
+Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
-
+// ================= ADMIN =================
 Route::prefix('admin')->name('admin.')->group(function () {
 
-    // ================= AUTH =================
+    // AUTH
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -29,26 +30,35 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request');
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 
-
-    // ================= ADMIN PANEL =================
+    // Admin Panel (Auth Required)
     Route::middleware('auth')->group(function () {
 
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // Content
-        Route::view('/posts', 'admin.content.posts')->name('content.posts');
-        Route::view('/categories', 'admin.content.categories')->name('content.categories');
-        Route::view('/comments', 'admin.content.comments')->name('content.comments');
+        // Content CRUD (sidebar ile uyumlu)
+        Route::get('/posts', [AdminPostController::class, 'index'])->name('content.posts');
+        Route::get('/posts/create', [AdminPostController::class, 'create'])->name('content.posts.create');
+        Route::post('/posts', [AdminPostController::class, 'store'])->name('content.posts.store');
+        Route::get('/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('content.posts.edit');
+        Route::put('/posts/{post}', [AdminPostController::class, 'update'])->name('content.posts.update');
+        Route::delete('/posts/{post}', [AdminPostController::class, 'destroy'])->name('content.posts.destroy');
+
+        Route::get('/categories', function() {
+            return view('admin.content.categories');
+        })->name('content.categories');
+
+        Route::get('/comments', function() {
+            return view('admin.content.comments');
+        })->name('content.comments');
 
         // Pages
         Route::get('/about-us', [AdminPageController::class, 'about'])->name('pages.about');
         Route::put('/about-us', [AdminPageController::class, 'updateAbout'])->name('pages.about.update');
-        
-        // CONTACT PAGE
+
         Route::get('/contact-us', [AdminPageController::class, 'contact'])->name('pages.contact');
         Route::put('/contact-us', [AdminPageController::class, 'updateContact'])->name('pages.contact.update');
-        
+
         Route::view('/privacy-policy', 'admin.pages.privacy')->name('pages.privacy');
 
         // Users
@@ -64,5 +74,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/settings/mail', 'admin.settings.mail')->name('settings.mail');
 
     });
-
 });
