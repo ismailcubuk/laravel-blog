@@ -36,15 +36,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // Content CRUD (sidebar ile uyumlu)
-        Route::get('/posts', [AdminPostController::class, 'index'])->name('content.posts');
-        Route::get('/posts/create', [AdminPostController::class, 'create'])->name('content.posts.create');
-        Route::post('/posts', [AdminPostController::class, 'store'])->name('content.posts.store');
-        Route::get('/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('content.posts.edit');
-        Route::put('/posts/{post}', [AdminPostController::class, 'update'])->name('content.posts.update');
-        Route::delete('/posts/{post}', [AdminPostController::class, 'destroy'])->name('content.posts.destroy');
-
-        Route::get('/categories', function() {
+ // Posts (tek blade üzerinden)
+    Route::get('/posts', [AdminPostController::class, 'index'])->name('content.posts'); // Liste
+    Route::post('/posts', [AdminPostController::class, 'store'])->name('content.posts.store'); // Create
+    Route::get('/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('content.posts.edit'); // Edit form
+    Route::put('/posts/{post}', [AdminPostController::class, 'update'])->name('content.posts.update'); // Update
+    Route::delete('/posts/{post}', [AdminPostController::class, 'destroy'])->name('content.posts.destroy'); // Delete
+        
+    Route::get('/categories', function() {
             return view('admin.content.categories');
         })->name('content.categories');
 

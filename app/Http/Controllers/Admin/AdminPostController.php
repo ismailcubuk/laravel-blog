@@ -9,23 +9,36 @@ use Illuminate\Http\Request;
 
 class AdminPostController extends Controller
 {
-    // Post list
+    // Listeleme ve form
     public function index()
     {
         $posts = Post::latest()->paginate(10);
-        return view('admin.posts.index', compact('posts'));
-    }
-
-    // Create form
-    public function create()
-    {
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+
+        return view('admin.content.posts', [
+            'posts' => $posts,
+            'categories' => $categories
+        ]);
     }
 
-    // Store new post
+    // Edit form için
+    public function edit(Post $post)
+    {
+        $posts = Post::latest()->paginate(10);
+        $categories = Category::all();
+
+        // Önemli: 'editPost' olarak gönderiyoruz
+        return view('admin.content.posts', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'editPost' => $post
+        ]);
+    }
+
+    // Create
     public function store(Request $request)
     {
+        // 1️⃣ Validate
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string|unique:posts,slug',
@@ -34,12 +47,13 @@ class AdminPostController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
-        $post = new Post();
-        $post->title = $validated['title'];
-        $post->slug = $validated['slug'];
-        $post->content = $validated['content'];
-        $post->category_id = $validated['category_id'];
+        // 2️⃣ user_id ekle
+        $validated['user_id'] = auth()->id();
 
+        // 3️⃣ Post oluştur
+        $post = new Post($validated);
+
+        // 4️⃣ Image varsa kaydet
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time().'_'.$file->getClientOriginalName();
@@ -49,19 +63,13 @@ class AdminPostController extends Controller
 
         $post->save();
 
-        return redirect()->route('admin.posts.index')->with('success', 'Post created successfully');
+        return redirect()->route('admin.content.posts')->with('success', 'Post created successfully');
     }
 
-    // Edit form
-    public function edit(Post $post)
-    {
-        $categories = Category::all();
-        return view('admin.posts.edit', compact('post', 'categories'));
-    }
-
-    // Update post
+    // Update
     public function update(Request $request, Post $post)
     {
+        // Validate
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string|unique:posts,slug,'.$post->id,
@@ -70,27 +78,25 @@ class AdminPostController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
-        $post->title = $validated['title'];
-        $post->slug = $validated['slug'];
-        $post->content = $validated['content'];
-        $post->category_id = $validated['category_id'];
+        // Update user_id is optional; genelde değiştirmeyiz
+        $post->update($validated);
 
+        // Image varsa kaydet
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time().'_'.$file->getClientOriginalName();
             $file->move(public_path('uploads'), $filename);
             $post->image = '/uploads/'.$filename;
+            $post->save();
         }
 
-        $post->save();
-
-        return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully');
+        return redirect()->route('admin.content.posts')->with('success', 'Post updated successfully');
     }
 
-    // Delete post
+    // Delete
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully');
+        return redirect()->route('admin.content.posts')->with('success', 'Post deleted successfully');
     }
 }
