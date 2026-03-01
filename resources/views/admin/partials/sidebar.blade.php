@@ -2,8 +2,9 @@
 
     <!-- Brand -->
     <div class="sidebar-brand">
-        <a href="#" class="brand-link">
-            <span class="brand-text">Admin Panel</span>
+        <a href="{{ route('home') }}" class="brand-link">
+            <span class="brand-text">{{ $settings['site_name'] }}</span>
+
         </a>
     </div>
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\AdminPostController; 
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\PageController;
@@ -69,7 +70,9 @@ Route::delete('/posts/{post}', [AdminPostController::class, 'destroy'])->name('c
         Route::view('/analytics', 'admin.analytics.index')->name('analytics.index');
 
         // Settings
-        Route::view('/settings/general', 'admin.settings.general')->name('settings.general');
+        // Yeni satırlar:
+Route::get('/settings/general', [SettingController::class, 'general'])->name('settings.general');
+Route::put('/settings/general', [SettingController::class, 'update'])->name('settings.general.update');
         Route::view('/settings/social', 'admin.settings.social')->name('settings.social');
         Route::view('/settings/mail', 'admin.settings.mail')->name('settings.mail');
 

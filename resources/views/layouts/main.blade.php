@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,7 +16,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/templatemo-stand-blog.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/owl.css') }}">
+    
+    <!-- Site Favicon -->
+    <link rel="icon" href="{{ asset($settings['site_favicon'] ?? 'default-favicon.ico') }}" type="image/x-icon">
 </head>
+
 <body>
 
     {{-- Preloader --}}
@@ -37,4 +42,5 @@
     <script src="{{ asset('assets/js/custom.js') }}"></script>
 
 </body>
+
 </html>
