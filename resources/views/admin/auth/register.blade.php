@@ -10,7 +10,19 @@
 
             <div class="card-header text-center">
                 <a href="{{ route('home') }}" class="text-decoration-none">
-                    <h1 class="mb-0"><b>Blog</b> Admin</h1>
+                      {{-- Logo --}}
+                    <img src="{{ asset($settings['site_logo'] ?: 'default-logo.png') }}"
+                        alt="{{ $settings['site_name'] ?? 'My Website' }}" style="height: 60px;">
+
+                    <div class="d-flex flex-column ml-2">
+                        {{-- Site Name --}}
+                        @if(!empty($settings['site_name']))
+                            <span style="font-weight: bold; font-size: 18px; line-height: 1;">
+                                <h1 class="mb-0">
+                                    {{ $settings['site_name'] }}
+                                </h1>
+                            </span>
+                        @endif
                 </a>
             </div>
 

@@ -7,8 +7,17 @@
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="{{ route('home') }}" class="text-decoration-none">
-                    <h1 class="mb-0"><b>Blog</b> Admin</h1>
+                <a href="{{ route('home') }}" class="text-decoration-none d-flex flex-column align-items-center">
+                    {{-- Logo --}}
+                    <img src="{{ asset($settings['site_logo'] ?? 'default-logo.png') }}"
+                        alt="{{ $settings['site_name'] ?? 'My Website' }}" style="height: 60px;">
+
+                    {{-- Site Name --}}
+                    @if(!empty($settings['site_name']))
+                        <h1 class="mt-2 mb-0" style="font-size: 22px;">
+                            {{ $settings['site_name'] }}
+                        </h1>
+                    @endif
                 </a>
             </div>
             <div class="card-body login-card-body">
@@ -54,7 +63,7 @@
                             <div class="form-check">
                                 <input type="checkbox" name="remember" class="form-check-input">
                                 <label class="form-check-label">
-                                    Beni Hatırla
+                                    Remember Me
                                 </label>
                             </div>
                         </div>
@@ -62,7 +71,7 @@
                         <div class="col-4">
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">
-                                    Giriş Yap
+                                    Log In
                                 </button>
                             </div>
                         </div>

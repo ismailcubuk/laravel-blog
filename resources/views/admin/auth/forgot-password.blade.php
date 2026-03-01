@@ -5,17 +5,32 @@
 @section('content')
 
     <div class="login-box">
-        <div class="login-logo">
-            <a href="#"><b>Admin</b>LTE</a>
-        </div>
-
         <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a href="{{ route('home') }}" class="text-decoration-none">
+                    {{-- Logo --}}
+                    <img src="{{ asset($settings['site_logo'] ?? 'default-logo.png') }}" 
+                         alt="{{ $settings['site_name'] ?? 'My Website' }}" style="height: 60px;">
+                    @if(!empty($settings['site_name']))
+                        <h1 class="mt-2 mb-0" style="font-size: 22px;">
+                            {{ $settings['site_name'] }}
+                        </h1>
+                    @endif
+                </a>
+            </div>
+
             <div class="card-body login-card-body">
                 <p class="login-box-msg">You forgot your password? Enter your email to reset it.</p>
 
-                <form>
+                {{-- Formu direkt URL'ye gönderiyoruz, route yoksa sorun olmaz --}}
+                <form method="POST" action="/admin/forgot-password" novalidate>
+                    @csrf
+
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
+                        <div class="form-floating">
+                            <input type="email" name="email" class="form-control" placeholder="Email" required>
+                            <label>Email</label>
+                        </div>
                         <div class="input-group-text">
                             <span class="bi bi-envelope"></span>
                         </div>

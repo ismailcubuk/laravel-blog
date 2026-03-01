@@ -1,67 +1,126 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<h1>General Settings</h1>
+<div class="container py-5">
+    <h1 class="mb-4 text-primary">General Settings</h1>
 
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
 
-<form action="{{ route('admin.settings.general.update') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="{{ route('admin.settings.general.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
-    <div>
-        <label>Site Name</label>
-        <input type="text" name="site_name" value="{{ $settings['site_name'] ?? '' }}">
+                {{-- Site Info --}}
+                <h5 class="mb-3">Site Information</h5>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Site Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="site_name" class="form-control" value="{{ $settings['site_name'] ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <label class="col-sm-2 col-form-label">Site Logo</label>
+                    <div class="col-sm-10">
+                        <input type="file" name="site_logo" class="form-control" id="siteLogoInput">
+                        <div class="mt-2">
+                            <img id="siteLogoPreview" src="{{ asset($settings['site_logo'] ?? 'default-logo.png') }}" 
+                                 alt="Logo" class="img-fluid border rounded" style="max-height:100px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <label class="col-sm-2 col-form-label">Site Favicon</label>
+                    <div class="col-sm-10">
+                        <input type="file" name="site_favicon" class="form-control" id="siteFaviconInput">
+                        <div class="mt-2">
+                            <img id="siteFaviconPreview" src="{{ asset($settings['site_favicon'] ?? 'default-favicon.ico') }}" 
+                                 alt="Favicon" class="img-fluid border rounded" style="max-height:32px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Site Tagline</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="site_tagline" class="form-control" value="{{ $settings['site_tagline'] ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="mb-4 row">
+                    <label class="col-sm-2 col-form-label">Footer Text</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="footer_text" class="form-control" value="{{ $settings['footer_text'] ?? '' }}">
+                    </div>
+                </div>
+
+                {{-- Social Links --}}
+                <h5 class="mb-3">Social Links</h5>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Facebook</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="facebook_url" class="form-control" value="{{ $settings['facebook_url'] ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Twitter</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="twitter_url" class="form-control" value="{{ $settings['twitter_url'] ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Instagram</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="instagram_url" class="form-control" value="{{ $settings['instagram_url'] ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="mb-4 row">
+                    <label class="col-sm-2 col-form-label">LinkedIn</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="linkedin_url" class="form-control" value="{{ $settings['linkedin_url'] ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success btn-lg">Save Settings</button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
-    <div>
-        <label>Site Logo</label>
-        <input type="file" name="site_logo">
-        @if(!empty($settings['site_logo']))
-            <img src="{{ asset($settings['site_logo']) }}" alt="Logo" width="100">
-        @endif
-    </div>
+{{-- Live Preview Script --}}
+@push('scripts')
+<script>
+    const logoInput = document.getElementById('siteLogoInput');
+    const logoPreview = document.getElementById('siteLogoPreview');
 
-    <div>
-        <label>Site Favicon</label>
-        <input type="file" name="site_favicon">
-        @if(!empty($settings['site_favicon']))
-            <img src="{{ asset($settings['site_favicon']) }}" alt="Favicon" width="32">
-        @endif
-    </div>
+    logoInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if(file) logoPreview.src = URL.createObjectURL(file);
+    });
 
-    <div>
-        <label>Site Tagline</label>
-        <input type="text" name="site_tagline" value="{{ $settings['site_tagline'] ?? '' }}">
-    </div>
+    const faviconInput = document.getElementById('siteFaviconInput');
+    const faviconPreview = document.getElementById('siteFaviconPreview');
 
-    <div>
-        <label>Footer Text</label>
-        <input type="text" name="footer_text" value="{{ $settings['footer_text'] ?? '' }}">
-    </div>
+    faviconInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if(file) faviconPreview.src = URL.createObjectURL(file);
+    });
+</script>
+@endpush
 
-    <div>
-        <label>Facebook URL</label>
-        <input type="text" name="facebook_url" value="{{ $settings['facebook_url'] ?? '' }}">
-    </div>
-
-    <div>
-        <label>Twitter URL</label>
-        <input type="text" name="twitter_url" value="{{ $settings['twitter_url'] ?? '' }}">
-    </div>
-
-    <div>
-        <label>Instagram URL</label>
-        <input type="text" name="instagram_url" value="{{ $settings['instagram_url'] ?? '' }}">
-    </div>
-
-    <div>
-        <label>LinkedIn URL</label>
-        <input type="text" name="linkedin_url" value="{{ $settings['linkedin_url'] ?? '' }}">
-    </div>
-
-    <button type="submit">Save Settings</button>
-</form>
 @endsection
