@@ -5,11 +5,13 @@
             <div class="col-lg-12">
                 <div class="blog-post">
 
-                    <div class="blog-thumb">
-                        <a href="{{ route('post.show', $post->slug) }}">
-                            <img src="{{ asset('assets/images/blog-post-01.jpg') }}" alt="">
-                        </a>
-                    </div>
+                    @if($post->image)
+                        <div class="blog-thumb">
+                            <a href="{{ route('post.show', $post->slug) }}">
+                                <img src="{{ asset($post->image) }}" alt="{{ $post->title }}">
+                            </a>
+                        </div>
+                    @endif
 
 
                     <div class="down-content">

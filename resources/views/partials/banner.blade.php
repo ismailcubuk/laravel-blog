@@ -7,7 +7,11 @@
                 <div class="item">
 
                     {{-- image --}}
-                    <img src="{{ asset('assets/images/banner-item-01.jpg') }}" alt="">
+                    @if($post->image)
+                        <a href="{{ route('post.show', $post->slug) }}">
+                            <img src="{{ asset($post->image) }}" alt="{{ $post->title }}">
+                        </a>
+                    @endif
 
                     <div class="item-content">
                         <div class="main-content">
