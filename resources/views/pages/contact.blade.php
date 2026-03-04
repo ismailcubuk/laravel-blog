@@ -75,23 +75,23 @@
                             <div class="sidebar-item contact-information">
 
                                 <div class="sidebar-heading">
-                                    <h2>contact information</h2>
+                                    <h2>CONTACT INFORMATION</h2>
                                 </div>
 
                                 <div class="content">
                                     <ul>
                                         <li>
-                                            <h5>{{ $page->contact_phone ?? '-' }}</h5>
+                                            <h5>{{ !empty($page->contact_phone) ? $page->contact_phone : 'Your phone number' }}</h5>
                                             <span>PHONE NUMBER</span>
                                         </li>
 
                                         <li>
-                                            <h5>{{ $page->contact_email ?? '-' }}</h5>
+                                            <h5>{{ !empty($page->contact_email) ? $page->contact_email : 'Your email address' }}</h5>
                                             <span>EMAIL ADDRESS</span>
                                         </li>
 
                                         <li>
-                                            <h5>{{ $page->contact_address ?? '-' }}</h5>
+                                            <h5>{{ !empty($page->contact_address) ? $page->contact_address : 'Your street address' }}</h5>
                                             <span>STREET ADDRESS</span>
                                         </li>
                                     </ul>
