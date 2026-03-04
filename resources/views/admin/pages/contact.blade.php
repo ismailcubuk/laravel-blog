@@ -43,9 +43,8 @@
             <div class="mb-3 row">
                 <div class="col-md-6">
                     <label class="form-label">Google Map URL</label>
-                    <input type="text" name="contact_map_src" class="form-control"
+                    <input type="text" id="map_src_input" name="contact_map_src" class="form-control"
                         value="{{ $page->contact_map_src ?? '' }}" placeholder="https://maps.google.com/embed?...">
-                    >
                 </div>
 
                 <div class="col-md-6">

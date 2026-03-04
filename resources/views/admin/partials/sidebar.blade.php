@@ -19,8 +19,11 @@
                     </p>
                 </a>
                 {{--Content--}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                @php
+                    $contentOpen = request()->routeIs('admin.content.*');
+                @endphp
+                <li class="nav-item {{ $contentOpen ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ $contentOpen ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-newspaper"></i>
                         <p>
                             Content
@@ -29,19 +32,19 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('admin.content.posts.index') }}" class="nav-link">
+                            <a href="{{ route('admin.content.posts.index') }}" class="nav-link {{ request()->routeIs('admin.content.posts.*') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Posts</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.content.categories') }}" class="nav-link">
+                            <a href="{{ route('admin.content.categories') }}" class="nav-link {{ request()->routeIs('admin.content.categories') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Categories</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.content.comments') }}" class="nav-link">
+                            <a href="{{ route('admin.content.comments') }}" class="nav-link {{ request()->routeIs('admin.content.comments') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Comment</p>
                             </a>

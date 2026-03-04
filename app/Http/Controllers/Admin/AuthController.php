@@ -62,12 +62,12 @@ public function logout(Request $request)
       public function register(Request $request)
     {
         // 1. Validation
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required', 'email:rfc,dns', 'unique:users,email',
-            'password' => 'required|string|min:6|confirmed', 
-            'terms' => 'accepted', 
-        ]);
+$request->validate([
+    'name' => ['required', 'string', 'max:255'],
+    'email' => ['required', 'email:rfc,dns', 'unique:users,email'],
+    'password' => ['required', 'string', 'min:6', 'confirmed'],
+    'terms' => ['accepted'],
+]);
 
         // 2. New user
         $user = User::create([
