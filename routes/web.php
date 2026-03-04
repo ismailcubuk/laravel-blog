@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\AdminPostController; 
+use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PostController;
@@ -45,9 +46,8 @@ Route::get('/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('co
 Route::put('/posts/{post}', [AdminPostController::class, 'update'])->name('content.posts.update'); // Update
 Route::delete('/posts/{post}', [AdminPostController::class, 'destroy'])->name('content.posts.destroy'); // Delete
 
-    Route::get('/categories', function() {
-            return view('admin.content.categories');
-        })->name('content.categories');
+        Route::get('/categories', [AdminCategoryController::class, 'index'])->name('content.categories.index');
+        Route::post('/categories', [AdminCategoryController::class, 'store'])->name('content.categories.store');
 
         Route::get('/comments', function() {
             return view('admin.content.comments');

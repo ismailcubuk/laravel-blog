@@ -47,7 +47,7 @@
                                             </span>
 
                                             {{-- title --}}
-                                            <a href="{{ route('post.show', $post->id) }}">
+                                            <a href="{{ route('post.show', $post->slug) }}">
                                                 <h4>{{ $post->title }}</h4>
                                             </a>
 
@@ -125,7 +125,7 @@
                                             @foreach($posts->take(5) as $recent)
 
                                                 <li>
-                                                    <a href="{{ route('post.show', $recent->id) }}">
+                                                    <a href="{{ route('post.show', $recent->slug) }}">
                                                         <h5>{{ $recent->title }}</h5>
                                                         <span>
                                                             {{ $recent->created_at->format('d M Y') }}

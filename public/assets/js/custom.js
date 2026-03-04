@@ -77,11 +77,11 @@ jQuery( document ).ready(function( $ ) {
                         items: 1,
                         margin: 0
                     },
-                    576: {
-                        items: 1,
+                    768: {
+                        items: 2,
                         margin: 10
                     },
-                    992: {
+                    1200: {
                       items: 3,
                       margin: 10
                     }
