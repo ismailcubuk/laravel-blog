@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Content\AdminPostController;
 use App\Http\Controllers\Admin\Content\AdminCategoryController;
 use App\Http\Controllers\Admin\Pages\AdminPageController;
 use App\Http\Controllers\Admin\Settings\SettingController;
+use App\Http\Controllers\Admin\Users\RoleController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -42,7 +43,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/contact-us', [AdminPageController::class, 'updateContact'])->name('pages.contact.update');
         Route::view('/privacy-policy', 'admin.pages.privacy')->name('pages.privacy');
 
-        Route::view('/users/roles', 'admin.users.roles')->name('users.roles');
+        Route::get('/users/roles', [RoleController::class, 'index'])->name('users.roles');
         Route::view('/users/permissions', 'admin.users.permissions')->name('users.permissions');
 
         Route::view('/analytics', 'admin.analytics.index')->name('analytics.index');
@@ -53,3 +54,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/settings/mail', 'admin.settings.mail')->name('settings.mail');
     });
 });
+
