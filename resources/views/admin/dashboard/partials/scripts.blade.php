@@ -14,3 +14,4 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ asset('assets/js/admin/dashboard/activity.js') }}"></script>
+<script src="{{ asset('assets/js/admin/dashboard/all-posts-modal.js') }}"></script>

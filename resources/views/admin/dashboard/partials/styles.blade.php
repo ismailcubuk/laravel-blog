@@ -90,4 +90,13 @@
     justify-content: center;
     font-weight: 700;
 }
+
+.all-posts-item {
+    transition: background-color 0.2s ease;
+}
+
+.all-posts-item:hover {
+    background-color: #e9f2ff;
+    box-shadow: inset 4px 0 0 #0d6efd;
+}
 </style>

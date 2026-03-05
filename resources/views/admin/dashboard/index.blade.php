@@ -3,6 +3,7 @@
 @section('content')
     @include('admin.dashboard.partials.header')
     @include('admin.dashboard.partials.stats')
+    @include('admin.dashboard.partials.all-posts-modal')
 
     <div class="row mt-4">
         @include('admin.dashboard.partials.blog-activity-card')
