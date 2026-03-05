@@ -20,10 +20,6 @@
 <body class="hold-transition sidebar-mini layout-fixed ">
 
     <div class="app-wrapper">
-
-        {{-- Navbar --}}
-        @include('admin.partials.navbar')
-
         {{-- Sidebar --}}
         @include('admin.partials.sidebar')
 

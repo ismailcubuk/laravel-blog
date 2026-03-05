@@ -12,7 +12,7 @@ class AdminPostController extends Controller
     // Listeleme
     public function index()
     {
-        $posts = Post::latest()->paginate(10);
+        $posts = Post::with(['category', 'user'])->latest()->paginate(10);
 
         return view('admin.content.posts.index', [
             'posts' => $posts
