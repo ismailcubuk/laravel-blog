@@ -73,7 +73,35 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="p-3">{{ $posts->links() }}</div>
+                    <div class="p-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+                        <small class="text-muted">
+                            Showing {{ $posts->firstItem() ?? 0 }}-{{ $posts->lastItem() ?? 0 }} of {{ $posts->total() }} posts
+                        </small>
+
+                        @if ($posts->hasPages())
+                            <nav aria-label="Posts pagination">
+                                <ul class="pagination pagination-sm mb-0">
+                                    <li class="page-item {{ $posts->onFirstPage() ? 'disabled' : '' }}">
+                                        <a class="page-link" href="{{ $posts->previousPageUrl() ?? '#' }}" aria-label="Previous">
+                                            &laquo;
+                                        </a>
+                                    </li>
+
+                                    @foreach ($posts->getUrlRange(1, $posts->lastPage()) as $page => $url)
+                                        <li class="page-item {{ $page == $posts->currentPage() ? 'active' : '' }}">
+                                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                        </li>
+                                    @endforeach
+
+                                    <li class="page-item {{ $posts->hasMorePages() ? '' : 'disabled' }}">
+                                        <a class="page-link" href="{{ $posts->nextPageUrl() ?? '#' }}" aria-label="Next">
+                                            &raquo;
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

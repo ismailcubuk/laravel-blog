@@ -40,7 +40,7 @@
                         @foreach($categories as $category)
                             <li>
                                 <a href="{{ route('blog', ['category' => $category->id]) }}">
-                                    - {{ $category->name }}
+                                    - {{ $category->name }} ({{ $category->posts_count ?? 0 }})
                                 </a>
                             </li>
                         @endforeach

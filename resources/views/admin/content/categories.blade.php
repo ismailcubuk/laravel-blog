@@ -30,30 +30,18 @@
     @endif
 
     <div class="row g-4">
-        <div class="col-lg-4">
+        <div class="col-lg-12">
             <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0">Create Category</h5>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('admin.content.categories.store') }}" method="POST">
-                        @csrf
-
-                        <div class="mb-3">
-                            <label class="form-label">Category Name</label>
-                            <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
-                        </div>
-
-                        <button type="submit" class="btn btn-success w-100">Save Category</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white">
+                <div class="card-header bg-dark text-white d-flex align-items-center">
                     <h5 class="mb-0">Category List</h5>
+                    <button
+                        type="button"
+                        class="btn btn-success btn-sm ms-auto"
+                        data-bs-toggle="modal"
+                        data-bs-target="#newCategoryModal"
+                    >
+                        <i class="bi bi-plus-lg me-1"></i> New Category
+                    </button>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -70,18 +58,54 @@
                             <tbody>
                                 @forelse($categories as $category)
                                     <tr>
-                                        <td>{{ $category->name }}</td>
+                                        <td>
+                                            <span id="categoryNameText-{{ $category->id }}">{{ $category->name }}</span>
+                                            <input
+                                                type="text"
+                                                id="categoryNameInput-{{ $category->id }}"
+                                                name="name"
+                                                value="{{ $category->name }}"
+                                                class="form-control form-control-sm d-none"
+                                                form="updateCategoryForm-{{ $category->id }}"
+                                                required
+                                            >
+                                        </td>
                                         <td>{{ $category->slug }}</td>
                                         <td>{{ $category->posts_count }}</td>
                                         <td>{{ optional($category->created_at)->format('d M Y') }}</td>
                                         <td class="text-end">
+                                            <form
+                                                id="updateCategoryForm-{{ $category->id }}"
+                                                action="{{ route('admin.content.categories.update', $category) }}"
+                                                method="POST"
+                                                class="d-inline"
+                                            >
+                                                @csrf
+                                                @method('PUT')
+                                            </form>
                                             <button
                                                 type="button"
                                                 class="btn btn-sm btn-outline-primary"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#editCategoryModal-{{ $category->id }}"
+                                                id="editCategoryBtn-{{ $category->id }}"
+                                                onclick="toggleCategoryEdit({{ $category->id }}, true)"
                                             >
                                                 Edit
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                form="updateCategoryForm-{{ $category->id }}"
+                                                class="btn btn-sm btn-primary d-none"
+                                                id="saveCategoryBtn-{{ $category->id }}"
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-secondary d-none"
+                                                id="cancelCategoryBtn-{{ $category->id }}"
+                                                onclick="toggleCategoryEdit({{ $category->id }}, false)"
+                                            >
+                                                Cancel
                                             </button>
                                             <form
                                                 action="{{ route('admin.content.categories.destroy', $category) }}"
@@ -112,37 +136,73 @@
     </div>
 </div>
 
-@foreach($categories as $category)
-    <div class="modal fade" id="editCategoryModal-{{ $category->id }}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('admin.content.categories.update', $category) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Category Name</label>
-                            <input
-                                type="text"
-                                name="name"
-                                class="form-control"
-                                value="{{ old('name', $category->name) }}"
-                                required
-                            >
-                        </div>
-                        <small class="text-muted">Slug is generated automatically from category name.</small>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                </form>
+<div class="modal fade" id="newCategoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form action="{{ route('admin.content.categories.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-0">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save Category</button>
+                </div>
+            </form>
         </div>
     </div>
-@endforeach
+</div>
+<script>
+function toggleCategoryEdit(categoryId, enableEdit) {
+    const nameText = document.getElementById('categoryNameText-' + categoryId);
+    const nameInput = document.getElementById('categoryNameInput-' + categoryId);
+    const editBtn = document.getElementById('editCategoryBtn-' + categoryId);
+    const saveBtn = document.getElementById('saveCategoryBtn-' + categoryId);
+    const cancelBtn = document.getElementById('cancelCategoryBtn-' + categoryId);
+
+    if (!nameText || !nameInput || !editBtn || !saveBtn || !cancelBtn) {
+        return;
+    }
+
+    if (enableEdit) {
+        nameText.classList.add('d-none');
+        nameInput.classList.remove('d-none');
+        editBtn.classList.add('d-none');
+        saveBtn.classList.remove('d-none');
+        cancelBtn.classList.remove('d-none');
+        nameInput.focus();
+        nameInput.select();
+        return;
+    }
+
+    nameInput.value = nameText.textContent.trim();
+    nameText.classList.remove('d-none');
+    nameInput.classList.add('d-none');
+    editBtn.classList.remove('d-none');
+    saveBtn.classList.add('d-none');
+    cancelBtn.classList.add('d-none');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const hasValidationErrors = {{ $errors->any() ? 'true' : 'false' }};
+    if (!hasValidationErrors) {
+        return;
+    }
+
+    const modalElement = document.getElementById('newCategoryModal');
+    if (!modalElement || !window.bootstrap) {
+        return;
+    }
+
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+});
+</script>
 @endsection
