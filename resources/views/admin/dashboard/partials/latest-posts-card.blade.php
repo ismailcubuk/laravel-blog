@@ -5,7 +5,7 @@
         </div>
         <div class="card-body p-0 latest-posts-body">
             @forelse($latestPosts as $post)
-                <div class="d-flex p-3 border-bottom">
+                <a href="{{ route('post.show', $post->slug) }}" class="d-flex p-3 border-bottom latest-post-item">
                     <div class="me-3">
                         <img
                             src="{{ $post->image ? asset(ltrim($post->image, '/')) : 'https://picsum.photos/seed/' . $post->id . '/200/300' }}"
@@ -22,9 +22,8 @@
                         <small class="text-secondary">
                             <i class="fa fa-calendar"></i> {{ optional($post->created_at)->format('d.m.Y') }}
                         </small>
-                        <a href="{{ route('post.show', $post->slug) }}" class="d-inline-block ms-2">View</a>
                     </div>
-                </div>
+                </a>
             @empty
                 <div class="p-3 text-muted">Henüz blog yazısı bulunmuyor.</div>
             @endforelse

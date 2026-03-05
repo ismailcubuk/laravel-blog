@@ -19,6 +19,19 @@
     overflow-y: auto;
 }
 
+.latest-post-item {
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.latest-post-item:hover {
+    color: inherit;
+    text-decoration: none;
+    background-color: #e9f2ff;
+    box-shadow: inset 4px 0 0 #0d6efd;
+}
+
 .latest-post-excerpt {
     font-size: 14px;
 }
@@ -46,7 +59,8 @@
 
 .activity-post-item:hover,
 .activity-user-item:hover {
-    background-color: #f8f9fa;
+    background-color: #e9f2ff;
+    box-shadow: inset 4px 0 0 #0d6efd;
 }
 
 .activity-view-link {

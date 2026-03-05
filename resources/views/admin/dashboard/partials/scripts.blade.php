@@ -100,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             '<p class="mb-1 text-muted small">' + safeExcerpt + '</p>' +
                             '<div class="d-flex justify-content-between align-items-center">' +
                             '<small class="text-secondary"><i class="fa fa-clock"></i> ' + safeTime + '</small>' +
-                            '<span class="activity-view-link">View</span>' +
                             '</div>' +
                             '</div>' +
                             '</a>';
