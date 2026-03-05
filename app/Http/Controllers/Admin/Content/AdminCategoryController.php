@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Content;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -41,4 +41,5 @@ class AdminCategoryController extends Controller
             ->with('success', 'Category created successfully.');
     }
 }
+
 

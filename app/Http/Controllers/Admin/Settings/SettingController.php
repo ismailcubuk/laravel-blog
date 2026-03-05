@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Settings;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,10 +8,10 @@ use App\Models\Setting;
 
 class SettingController extends Controller
 {
-    // Admin General Settings sayfasını göster
+    // Admin General Settings sayfasÄ±nÄ± gÃ¶ster
     public function general()
     {
-        // Default değerler
+        // Default deÄŸerler
         $defaultSettings = [
             'site_name'     => 'My Website',
             'site_logo'     => null,
@@ -24,16 +24,16 @@ class SettingController extends Controller
             'linkedin_url'  => '',
         ];
 
-        // Veritabanındaki mevcut ayarları al
+        // VeritabanÄ±ndaki mevcut ayarlarÄ± al
         $settings = Setting::all()->pluck('value', 'key')->toArray();
 
-        // Default ile birleştir
+        // Default ile birleÅŸtir
         $settings = array_merge($defaultSettings, $settings);
 
         return view('admin.settings.general', compact('settings'));
     }
 
-    // Form submit işlemi
+    // Form submit iÅŸlemi
     public function update(Request $request)
     {
         $fields = [
