@@ -1,4 +1,4 @@
-﻿<div class="modal fade" id="activityDetailModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="activityDetailModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header activity-modal-header">

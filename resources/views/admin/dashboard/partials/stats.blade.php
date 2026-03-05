@@ -1,4 +1,4 @@
-﻿@php
+@php
     $stats = [
         ['bg' => 'info', 'icon' => 'fa-file-lines', 'count' => 6, 'label' => 'Site Pages'],
         ['bg' => 'success', 'icon' => 'fa-users', 'count' => 5, 'label' => 'Users'],

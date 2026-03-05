@@ -1,4 +1,4 @@
-﻿<style>
+<style>
 .small-box .icon {
     position: absolute;
     top: 10px;

@@ -1,4 +1,4 @@
-﻿<div class="col-lg-6">
+<div class="col-lg-6">
     <div class="card card-primary h-100 dashboard-card">
         <div class="card-header">
             <h3 class="card-title">Latest Blog Posts</h3>
