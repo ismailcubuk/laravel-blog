@@ -31,6 +31,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/categories', [AdminCategoryController::class, 'index'])->name('content.categories.index');
         Route::post('/categories', [AdminCategoryController::class, 'store'])->name('content.categories.store');
+        Route::put('/categories/{category}', [AdminCategoryController::class, 'update'])->name('content.categories.update');
+        Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('content.categories.destroy');
 
         Route::view('/comments', 'admin.content.comments')->name('content.comments');
 
