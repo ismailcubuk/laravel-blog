@@ -7,7 +7,9 @@ use App\Http\Controllers\Admin\Content\AdminPostController;
 use App\Http\Controllers\Admin\Content\AdminCategoryController;
 use App\Http\Controllers\Admin\Pages\AdminPageController;
 use App\Http\Controllers\Admin\Settings\SettingController;
+use App\Http\Controllers\Admin\Users\PermissionController;
 use App\Http\Controllers\Admin\Users\RoleController;
+use App\Http\Controllers\Admin\Users\UserController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -43,8 +45,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/contact-us', [AdminPageController::class, 'updateContact'])->name('pages.contact.update');
         Route::view('/privacy-policy', 'admin.pages.privacy')->name('pages.privacy');
 
+        Route::get('/users', [UserController::class, 'index'])->name('users.list');
+        Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.role.update');
         Route::get('/users/roles', [RoleController::class, 'index'])->name('users.roles');
-        Route::view('/users/permissions', 'admin.users.permissions')->name('users.permissions');
+        Route::post('/users/roles', [RoleController::class, 'store'])->name('users.roles.store');
+        Route::put('/users/roles/{role}', [RoleController::class, 'update'])->name('users.roles.update');
+        Route::delete('/users/roles/{role}', [RoleController::class, 'destroy'])->name('users.roles.destroy');
+        Route::get('/users/permissions', function () {
+            return redirect()->route('admin.users.roles');
+        })->name('users.permissions');
+        Route::post('/users/permissions', [PermissionController::class, 'store'])->name('users.permissions.store');
+        Route::put('/users/permissions/{permission}', [PermissionController::class, 'update'])->name('users.permissions.update');
+        Route::delete('/users/permissions/{permission}', [PermissionController::class, 'destroy'])->name('users.permissions.destroy');
+        Route::put('/users/permissions/{permission}/roles', [PermissionController::class, 'syncRoles'])->name('users.permissions.roles.sync');
 
         Route::view('/analytics', 'admin.analytics.index')->name('analytics.index');
 
@@ -54,4 +67,3 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/settings/mail', 'admin.settings.mail')->name('settings.mail');
     });
 });
-

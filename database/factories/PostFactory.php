@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,9 @@ class PostFactory extends Factory
 
             'category_id' => Category::inRandomOrder()->first()->id 
                 ?? Category::factory(),
+
+            'user_id' => User::inRandomOrder()->first()->id
+                ?? User::factory(),
         ];
     }
 }

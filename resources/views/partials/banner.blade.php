@@ -7,11 +7,9 @@
                 <div class="item">
 
                     {{-- image --}}
-                    @if($post->image)
-                        <a href="{{ route('post.show', $post->slug) }}">
-                            <img src="{{ asset($post->image) }}" alt="{{ $post->title }}">
-                        </a>
-                    @endif
+                    <a href="{{ route('post.show', $post->slug) }}">
+                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}">
+                    </a>
 
                     <div class="item-content">
                         <div class="main-content">

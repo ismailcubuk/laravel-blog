@@ -11,11 +11,10 @@ class PostSeeder extends Seeder
 {
     public function run(): void
     {
+        User::factory(5)->create();
+
         Category::factory(5)->create();
 
         Post::factory(20)->create();
-
-        User::factory(5)->create();
-
     }
 }

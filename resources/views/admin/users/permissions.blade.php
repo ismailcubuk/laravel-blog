@@ -1,6 +1,258 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<h1>Permissions Page</h1>
-<p>This is dummy permissions page.</p>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Permissions</h1>
+        <form method="GET" action="{{ route('admin.users.permissions') }}" class="d-flex" style="max-width: 320px; width: 100%;">
+            <input type="text" name="q" value="{{ $search }}" class="form-control me-2" placeholder="Search permission name">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white d-flex align-items-center">
+            <h5 class="mb-0">Permission List</h5>
+            <button
+                type="button"
+                class="btn btn-success btn-sm ms-auto"
+                data-bs-toggle="modal"
+                data-bs-target="#newPermissionModal"
+            >
+                <i class="bi bi-plus-lg me-1"></i> New Permission
+            </button>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Roles</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($permissions as $permission)
+                            <tr>
+                                <td>
+                                    <span id="permissionNameText-{{ $permission->id }}">{{ $permission->name }}</span>
+                                    <input
+                                        type="text"
+                                        id="permissionNameInput-{{ $permission->id }}"
+                                        name="name"
+                                        value="{{ $permission->name }}"
+                                        class="form-control form-control-sm d-none"
+                                        form="updatePermissionForm-{{ $permission->id }}"
+                                        required
+                                    >
+                                </td>
+                                <td>
+                                    @forelse($permission->roles as $role)
+                                        <span class="badge bg-secondary me-1 mb-1">{{ $role->name }}</span>
+                                    @empty
+                                        <span class="text-muted">No roles</span>
+                                    @endforelse
+                                </td>
+                                <td class="text-end">
+                                    <form
+                                        id="updatePermissionForm-{{ $permission->id }}"
+                                        action="{{ route('admin.users.permissions.update', $permission) }}"
+                                        method="POST"
+                                        class="d-inline"
+                                    >
+                                        @csrf
+                                        @method('PUT')
+                                    </form>
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        id="editPermissionBtn-{{ $permission->id }}"
+                                        onclick="togglePermissionEdit({{ $permission->id }}, true)"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        form="updatePermissionForm-{{ $permission->id }}"
+                                        class="btn btn-sm btn-primary d-none"
+                                        id="savePermissionBtn-{{ $permission->id }}"
+                                    >
+                                        Save
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-secondary d-none"
+                                        id="cancelPermissionBtn-{{ $permission->id }}"
+                                        onclick="togglePermissionEdit({{ $permission->id }}, false)"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-info"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#permissionRoleModal-{{ $permission->id }}"
+                                    >
+                                        Roles
+                                    </button>
+                                    <form
+                                        action="{{ route('admin.users.permissions.destroy', $permission) }}"
+                                        method="POST"
+                                        class="d-inline"
+                                        onsubmit="return confirm('Are you sure you want to delete this permission?');"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-3">No permissions found</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-3">
+                {{ $permissions->links() }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="newPermissionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Permission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.users.permissions.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-0">
+                        <label class="form-label">Permission Name</label>
+                        <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save Permission</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@foreach($permissions as $permission)
+    <div class="modal fade" id="permissionRoleModal-{{ $permission->id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ $permission->name }} Roles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.users.permissions.roles.sync', $permission) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        @php
+                            $assignedRoleIds = $permission->roles->pluck('id')->all();
+                        @endphp
+                        @forelse($roles as $role)
+                            <div class="form-check mb-2">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="role_ids[]"
+                                    value="{{ $role->id }}"
+                                    id="permission-{{ $permission->id }}-role-{{ $role->id }}"
+                                    {{ in_array($role->id, $assignedRoleIds, true) ? 'checked' : '' }}
+                                >
+                                <label class="form-check-label" for="permission-{{ $permission->id }}-role-{{ $role->id }}">
+                                    {{ $role->name }}
+                                </label>
+                            </div>
+                        @empty
+                            <p class="text-muted mb-0">No roles found.</p>
+                        @endforelse
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Roles</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endforeach
+
+<script>
+function togglePermissionEdit(permissionId, enableEdit) {
+    const nameText = document.getElementById('permissionNameText-' + permissionId);
+    const nameInput = document.getElementById('permissionNameInput-' + permissionId);
+    const editBtn = document.getElementById('editPermissionBtn-' + permissionId);
+    const saveBtn = document.getElementById('savePermissionBtn-' + permissionId);
+    const cancelBtn = document.getElementById('cancelPermissionBtn-' + permissionId);
+
+    if (!nameText || !nameInput || !editBtn || !saveBtn || !cancelBtn) {
+        return;
+    }
+
+    if (enableEdit) {
+        nameText.classList.add('d-none');
+        nameInput.classList.remove('d-none');
+        editBtn.classList.add('d-none');
+        saveBtn.classList.remove('d-none');
+        cancelBtn.classList.remove('d-none');
+        nameInput.focus();
+        nameInput.select();
+        return;
+    }
+
+    nameInput.value = nameText.textContent.trim();
+    nameText.classList.remove('d-none');
+    nameInput.classList.add('d-none');
+    editBtn.classList.remove('d-none');
+    saveBtn.classList.add('d-none');
+    cancelBtn.classList.add('d-none');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const hasValidationErrors = {{ $errors->any() ? 'true' : 'false' }};
+    if (!hasValidationErrors) {
+        return;
+    }
+
+    const modalElement = document.getElementById('newPermissionModal');
+    if (!modalElement || !window.bootstrap) {
+        return;
+    }
+
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+});
+</script>
 @endsection
+

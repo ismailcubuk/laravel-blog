@@ -31,11 +31,9 @@
                                 <div class="blog-post">
 
                                     {{-- image --}}
-                                    @if($post->image)
-                                        <div class="blog-thumb">
-                                            <img src="{{ asset($post->image) }}" alt="{{ $post->title }}">
-                                        </div>
-                                    @endif
+                                    <div class="blog-thumb">
+                                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}">
+                                    </div>
 
                                     <div class="down-content">
 

@@ -113,17 +113,17 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('admin.users.roles') }}"
-                               class="nav-link {{ request()->routeIs('admin.users.roles') ? 'active' : '' }}">
+                            <a href="{{ route('admin.users.list') }}"
+                               class="nav-link {{ request()->routeIs('admin.users.list') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>User List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.users.permissions') }}"
-                               class="nav-link {{ request()->routeIs('admin.users.permissions') ? 'active' : '' }}">
+                            <a href="{{ route('admin.users.roles') }}"
+                               class="nav-link {{ request()->routeIs('admin.users.roles*') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Permissions</p>
+                                <p>Roles & Permissions</p>
                             </a>
                         </li>
                     </ul>
