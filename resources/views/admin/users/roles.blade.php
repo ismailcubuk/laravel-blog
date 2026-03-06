@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Roles</h1>
+        <h1 class="mb-0">User List</h1>
         <form method="GET" action="{{ route('admin.users.roles') }}" class="d-flex" style="max-width: 320px; width: 100%;">
             <input type="text" name="q" value="{{ $search }}" class="form-control me-2" placeholder="Search name, email, role">
             <button type="submit" class="btn btn-primary">Search</button>

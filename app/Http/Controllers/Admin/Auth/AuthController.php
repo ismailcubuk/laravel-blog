@@ -74,7 +74,7 @@ $request->validate([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'admin'
+            'role' => 'user'
         ]);
 
         // 3. Login 

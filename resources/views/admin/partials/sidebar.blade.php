@@ -116,7 +116,7 @@
                             <a href="{{ route('admin.users.roles') }}"
                                class="nav-link {{ request()->routeIs('admin.users.roles') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Roles</p>
+                                <p>User List</p>
                             </a>
                         </li>
                         <li class="nav-item">
