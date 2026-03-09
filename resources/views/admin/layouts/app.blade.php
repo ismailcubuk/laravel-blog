@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Admin Panel</title>
+    @php($siteName = $settings['site_name'] ?? config('app.name', 'My Website'))
+    @php($pageTitle = trim($__env->yieldContent('title')))
+    <title>{{ $siteName }}{{ $pageTitle ? ' ' . $pageTitle : ' Admin Panel' }}</title>
 
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.css') }}">

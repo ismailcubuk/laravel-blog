@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    @php($siteName = $settings['site_name'] ?? config('app.name', 'My Website'))
+    <title>Reset Password | {{ $siteName }}</title>
 </head>
 <body>
     reset password form

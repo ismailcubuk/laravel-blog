@@ -106,7 +106,7 @@
                             <div class="col-lg-12">
                                 <div class="sidebar-item search">
                                     <form method="GET" action="{{ route('blog') }}">
-                                        <input type="text" name="search" class="searchText" placeholder="Search...">
+                                        <input type="text" name="search" class="searchText" placeholder="Search..." value="{{ request('search') }}">
                                     </form>
                                 </div>
                             </div>
@@ -152,11 +152,11 @@
                                     <div class="content">
                                         <ul>
 
-                                            @foreach(\App\Models\Category::all() as $category)
+                                            @foreach($categories as $category)
 
                                                 <li>
-                                                    <a href="#">
-                                                        - {{ $category->name }}
+                                                    <a href="{{ route('blog', ['category' => $category->id]) }}">
+                                                        - {{ $category->name }} ({{ $category->posts_count ?? 0 }})
                                                     </a>
                                                 </li>
 

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Stand Blog Anasayfa')
+@section('title', 'Ana Sayfa')
 
 @section('content')
 

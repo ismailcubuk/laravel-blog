@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@yield('title', 'Stand Blog')</title>
+    @php($siteName = $settings['site_name'] ?? config('app.name', 'My Website'))
+    <title>@hasSection('title'){{ $siteName }} @yield('title')@else{{ $siteName }}@endif</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet">

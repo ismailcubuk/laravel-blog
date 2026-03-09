@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Login')</title>
+    @php($siteName = $settings['site_name'] ?? config('app.name', 'My Website'))
+    @php($pageTitle = trim($__env->yieldContent('title')))
+    <title>{{ $siteName }}{{ $pageTitle ? ' ' . $pageTitle : ' Admin Login' }}</title>
 
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.min.css') }}">

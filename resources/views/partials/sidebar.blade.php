@@ -5,7 +5,7 @@
         <div class="col-lg-12">
             <div class="sidebar-item search">
                 <form method="GET" action="{{ route('blog') }}">
-                    <input type="text" name="search" class="searchText" placeholder="type to search..." autocomplete="on">
+                    <input type="text" name="search" class="searchText" placeholder="type to search..." value="{{ request('search') }}" autocomplete="on">
                 </form>
             </div>
         </div>
