@@ -58,9 +58,11 @@
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                    Dashboard
-                                </a>
+                                @if(Auth::user()->role === 'admin')
+                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                        Dashboard
+                                    </a>
+                                @endif
                                 <form method="POST" action="{{ route('admin.logout') }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item">Logout</button>
@@ -69,7 +71,7 @@
                         </li>
                     @else
                         <li class="nav-item {{ request()->routeIs('admin.login') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('admin.login') }}">Admin Login</a>
+                            <a class="nav-link" href="{{ route('admin.login') }}">Login</a>
                         </li>
                     @endauth
 

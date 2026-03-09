@@ -19,25 +19,25 @@ class AuthController extends Controller
 // LOGIN
 public function login(Request $request)
 {
-    //  Validation
     $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required'],
     ]);
 
-    //  Attempt login
     if (Auth::attempt([
         'email' => $request->email,
         'password' => $request->password,
-        'role' => 'admin'
     ], $request->boolean('remember'))) {
 
         $request->session()->regenerate();
 
-        return redirect()->route('admin.dashboard');
+        if ($request->user()?->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('home');
     }
 
-    // Cant login
     return back()->withErrors([
     'email' => 'Invalid email or password.',
     ])->onlyInput('email');
@@ -59,29 +59,27 @@ public function logout(Request $request)
     {
         return view('admin.auth.register');
     }
-      public function register(Request $request)
+    public function register(Request $request)
     {
-        // 1. Validation
-$request->validate([
-    'name' => ['required', 'string', 'max:255'],
-    'email' => ['required', 'email:rfc,dns', 'unique:users,email'],
-    'password' => ['required', 'string', 'min:6', 'confirmed'],
-    'terms' => ['accepted'],
-]);
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'terms' => ['accepted'],
+        ]);
 
-        // 2. New user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user'
+            'role' => 'user',
         ]);
 
-        // 3. Login 
         Auth::login($user);
 
-        // 4. Dashboard
-        return redirect()->route('admin.login');
+        $request->session()->regenerate();
+
+        return redirect()->route('home');
     }
 
     // FORGOT PASSWORD PAGE

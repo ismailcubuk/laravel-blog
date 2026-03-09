@@ -40,7 +40,7 @@
 
                                 {{-- comments --}}
                                 <li>
-                                    <a href="#">0 Comments</a>
+                                    <a href="{{ route('post.show', $post->slug) }}#comments">{{ $post->approved_comments_count ?? 0 }} Comments</a>
                                 </li>
 
                             </ul>

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Content\AdminPostController;
 use App\Http\Controllers\Admin\Content\AdminCategoryController;
+use App\Http\Controllers\Admin\Content\AdminCommentController;
 use App\Http\Controllers\Admin\Pages\AdminPageController;
 use App\Http\Controllers\Admin\Settings\SettingController;
 use App\Http\Controllers\Admin\Users\PermissionController;
@@ -22,7 +23,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request');
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/posts', [AdminPostController::class, 'index'])->name('content.posts.index');
@@ -37,7 +38,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/categories/{category}', [AdminCategoryController::class, 'update'])->name('content.categories.update');
         Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('content.categories.destroy');
 
-        Route::view('/comments', 'admin.content.comments')->name('content.comments');
+        Route::get('/comments', [AdminCommentController::class, 'index'])->name('content.comments');
+        Route::put('/comments/{comment}/status', [AdminCommentController::class, 'updateStatus'])->name('content.comments.status');
+        Route::delete('/comments/{comment}', [AdminCommentController::class, 'destroy'])->name('content.comments.destroy');
 
         Route::get('/about-us', [AdminPageController::class, 'about'])->name('pages.about');
         Route::put('/about-us', [AdminPageController::class, 'updateAbout'])->name('pages.about.update');

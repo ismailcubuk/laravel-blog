@@ -10,9 +10,20 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $bannerPosts = Post::with('category')->latest()->take(5)->get();
-        $posts = Post::with('category')->latest()->paginate(6);
-        $recentPosts = Post::with('category')->latest()->take(5)->get();
+        $bannerPosts = Post::with('category')
+            ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
+            ->latest()
+            ->take(5)
+            ->get();
+        $posts = Post::with('category')
+            ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
+            ->latest()
+            ->paginate(6);
+        $recentPosts = Post::with('category')
+            ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
+            ->latest()
+            ->take(5)
+            ->get();
         $categories = Category::query()
             ->withCount('posts')
             ->having('posts_count', '>', 0)

@@ -60,7 +60,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('admin.content.comments') }}"
-                               class="nav-link {{ request()->routeIs('admin.content.comments.*') ? 'active' : '' }}">
+                               class="nav-link {{ request()->routeIs('admin.content.comments*') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Comments</p>
                             </a>

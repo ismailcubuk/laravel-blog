@@ -1,6 +1,6 @@
 @extends('admin.layouts.auth')
 
-@section('title', 'Admin Login')
+@section('title', 'Login')
 
 @section('content')
 
