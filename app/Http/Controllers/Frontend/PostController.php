@@ -42,7 +42,8 @@ class PostController extends Controller
                 'user',
                 'comments' => fn ($query) => $query
                     ->whereIn('status', $commentStatuses)
-                    ->latest(),
+                    ->orderByDesc('created_at')
+                    ->orderByDesc('id'),
                 'comments.user',
             ])
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
@@ -62,25 +63,25 @@ class PostController extends Controller
 
     public function storeComment(Request $request, string $slug)
     {
+        abort_unless(auth()->check() && auth()->user()->role === 'user', 403);
+
         $post = Post::where('slug', $slug)->firstOrFail();
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
             'message' => 'required|string|min:3|max:2000',
         ]);
 
         Comment::create([
             'post_id' => $post->id,
             'user_id' => auth()->id(),
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'name' => auth()->user()->name,
+            'email' => auth()->user()->email,
             'message' => $validated['message'],
-            'status' => 'pending',
+            'status' => 'approved',
         ]);
 
         return redirect()->to(route('post.show', $post->slug) . '#comment-form')
-            ->with('success', 'Your comment was submitted and is waiting for admin approval.');
+            ->with('success', 'Your comment was published successfully.');
     }
 
     public function storeReply(Request $request, string $slug, Comment $comment)

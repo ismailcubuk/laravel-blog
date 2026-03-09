@@ -15,7 +15,7 @@ class AdminCommentController extends Controller
         $postId = $request->query('post');
         $search = trim((string) $request->query('search', ''));
 
-        $comments = Comment::with(['post', 'user'])
+        $comments = Comment::with(['post.category', 'post.user', 'user', 'repliedBy'])
             ->when(in_array($status, ['pending', 'approved'], true), function ($query) use ($status) {
                 $query->where('status', $status);
             })
@@ -32,7 +32,8 @@ class AdminCommentController extends Controller
                         });
                 });
             })
-            ->latest()
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
             ->paginate(15)
             ->withQueryString();
 
@@ -63,6 +64,34 @@ class AdminCommentController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Comment status updated.');
+    }
+
+    public function storeReply(Request $request, Comment $comment)
+    {
+        $validated = $request->validate([
+            'reply_message' => 'required|string|min:2|max:2000',
+        ]);
+
+        $comment->update([
+            'reply_message' => $validated['reply_message'],
+            'replied_by_user_id' => auth()->id(),
+            'replied_at' => now(),
+        ]);
+
+        return redirect()->route('admin.content.comments', $request->query())
+            ->with('success', 'Reply published successfully.');
+    }
+
+    public function destroyReply(Request $request, Comment $comment)
+    {
+        $comment->update([
+            'reply_message' => null,
+            'replied_by_user_id' => null,
+            'replied_at' => null,
+        ]);
+
+        return redirect()->route('admin.content.comments', $request->query())
+            ->with('success', 'Reply deleted successfully.');
     }
 
     public function destroy(Comment $comment)

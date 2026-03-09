@@ -75,6 +75,101 @@
             text-decoration: underline;
         }
 
+        .comment-status-badge {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 8px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1;
+            text-transform: capitalize;
+        }
+
+        .comment-status-menu {
+            display: inline-block;
+            position: relative;
+            margin-left: 8px;
+        }
+
+        .comment-status-trigger {
+            border: 0;
+            cursor: pointer;
+        }
+
+        .comment-status-menu summary {
+            list-style: none;
+        }
+
+        .comment-status-menu summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .comment-status-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            min-width: 132px;
+            padding: 6px;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+            z-index: 20;
+        }
+
+        .comment-status-dropdown form + form {
+            margin-top: 4px;
+        }
+
+        .comment-status-option {
+            width: 100%;
+            border: 0;
+            border-radius: 8px;
+            background: transparent;
+            text-align: left;
+            padding: 7px 9px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .comment-status-option:hover {
+            background: #f8fafc;
+        }
+
+        .comment-status-option.is-current {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .comment-status-option.approved-option {
+            color: #198754;
+        }
+
+        .comment-status-option.pending-option {
+            color: #997404;
+        }
+
+        .comment-status-option.approved-option:hover {
+            background: #e8f7ee;
+        }
+
+        .comment-status-option.pending-option:hover {
+            background: #fff3cd;
+        }
+
+        .comment-status-badge.approved {
+            background: #e8f7ee;
+            color: #198754;
+        }
+
+        .comment-status-badge.pending {
+            background: #fff3cd;
+            color: #997404;
+        }
+
         .reply-inline-edit {
             margin-top: 10px;
             width: 100%;
@@ -212,7 +307,31 @@
                                                                 <img src="{{ asset('assets/images/comment-author-01.jpg') }}" alt="{{ $comment->name }}">
                                                             </div>
                                                             <div class="right-content">
-                                                                <h4>{{ $comment->name }} <span>{{ $comment->created_at->format('M d, Y') }}</span></h4>
+                                                                <h4>
+                                                                    {{ $comment->name }}
+                                                                    <span>{{ $comment->created_at->format('M d, Y') }}</span>
+                                                                    @if($isAdminViewer)
+                                                                        <details class="comment-status-menu">
+                                                                            <summary class="comment-status-badge comment-status-trigger {{ $comment->status }}">
+                                                                                {{ $comment->status }}
+                                                                            </summary>
+                                                                            <div class="comment-status-dropdown">
+                                                                                <form method="POST" action="{{ route('admin.content.comments.status', $comment) }}">
+                                                                                    @csrf
+                                                                                    @method('PUT')
+                                                                                    <input type="hidden" name="status" value="approved">
+                                                                                    <button type="submit" class="comment-status-option approved-option {{ $comment->status === 'approved' ? 'is-current' : '' }}">Approved</button>
+                                                                                </form>
+                                                                                <form method="POST" action="{{ route('admin.content.comments.status', $comment) }}">
+                                                                                    @csrf
+                                                                                    @method('PUT')
+                                                                                    <input type="hidden" name="status" value="pending">
+                                                                                    <button type="submit" class="comment-status-option pending-option {{ $comment->status === 'pending' ? 'is-current' : '' }}">Pending</button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </details>
+                                                                    @endif
+                                                                </h4>
                                                                 <p>{{ $comment->message }}</p>
 
                                                                 @if($isAdminViewer && !$comment->reply_message)
@@ -262,7 +381,10 @@
                                                                     <img src="{{ asset('assets/images/comment-author-02.jpg') }}" alt="Admin Reply">
                                                                 </div>
                                                                 <div class="right-content">
-                                                                    <h4>{{ optional($comment->user)->name ?: 'Thirteen Man' }} <span>{{ optional($comment->replied_at)->format('M d, Y') }}</span></h4>
+                                                                    <h4>
+                                                                        {{ optional($comment->user)->name ?: 'Thirteen Man' }}
+                                                                        <span>{{ optional($comment->replied_at)->format('M d, Y') }}</span>
+                                                                    </h4>
 
                                                                     <div id="reply-view-body-{{ $comment->id }}">
                                                                         <p id="reply-text-{{ $comment->id }}">{{ $comment->reply_message }}</p>
@@ -351,10 +473,20 @@
                                                         @csrf
                                                         <div class="row">
                                                             <div class="col-md-6 col-sm-12">
-                                                                <input type="text" name="name" value="{{ old('name') }}" placeholder="Your Name" required>
+                                                                <input
+                                                                    type="text"
+                                                                    value="{{ auth()->user()->name }}"
+                                                                    placeholder="Your Name"
+                                                                    readonly
+                                                                >
                                                             </div>
                                                             <div class="col-md-6 col-sm-12">
-                                                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Your Email" required>
+                                                                <input
+                                                                    type="email"
+                                                                    value="{{ auth()->user()->email }}"
+                                                                    placeholder="Your Email"
+                                                                    readonly
+                                                                >
                                                             </div>
                                                             <div class="col-md-12 col-sm-12 mt-2">
                                                                 <textarea name="message" rows="6" placeholder="Type your comment" required>{{ old('message') }}</textarea>
@@ -444,6 +576,14 @@
 
     @if($isAdminViewer)
         <script>
+            document.addEventListener('click', function (event) {
+                document.querySelectorAll('.comment-status-menu[open]').forEach(function (menu) {
+                    if (!menu.contains(event.target)) {
+                        menu.removeAttribute('open');
+                    }
+                });
+            });
+
             function toggleReplyCreate(commentId, shouldShow) {
                 const trigger = document.getElementById('reply-trigger-' + commentId);
                 const form = document.getElementById('reply-create-' + commentId);

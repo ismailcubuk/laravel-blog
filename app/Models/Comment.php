@@ -38,6 +38,11 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function repliedBy()
+    {
+        return $this->belongsTo(User::class, 'replied_by_user_id');
+    }
+
     public function scopeApproved($query)
     {
         return $query->where('status', 'approved');

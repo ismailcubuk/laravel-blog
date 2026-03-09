@@ -39,6 +39,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('content.categories.destroy');
 
         Route::get('/comments', [AdminCommentController::class, 'index'])->name('content.comments');
+        Route::post('/comments/{comment}/reply', [AdminCommentController::class, 'storeReply'])->name('content.comments.reply');
+        Route::delete('/comments/{comment}/reply', [AdminCommentController::class, 'destroyReply'])->name('content.comments.reply.destroy');
         Route::put('/comments/{comment}/status', [AdminCommentController::class, 'updateStatus'])->name('content.comments.status');
         Route::delete('/comments/{comment}', [AdminCommentController::class, 'destroy'])->name('content.comments.destroy');
 
