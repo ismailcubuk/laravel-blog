@@ -4,6 +4,16 @@
 
 @section('content')
 
+  <style>
+    .about-us .about-section-content,
+    .about-us .about-section-content * {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: normal;
+    }
+  </style>
+
   <div class="heading-page header-text">
     <section class="page-heading">
       <div class="container">
@@ -62,7 +72,7 @@
               @endif
 
               @if($column->content)
-                <p>{!! $column->content !!}</p>
+                <div class="about-section-content">{!! $column->content !!}</div>
               @endif
 
             </div>

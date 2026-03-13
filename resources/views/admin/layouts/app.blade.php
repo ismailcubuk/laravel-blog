@@ -49,6 +49,33 @@
             padding: 1.1rem 1.2rem;
         }
 
+        .admin-sidebar-toggle {
+            position: sticky;
+            top: 0.85rem;
+            z-index: 1035;
+            width: 42px;
+            height: 42px;
+            border: 0;
+            border-radius: 12px;
+            color: #fff;
+            background: linear-gradient(135deg, #1f6bff 0%, #3a84ff 100%);
+            box-shadow: 0 10px 22px rgba(31, 107, 255, 0.28);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.85rem;
+        }
+
+        .admin-sidebar-toggle:hover {
+            filter: brightness(1.03);
+            transform: translateY(-1px);
+        }
+
+        .admin-sidebar-toggle:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 4px rgba(31, 107, 255, 0.18);
+        }
+
         .app-content h1 {
             font-weight: 800;
             color: var(--admin-text);
@@ -70,6 +97,16 @@
         .app-sidebar {
             border-right: 1px solid rgba(255, 255, 255, 0.06);
             background: linear-gradient(180deg, #0f1f3a 0%, #162b4f 100%) !important;
+        }
+
+        .admin-sidebar-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 18, 35, 0.48);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 1040;
         }
 
         .sidebar-brand {
@@ -238,6 +275,52 @@
             background: var(--admin-primary);
             border-color: var(--admin-primary);
         }
+
+        @media (max-width: 991.98px) {
+            .app-sidebar {
+                position: fixed !important;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 280px;
+                margin-left: 0 !important;
+                transform: translateX(-100%);
+                transition: transform 0.22s ease;
+                z-index: 1045;
+            }
+
+            .app-main,
+            .app-footer {
+                margin-left: 0 !important;
+            }
+
+            .admin-sidebar-toggle {
+                position: fixed;
+                top: 0.9rem;
+                left: 0.9rem;
+                margin-bottom: 0;
+                z-index: 1055;
+            }
+
+            body.sidebar-mobile-open .app-sidebar {
+                transform: translateX(0);
+            }
+
+            body.sidebar-mobile-open .admin-sidebar-backdrop {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .admin-sidebar-backdrop {
+                display: none;
+            }
+
+            .admin-sidebar-toggle {
+                display: none;
+            }
+        }
     </style>
     @stack('styles')
 </head>
@@ -247,11 +330,15 @@
     <div class="app-wrapper">
         {{-- Sidebar --}}
         @include('admin.partials.sidebar')
+        <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop"></div>
 
         {{-- Content --}}
         <main class="app-main">
             <div class="app-content">
                 <div class="container-fluid">
+                    <button type="button" class="admin-sidebar-toggle" id="adminSidebarToggle" aria-label="Open sidebar" title="Open sidebar">
+                        <i class="fa-solid fa-bars" id="adminSidebarToggleIcon"></i>
+                    </button>
                     @yield('content')
                 </div>
             </div>
@@ -268,7 +355,88 @@
     <!-- AdminLTE JS -->
     <script src="{{ asset('adminlte/js/adminlte.js') }}"></script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const body = document.body;
+            const toggleBtn = document.getElementById('adminSidebarToggle');
+            const toggleIcon = document.getElementById('adminSidebarToggleIcon');
+            const backdrop = document.getElementById('adminSidebarBackdrop');
+            const sidebar = document.querySelector('.app-sidebar');
+            const mobileMedia = window.matchMedia('(max-width: 991.98px)');
+
+            if (!toggleBtn) {
+                return;
+            }
+
+            const isMobile = function () {
+                return mobileMedia.matches;
+            };
+
+            const syncToggleState = function () {
+                const mobileOpen = body.classList.contains('sidebar-mobile-open');
+                toggleBtn.setAttribute('aria-label', mobileOpen ? 'Close sidebar' : 'Open sidebar');
+                toggleBtn.setAttribute('title', mobileOpen ? 'Close sidebar' : 'Open sidebar');
+
+                if (toggleIcon) {
+                    toggleIcon.classList.toggle('fa-bars', !mobileOpen);
+                    toggleIcon.classList.toggle('fa-xmark', mobileOpen);
+                    toggleIcon.classList.remove('fa-angles-right');
+                }
+            };
+
+            body.classList.remove('sidebar-collapse');
+            syncToggleState();
+
+            const closeMobileSidebar = function () {
+                body.classList.remove('sidebar-mobile-open');
+                syncToggleState();
+            };
+
+            toggleBtn.addEventListener('click', function () {
+                if (isMobile()) {
+                    body.classList.toggle('sidebar-mobile-open');
+                }
+                syncToggleState();
+            });
+
+            if (backdrop) {
+                backdrop.addEventListener('click', closeMobileSidebar);
+            }
+
+            if (sidebar) {
+                sidebar.addEventListener('click', function (event) {
+                    if (!isMobile()) {
+                        return;
+                    }
+
+                    const target = event.target.closest('a.nav-link, button.nav-link');
+                    if (!target) {
+                        return;
+                    }
+
+                    if (target.matches('a.nav-link')) {
+                        const href = target.getAttribute('href');
+                        if (!href || href === '#') {
+                            return;
+                        }
+                    }
+
+                    closeMobileSidebar();
+                });
+            }
+
+            window.addEventListener('resize', function () {
+                if (!isMobile()) {
+                    body.classList.remove('sidebar-mobile-open');
+                }
+                body.classList.remove('sidebar-collapse');
+                syncToggleState();
+            });
+        });
+    </script>
+
     @yield('scripts')
+    @stack('scripts')
 
 </body>
 

@@ -661,7 +661,6 @@
     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
         <div>
             <h1 class="mb-1 text-primary">Comments Management</h1>
-            <p class="text-muted mb-0">Postlara gelen tum yorumlar burada listelenir ve admin tarafindan yonetilir.</p>
         </div>
     </div>
 

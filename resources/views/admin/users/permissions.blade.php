@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Permissions</h1>
+        <h1 class="mb-0 text-primary">Permissions</h1>
         <form method="GET" action="{{ route('admin.users.permissions') }}" class="d-flex" style="max-width: 320px; width: 100%;">
             <input type="text" name="q" value="{{ $search }}" class="form-control me-2" placeholder="Search permission name">
             <button type="submit" class="btn btn-primary">Search</button>
@@ -28,7 +28,7 @@
     @endif
 
     <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white d-flex align-items-center">
+        <div class="card-header d-flex align-items-center">
             <h5 class="mb-0">Permission List</h5>
             <button
                 type="button"
@@ -42,7 +42,7 @@
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover table-striped align-middle mb-0">
-                    <thead class="table-dark">
+                    <thead>
                         <tr>
                             <th>Name</th>
                             <th>Roles</th>
@@ -255,4 +255,3 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endsection
-

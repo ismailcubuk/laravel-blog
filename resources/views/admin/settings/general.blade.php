@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="container py-5">
+<div class="container-fluid py-4">
     <h1 class="mb-4 text-primary">General Settings</h1>
 
     @if(session('success'))
@@ -12,6 +12,9 @@
     @endif
 
     <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">Site Settings</h5>
+        </div>
         <div class="card-body">
             <form action="{{ route('admin.settings.general.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf

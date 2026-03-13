@@ -244,8 +244,8 @@
                 </label>
                 <div>
                     <h1 class="profile-hero-title">Profile Settings</h1>
-                    <p class="profile-hero-subtitle">Update your account details and keep your security settings strong.</p>
-                    <p class="profile-hero-subtitle mb-0"><strong>{{ $user->name }}</strong> · {{ $user->email }}</p>
+                    <p class="profile-hero-subtitle mb-1"><strong>{{ $user->name }}</strong></p>
+                    <p class="profile-hero-subtitle mb-0">{{ $user->email }}</p>
                 </div>
             </div>
             <span class="profile-pill"><i class="bi bi-shield-check"></i> Account protected</span>
@@ -325,23 +325,6 @@
         </div>
 
         <div class="col-lg-5">
-<<<<<<< ours
-=======
-            <div class="profile-preview-card mb-4">
-                <div class="profile-preview-top">
-                    <h5 class="mb-0">Profile Preview</h5>
-                </div>
-                <div class="profile-preview-body">
-                    <label for="avatarInput" class="profile-avatar-edit" title="Change avatar">
-                        <img src="{{ $user->avatar_path ? asset($user->avatar_path) : asset('adminlte/img/avatar.png') }}" alt="Avatar">
-                        <span class="edit-icon"><i class="bi bi-pencil-fill"></i></span>
-                    </label>
-                    <div class="profile-preview-name">{{ $user->name }}</div>
-                    <p class="profile-preview-email">{{ $user->email }}</p>
-                </div>
-            </div>
-
->>>>>>> theirs
             <div class="profile-card password-card">
                 <div class="profile-card-header">
                     <h5>Change Password</h5>
@@ -444,10 +427,6 @@
 
         phoneInput.value = formatTrPhone(phoneInput.value);
     }
-<<<<<<< ours
-
-=======
->>>>>>> theirs
 </script>
 @endpush
 @endsection

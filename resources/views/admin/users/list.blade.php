@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">User List</h1>
+        <h1 class="mb-0 text-primary">User List</h1>
         <form method="GET" action="{{ route('admin.users.list') }}" class="d-flex" style="max-width: 320px; width: 100%;">
             <input type="text" name="q" value="{{ $search }}" class="form-control me-2" placeholder="Search name, email, role">
             <button type="submit" class="btn btn-primary">Search</button>
@@ -29,7 +29,7 @@
 
     <div class="row g-3 mb-4">
         <div class="col-lg-3 col-sm-6">
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <p class="text-muted mb-1">Total Users</p>
                     <h3 class="mb-0">{{ $users->total() }}</h3>
@@ -38,7 +38,7 @@
         </div>
         @foreach($roleCounts as $role => $count)
             <div class="col-lg-3 col-sm-6">
-                <div class="card shadow-sm border-0">
+                <div class="card shadow-sm">
                     <div class="card-body">
                         <p class="text-muted mb-1 text-capitalize">{{ $role }}</p>
                         <h3 class="mb-0">{{ $count }}</h3>
@@ -49,13 +49,13 @@
     </div>
 
     <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white">
+        <div class="card-header">
             <h5 class="mb-0">Users</h5>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
+                    <thead>
                         <tr>
                             <th>User</th>
                             <th>Email</th>

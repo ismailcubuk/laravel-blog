@@ -19,18 +19,16 @@
         </header>
 
         <div class="activity-insights">
-            <article class="activity-insight-card">
+            <article class="activity-insight-card is-clickable" id="activityBlogsWeekCard" role="button" tabindex="0">
                 <span class="activity-insight-label">Blogs This Week</span>
                 <strong class="activity-insight-value" id="activityBlogsTotal">0</strong>
             </article>
 
-            <article class="activity-insight-card">
-                <span class="activity-insight-label">Users This Week</span>
+            <article class="activity-insight-card is-clickable" id="activityUsersWeekCard" role="button" tabindex="0"><span class="activity-insight-label">Users This Week</span>
                 <strong class="activity-insight-value" id="activityUsersTotal">0</strong>
             </article>
 
-            <article class="activity-insight-card">
-                <span class="activity-insight-label">Peak Day</span>
+            <article class="activity-insight-card is-clickable" id="activityPeakDayCard" role="button" tabindex="0"><span class="activity-insight-label">Peak Day</span>
                 <strong class="activity-insight-value" id="activityPeakDay">-</strong>
             </article>
         </div>

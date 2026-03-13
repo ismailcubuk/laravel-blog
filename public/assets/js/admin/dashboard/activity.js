@@ -41,6 +41,39 @@
         }, 0);
     }
 
+    function flattenItemsByDate(itemsByDate) {
+        return Object.values(itemsByDate || {}).reduce(function (all, items) {
+            if (Array.isArray(items)) {
+                return all.concat(items);
+            }
+            return all;
+        }, []);
+    }
+
+        function getPeakDayInfo(rawBlogs, rawUsers, labels, activityDates) {
+        let peakIndex = -1;
+        let peakValue = -1;
+
+        for (let i = 0; i < labels.length; i += 1) {
+            const dayTotal = Number(rawBlogs[i] || 0) + Number(rawUsers[i] || 0);
+            if (dayTotal > peakValue) {
+                peakValue = dayTotal;
+                peakIndex = i;
+            }
+        }
+
+        if (peakIndex === -1 || peakValue <= 0) {
+            return null;
+        }
+
+        return {
+            index: peakIndex,
+            value: peakValue,
+            label: labels[peakIndex],
+            dateKey: activityDates && activityDates[peakIndex] ? activityDates[peakIndex] : null,
+        };
+    }
+
     function updateInsights(rawBlogs, rawUsers, labels) {
         const blogsTotalElement = byId('activityBlogsTotal');
         const usersTotalElement = byId('activityUsersTotal');
@@ -58,21 +91,11 @@
         }
 
         if (peakDayElement) {
-            let peakIndex = -1;
-            let peakValue = -1;
-
-            for (let i = 0; i < labels.length; i += 1) {
-                const dayTotal = Number(rawBlogs[i] || 0) + Number(rawUsers[i] || 0);
-                if (dayTotal > peakValue) {
-                    peakValue = dayTotal;
-                    peakIndex = i;
-                }
-            }
-
-            if (peakIndex === -1 || peakValue <= 0) {
+            const peakDayInfo = getPeakDayInfo(rawBlogs, rawUsers, labels, []);
+            if (!peakDayInfo) {
                 peakDayElement.textContent = '-';
             } else {
-                peakDayElement.textContent = labels[peakIndex] + ' (' + peakValue + ')';
+                peakDayElement.textContent = peakDayInfo.label + ' (' + peakDayInfo.value + ')';
             }
         }
     }
@@ -141,6 +164,30 @@
         bodyElement.replaceChildren(list);
     }
 
+    function openActivityModal(modalRefs, modalLabel, items, isBlog) {
+        if (!modalRefs.modal || !modalRefs.body) {
+            return;
+        }
+
+        if (modalRefs.title) {
+            modalRefs.title.textContent = modalLabel;
+        }
+
+        if (modalRefs.count) {
+            modalRefs.count.textContent = String(items.length);
+        }
+
+        if (!items.length) {
+            renderEmptyState(modalRefs.body);
+        } else if (isBlog) {
+            renderPostItems(modalRefs.body, items);
+        } else {
+            renderUserItems(modalRefs.body, items);
+        }
+
+        modalRefs.modal.show();
+    }
+
     function initLegendToggle(chart) {
         const legend = byId('activityLegend');
         if (!legend) {
@@ -170,6 +217,78 @@
         });
     }
 
+    function initBlogsWeekCard(modalRefs, newBlogsItemsByDate) {
+        const blogsWeekCard = byId('activityBlogsWeekCard');
+        if (!blogsWeekCard) {
+            return;
+        }
+
+        const open = function () {
+            const items = flattenItemsByDate(newBlogsItemsByDate);
+            openActivityModal(modalRefs, 'New Blogs - This Week', items, true);
+        };
+
+        blogsWeekCard.addEventListener('click', open);
+        blogsWeekCard.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                open();
+            }
+        });
+    }
+
+        function initUsersWeekCard(modalRefs, newUsersItemsByDate) {
+        const usersWeekCard = byId('activityUsersWeekCard');
+        if (!usersWeekCard) {
+            return;
+        }
+
+        const open = function () {
+            const items = flattenItemsByDate(newUsersItemsByDate);
+            openActivityModal(modalRefs, 'New Users - This Week', items, false);
+        };
+
+        usersWeekCard.addEventListener('click', open);
+        usersWeekCard.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                open();
+            }
+        });
+    }
+
+    function initPeakDayCard(modalRefs, rawBlogs, rawUsers, labels, activityDates, newBlogsItemsByDate, newUsersItemsByDate) {
+        const peakDayCard = byId('activityPeakDayCard');
+        if (!peakDayCard) {
+            return;
+        }
+
+        const open = function () {
+            const peakDayInfo = getPeakDayInfo(rawBlogs, rawUsers, labels, activityDates);
+            if (!peakDayInfo) {
+                openActivityModal(modalRefs, 'Peak Day', [], true);
+                return;
+            }
+
+            const blogItems = peakDayInfo.dateKey ? (newBlogsItemsByDate[peakDayInfo.dateKey] || []) : [];
+            const userItems = peakDayInfo.dateKey ? (newUsersItemsByDate[peakDayInfo.dateKey] || []) : [];
+
+            if (blogItems.length >= userItems.length) {
+                openActivityModal(modalRefs, 'Peak Day - New Blogs - ' + peakDayInfo.label, blogItems, true);
+            } else {
+                openActivityModal(modalRefs, 'Peak Day - New Users - ' + peakDayInfo.label, userItems, false);
+            }
+        };
+
+        peakDayCard.addEventListener('click', open);
+        peakDayCard.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                open();
+            }
+        });
+    }
+
     function initDashboardActivityChart() {
         const canvas = byId('blogChart');
         if (!canvas || !window.Chart) {
@@ -191,10 +310,16 @@
         updateInsights(rawNewBlogsData, rawNewUsersData, activityLabels);
 
         const modalElement = byId('activityDetailModal');
-        const activityDetailModal = modalElement && window.bootstrap ? new window.bootstrap.Modal(modalElement) : null;
-        const activityDetailTitle = byId('activityDetailTitle');
-        const activityDetailCount = byId('activityDetailCount');
-        const activityDetailBody = byId('activityDetailBody');
+        const modalRefs = {
+            modal: modalElement && window.bootstrap ? new window.bootstrap.Modal(modalElement) : null,
+            title: byId('activityDetailTitle'),
+            count: byId('activityDetailCount'),
+            body: byId('activityDetailBody'),
+        };
+
+        initBlogsWeekCard(modalRefs, newBlogsItemsByDate);
+        initUsersWeekCard(modalRefs, newUsersItemsByDate);
+        initPeakDayCard(modalRefs, rawNewBlogsData, rawNewUsersData, activityLabels, activityDates, newBlogsItemsByDate, newUsersItemsByDate);
 
         const ctx = canvas.getContext('2d');
         const blogsGradient = ctx.createLinearGradient(0, 0, 0, 260);
@@ -259,7 +384,7 @@
                     target.style.cursor = rawValue > 0 ? 'pointer' : 'default';
                 },
                 onClick: function (_, elements) {
-                    if (!elements.length || !activityDetailModal || !activityDetailBody) {
+                    if (!elements.length) {
                         return;
                     }
 
@@ -274,28 +399,12 @@
 
                     const dateKey = activityDates[dataIndex];
                     const dateLabel = activityLabels[dataIndex] || '';
-                    const modalLabel = isBlog ? 'New Blogs' : 'New Users';
+                    const modalLabel = (isBlog ? 'New Blogs' : 'New Users') + ' - ' + dateLabel;
                     const items = isBlog
                         ? (newBlogsItemsByDate[dateKey] || [])
                         : (newUsersItemsByDate[dateKey] || []);
 
-                    if (activityDetailTitle) {
-                        activityDetailTitle.textContent = modalLabel + ' - ' + dateLabel;
-                    }
-
-                    if (activityDetailCount) {
-                        activityDetailCount.textContent = String(items.length);
-                    }
-
-                    if (!items.length) {
-                        renderEmptyState(activityDetailBody);
-                    } else if (isBlog) {
-                        renderPostItems(activityDetailBody, items);
-                    } else {
-                        renderUserItems(activityDetailBody, items);
-                    }
-
-                    activityDetailModal.show();
+                    openActivityModal(modalRefs, modalLabel, items, isBlog);
                 },
                 scales: {
                     x: {

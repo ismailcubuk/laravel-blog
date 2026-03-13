@@ -1,185 +1,488 @@
 @extends('admin.layouts.app')
+
 @section('content')
-    <h1>Edit About Us Page</h1>
+<div class="container-fluid py-4">
+    <h1 class="mb-4 text-primary">About Page Settings</h1>
+
     @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
     <form action="{{ route('admin.pages.about.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        {{-- BASIC PAGE DATA --}}
-        <div class="mb-3">
-            <label>Page Title</label>
-            <input type="text" name="title" class="form-control" value="{{ old('title', $page->title) }}">
-        </div>
 
-        <div class="mb-3">
-            <label>Description</label>
-            <textarea name="description" class="form-control"
-                rows="5">{{ old('description', $page->description) }}</textarea>
-        </div>
-        <div class="mb-3">
-            <label>Image</label>
-            @if($page->hero_image)
-                <div class="mb-2">
-                    <img src="{{ asset($page->hero_image) }}" style="max-width:200px">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Basic Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Page Title</label>
+                    <input type="text" name="title" class="form-control" value="{{ old('title', $page->title) }}">
                 </div>
-            @endif
-            <input type="file" name="hero_image" class="form-control">
-        </div>
-        <hr>
-        <h3>Sections Builder</h3>
-        <div class="mb-3">
-            <button type="button" class="btn btn-secondary" onclick="addSection('full-width')">
-                Full Width
-            </button>
-            <button type="button" class="btn btn-secondary" onclick="addSection('two-columns')">
-                2 Columns
-            </button>
-            <button type="button" class="btn btn-secondary" onclick="addSection('three-columns')">
-                3 Columns
-            </button>
-            <button type="button" class="btn btn-secondary" onclick="addSection('four-columns')">
-                4 Columns
-            </button>
+
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-control" rows="5">{{ old('description', $page->description) }}</textarea>
+                </div>
+
+                <div class="mb-0">
+                    <label class="form-label">Image</label>
+                    @if($page->hero_image)
+                        <div class="mb-2">
+                            <img src="{{ asset($page->hero_image) }}" alt="About image" style="max-width:200px" class="img-fluid rounded border">
+                        </div>
+                    @endif
+                    <input type="file" name="hero_image" class="form-control">
+                </div>
+            </div>
         </div>
 
-        <div id="sections-area">
-            @php $sectionIndex = 0; @endphp
-            @foreach($sections as $section)
-                <div class="card mb-3 p-3">
-                    {{-- HEADER --}}
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="m-0">
-                            {{ $section->first()->section_type }}
-                        </h5>
-                        <div>
-                            <button type="button" class="btn btn-sm btn-secondary" onclick="moveSectionUp(this)">
-                                ↑
-                            </button>
-                            <button type="button" class="btn btn-sm btn-secondary" onclick="moveSectionDown(this)">
-                                ↓
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="removeSection(this)">
-                                Remove
-                            </button>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header d-flex align-items-center justify-content-between gap-2">
+                <div>
+                    <h5 class="mb-1">Sections Builder</h5>
+                    <small class="text-light opacity-75">Choose a layout and fill each column content.</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="section-layout-grid mb-3">
+                    <button type="button" class="section-layout-btn" onclick="addSection('full-width')">
+                        <span class="section-layout-icon section-layout-icon-grid section-layout-icon-grid-1"><span></span></span>
+                        <span class="section-layout-copy">
+                            <strong>Full Width</strong>
+                            <small>1 column block</small>
+                        </span>
+                    </button>
+                    <button type="button" class="section-layout-btn" onclick="addSection('two-columns')">
+                        <span class="section-layout-icon section-layout-icon-grid section-layout-icon-grid-2"><span></span><span></span></span>
+                        <span class="section-layout-copy">
+                            <strong>2 Columns</strong>
+                            <small>Side by side</small>
+                        </span>
+                    </button>
+                    <button type="button" class="section-layout-btn" onclick="addSection('three-columns')">
+                        <span class="section-layout-icon section-layout-icon-grid section-layout-icon-grid-3"><span></span><span></span><span></span></span>
+                        <span class="section-layout-copy">
+                            <strong>3 Columns</strong>
+                            <small>Balanced grid</small>
+                        </span>
+                    </button>
+                    <button type="button" class="section-layout-btn" onclick="addSection('four-columns')">
+                        <span class="section-layout-icon section-layout-icon-grid section-layout-icon-grid-4"><span></span><span></span><span></span><span></span></span>
+                        <span class="section-layout-copy">
+                            <strong>4 Columns</strong>
+                            <small>Compact cards</small>
+                        </span>
+                    </button>
+                </div>
+                <div id="sections-area">
+                    @php $sectionIndex = 0; @endphp
+                    @foreach($sections as $section)
+                        @php
+                            $sectionType = $section->first()->section_type;
+                            $sectionLabel = match($sectionType) {
+                                'two-columns' => '2 Columns',
+                                'three-columns' => '3 Columns',
+                                'four-columns' => '4 Columns',
+                                default => 'Full Width',
+                            };
+                            $sectionHint = match($sectionType) {
+                                'two-columns' => 'Side by side',
+                                'three-columns' => 'Balanced grid',
+                                'four-columns' => 'Compact cards',
+                                default => '1 column block',
+                            };
+                            $sectionIcon = match($sectionType) {
+                                'two-columns' => '2',
+                                'three-columns' => '3',
+                                'four-columns' => '4',
+                                default => '1',
+                            };
+                            $sectionColumns = match($sectionType) {
+                                'two-columns' => 2,
+                                'three-columns' => 3,
+                                'four-columns' => 4,
+                                default => 1,
+                            };
+                            $columnClass = match($sectionType) {
+                                'two-columns' => 'col-12 col-md-6',
+                                'three-columns' => 'col-12 col-md-4',
+                                'four-columns' => 'col-12 col-md-3',
+                                default => 'col-12',
+                            };
+                        @endphp
+                        <div class="card mb-3 p-3 section-entry">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <span class="section-layout-icon section-layout-icon-grid section-layout-icon-grid-{{ $sectionIcon }}">
+                                        @for($i = 0; $i < (int) $sectionIcon; $i++)
+                                            <span></span>
+                                        @endfor
+                                    </span>
+                                    <span class="section-layout-copy">
+                                        <strong>{{ $sectionLabel }}</strong>
+                                        <small>{{ $sectionHint }}</small>
+                                    </span>
+                                    <div class="section-collapsed-summary d-inline-flex align-items-center flex-wrap gap-1">
+                                        @foreach($section as $columnIndex => $column)
+                                            <span class="badge bg-light text-dark border">{{ $column->title ?: 'Column ' . ($columnIndex + 1) }}</span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveSectionUp(this)">&uarr;</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveSectionDown(this)">&darr;</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="toggleSectionCollapse(this)">Expand</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSection(this)">Remove</button>
+                                </div>
+                            </div>
+                            <div class="section-editor-body d-none">
+                                <input type="hidden" name="sections[{{$sectionIndex}}][type]" value="{{ $sectionType }}">
+                                <div class="row g-2">
+                                    @foreach($section as $columnIndex => $column)
+                                        <div class="{{ $columnClass }}">
+                                            <div class="p-2 border rounded bg-light-subtle h-100">
+                                                <input class="form-control mb-1" name="sections[{{$sectionIndex}}][columns][{{$columnIndex}}][title]" value="{{$column->title}}" maxlength="255" placeholder="Column Title">
+                                                <textarea class="form-control" name="sections[{{$sectionIndex}}][columns][{{$columnIndex}}][content]" placeholder="Column Content">{{$column->content}}</textarea>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <input type="hidden" name="sections[{{$sectionIndex}}][type]" value="{{$section->first()->section_type}}">
-                    @foreach($section as $columnIndex => $column)
-                        <div class="mb-2">
-                            <input class="form-control mb-1" name="sections[{{$sectionIndex}}][columns][{{$columnIndex}}][title]"
-                                value="{{$column->title}}" placeholder="Column Title">
-                            <textarea class="form-control" name="sections[{{$sectionIndex}}][columns][{{$columnIndex}}][content]"
-                                placeholder="Column Content">{{$column->content}}</textarea>
-                        </div>
+                        @php $sectionIndex++; @endphp
                     @endforeach
                 </div>
-                @php $sectionIndex++; @endphp
-            @endforeach
+            </div>
         </div>
-        <hr>
-        <button type="submit" class="btn btn-primary">
-            Update Page
-        </button>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Update Page</button>
+        </div>
     </form>
-    <script>
-        let sectionIndex = {{ $sectionIndex }};
-        // ADD SECTION
-        function addSection(type) {
-            let counts =
-            {
-                'full-width': 1,
-                'two-columns': 2,
-                'three-columns': 3,
-                'four-columns': 4
-            };
-            let html = '';
-            html += `<div class="card mb-3 p-3">`;
+</div>
+
+@push('styles')
+<style>
+    .section-layout-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .section-layout-btn {
+        border: 1px solid #d6e2f5;
+        background: #f8fbff;
+        border-radius: 12px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-align: left;
+        transition: all 0.2s ease;
+    }
+
+    .section-layout-btn:hover {
+        background: #eef5ff;
+        border-color: #bcd0f5;
+        transform: translateY(-1px);
+    }
+
+    .section-layout-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: #e5efff;
+        color: #1f6bff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+    }
+
+    .section-layout-icon-grid {
+        display: inline-grid;
+        align-items: stretch;
+        justify-items: stretch;
+        gap: 2px;
+        padding: 4px;
+    }
+
+    .section-layout-icon-grid span {
+        display: block;
+        background: #7aa9ff;
+        border-radius: 2px;
+        min-width: 0;
+    }
+
+    .section-layout-icon-grid-1 {
+        grid-template-columns: 1fr;
+    }
+
+    .section-layout-icon-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-layout-icon-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .section-layout-icon-grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .section-layout-copy {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .section-layout-copy strong {
+        font-size: 0.88rem;
+        color: #1f2f48;
+    }
+
+    .section-layout-copy small {
+        font-size: 0.75rem;
+        color: #647a97;
+    }
+
+    .section-entry {
+        border-color: #dce6f4;
+    }
+
+    @media (max-width: 1199.98px) {
+        .section-layout-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .section-layout-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    let sectionIndex = {{ $sectionIndex }};
+
+    function getColumnClass(type) {
+        switch (type) {
+            case 'two-columns':
+                return 'col-12 col-md-6';
+            case 'three-columns':
+                return 'col-12 col-md-4';
+            case 'four-columns':
+                return 'col-12 col-md-3';
+            default:
+                return 'col-12';
+        }
+    }
+
+    function getSectionMeta(type) {
+        switch (type) {
+            case 'two-columns':
+                return { label: '2 Columns', hint: 'Side by side', icon: '2', columns: 2 };
+            case 'three-columns':
+                return { label: '3 Columns', hint: 'Balanced grid', icon: '3', columns: 3 };
+            case 'four-columns':
+                return { label: '4 Columns', hint: 'Compact cards', icon: '4', columns: 4 };
+            default:
+                return { label: 'Full Width', hint: '1 column block', icon: '1', columns: 1 };
+        }
+    }
+
+    function addSection(type) {
+        const counts = {
+            'full-width': 1,
+            'two-columns': 2,
+            'three-columns': 3,
+            'four-columns': 4,
+        };
+        const sectionMeta = getSectionMeta(type);
+
+        let html = '';
+        html += `<div class="card mb-3 p-3 section-entry">`;
+        html += `
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="section-layout-icon section-layout-icon-grid section-layout-icon-grid-${sectionMeta.icon}">
+                        ${Array.from({ length: sectionMeta.columns }).map(() => '<span></span>').join('')}
+                    </span>
+                    <span class="section-layout-copy">
+                        <strong>${sectionMeta.label}</strong>
+                        <small>${sectionMeta.hint}</small>
+                    </span>
+                    <div class="section-collapsed-summary d-inline-flex align-items-center flex-wrap gap-1"></div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveSectionUp(this)">&uarr;</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveSectionDown(this)">&darr;</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="toggleSectionCollapse(this)">Collapse</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSection(this)">Remove</button>
+                </div>
+            </div>
+        `;
+        html += `<div class="section-editor-body">`;
+        html += `<input type="hidden" name="sections[${sectionIndex}][type]" value="${type}">`;
+
+        const columnClass = getColumnClass(type);
+        html += `<div class="row g-2">`;
+        for (let i = 0; i < counts[type]; i++) {
             html += `
-    <div class="d-flex justify-content-between align-items-center mb-2">
-    <h5 class="m-0">${type}</h5>
-    <div>
-    <button type="button"
-    class="btn btn-sm btn-secondary"
-    onclick="moveSectionUp(this)">
-    ↑
-    </button>
-    <button type="button"
-    class="btn btn-sm btn-secondary"
-    onclick="moveSectionDown(this)">
-    ↓
-    </button>
-    <button type="button"
-    class="btn btn-danger btn-sm"
-    onclick="removeSection(this)">
-    Remove
-    </button>
-    </div>
-    </div>
-    `;
-            html += `
-    <input type="hidden"
-    name="sections[${sectionIndex}][type]"
-    value="${type}">
-    `;
-            for (let i = 0; i < counts[type]; i++) {
-                html += `
-    <div class="mb-2">
-
-    <input class="form-control mb-1"
-    name="sections[${sectionIndex}][columns][${i}][title]"
-    placeholder="Column Title">
-
-    <textarea class="form-control"
-    name="sections[${sectionIndex}][columns][${i}][content]"
-    placeholder="Column Content"></textarea>
-
-    </div>
-    `;
-            }
-            html += `</div>`;
-            document.getElementById('sections-area')
-                .insertAdjacentHTML('beforeend', html);
-            sectionIndex++;
+                <div class="${columnClass}">
+                    <div class="p-2 border rounded bg-light-subtle h-100">
+                        <input class="form-control mb-1" name="sections[${sectionIndex}][columns][${i}][title]" maxlength="255" placeholder="Column Title">
+                        <textarea class="form-control" name="sections[${sectionIndex}][columns][${i}][content]" placeholder="Column Content"></textarea>
+                    </div>
+                </div>
+            `;
         }
-        // REMOVE SECTION
-        function removeSection(button) {
-            button.closest('.card').remove();
-            updateSectionOrders();
+        html += `</div>`;
+        html += `</div>`;
+
+        html += `</div>`;
+        const sectionsArea = document.getElementById('sections-area');
+        sectionsArea.insertAdjacentHTML('beforeend', html);
+
+        const addedCard = sectionsArea.lastElementChild;
+        if (addedCard) {
+            updateSectionSummary(addedCard);
+            addedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-        // MOVE UP
-        function moveSectionUp(button) {
-            const card = button.closest('.card');
-            const prev = card.previousElementSibling;
-            if (prev) {
-                card.parentNode.insertBefore(card, prev);
+
+        sectionIndex++;
+    }
+
+    function removeSection(button) {
+        button.closest('.card').remove();
+        updateSectionOrders();
+    }
+
+    function toggleSectionCollapse(button) {
+        const card = button.closest('.card');
+        if (!card) return;
+
+        const body = card.querySelector('.section-editor-body');
+        const summary = card.querySelector('.section-collapsed-summary');
+        if (!body) return;
+
+        updateSectionSummary(card);
+        const isCollapsed = body.classList.toggle('d-none');
+        if (summary) {
+            summary.classList.toggle('d-none', !isCollapsed);
+        }
+        button.textContent = isCollapsed ? 'Expand' : 'Collapse';
+    }
+
+    function updateSectionSummary(card) {
+        const summary = card.querySelector('.section-collapsed-summary');
+        if (!summary) return;
+
+        const titleInputs = card.querySelectorAll('input[name*="[columns]"][name$="[title]"]');
+        const badges = [];
+
+        titleInputs.forEach((input, index) => {
+            const value = (input.value || '').trim();
+            badges.push(`<span class="badge bg-light text-dark border">${value || ('Column ' + (index + 1))}</span>`);
+        });
+
+        summary.innerHTML = badges.join('');
+    }
+
+    document.addEventListener('input', function (event) {
+        const target = event.target;
+        if (!target || !(target instanceof HTMLInputElement)) return;
+        if (!target.name || !target.name.includes('[columns]') || !target.name.endsWith('[title]')) return;
+
+        const card = target.closest('.card');
+        if (card) {
+            updateSectionSummary(card);
+        }
+    });
+
+    function moveSectionUp(button) {
+        const card = button.closest('.card');
+        if (!card) return;
+        const container = card.parentNode;
+        const prev = card.previousElementSibling;
+        if (prev) {
+            animateSectionReorder(container, function () {
+                container.insertBefore(card, prev);
                 updateSectionOrders();
-            }
-        }
-        // MOVE DOWN
-        function moveSectionDown(button) {
-            const card = button.closest('.card');
-            const next = card.nextElementSibling;
-            if (next) {
-                card.parentNode.insertBefore(next, card);
-                updateSectionOrders();
-            }
-        }
-        // UPDATE INDEXES
-        function updateSectionOrders() {
-            const cards =
-                document.querySelectorAll('#sections-area .card');
-            cards.forEach((card, newIndex) => {
-                card.querySelectorAll('input, textarea')
-                    .forEach(input => {
-                        input.name =
-                            input.name.replace(/sections\[\d+\]/, `sections[${newIndex}]`);
-                    });
             });
         }
-    </script>
+    }
+
+    function moveSectionDown(button) {
+        const card = button.closest('.card');
+        if (!card) return;
+        const container = card.parentNode;
+        const next = card.nextElementSibling;
+        if (next) {
+            animateSectionReorder(container, function () {
+                container.insertBefore(next, card);
+                updateSectionOrders();
+            });
+        }
+    }
+
+    function animateSectionReorder(container, mutateFn) {
+        if (!container || typeof mutateFn !== 'function') {
+            return;
+        }
+
+        const cardsBefore = Array.from(container.querySelectorAll(':scope > .card'));
+        const firstRects = new Map(
+            cardsBefore.map((card) => [card, card.getBoundingClientRect()])
+        );
+
+        mutateFn();
+
+        const cardsAfter = Array.from(container.querySelectorAll(':scope > .card'));
+        cardsAfter.forEach((card) => {
+            const firstRect = firstRects.get(card);
+            if (!firstRect) {
+                return;
+            }
+
+            const lastRect = card.getBoundingClientRect();
+            const deltaX = firstRect.left - lastRect.left;
+            const deltaY = firstRect.top - lastRect.top;
+
+            if (!deltaX && !deltaY) {
+                return;
+            }
+
+            card.animate(
+                [
+                    { transform: `translate(${deltaX}px, ${deltaY}px)` },
+                    { transform: 'translate(0, 0)' },
+                ],
+                {
+                    duration: 220,
+                    easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                }
+            );
+        });
+    }
+
+    function updateSectionOrders() {
+        const cards = document.querySelectorAll('#sections-area .card');
+        cards.forEach((card, newIndex) => {
+            card.querySelectorAll('input, textarea').forEach((input) => {
+                input.name = input.name.replace(/sections\[\d+\]/, `sections[${newIndex}]`);
+            });
+        });
+    }
+</script>
+@endpush
 @endsection

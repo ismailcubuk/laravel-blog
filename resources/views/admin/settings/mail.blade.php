@@ -1,9 +1,8 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="container py-5">
+<div class="container-fluid py-4">
     <h1 class="mb-2 text-primary">Mail Settings</h1>
-    <p class="text-muted mb-4">Canli yayin icin gerekli bilgileri girin. SMTP host ve port sistem tarafinda sabit tutuluyor.</p>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show">
@@ -13,6 +12,9 @@
     @endif
 
     <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">Outgoing Mail</h5>
+        </div>
         <div class="card-body">
             <form action="{{ route('admin.settings.mail.update') }}" method="POST">
                 @csrf
@@ -30,7 +32,6 @@
                     <label class="col-sm-3 col-form-label">SMTP Password</label>
                     <div class="col-sm-9">
                         <input type="password" name="mail_password" class="form-control @error('mail_password') is-invalid @enderror" placeholder="Yeni sifre girin (degistirmeyecekseniz bos birakin)">
-                        <small class="text-muted">Bu alani bos birakirsaniz mevcut sifre korunur.</small>
                         @error('mail_password')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                 </div>

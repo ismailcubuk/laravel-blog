@@ -235,6 +235,22 @@
     padding: 10px 12px;
 }
 
+.activity-insight-card.is-clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.activity-insight-card.is-clickable:hover {
+    transform: translateY(-2px);
+    border-color: #c6d8f7;
+    box-shadow: 0 10px 18px rgba(16, 57, 117, 0.12);
+}
+
+.activity-insight-card.is-clickable:focus-visible {
+    outline: 2px solid #7aa6ff;
+    outline-offset: 2px;
+}
+
 .activity-insight-label {
     display: block;
     color: #6c7e97;
@@ -608,7 +624,7 @@
     transform: translateY(-3px);
     box-shadow: 0 18px 32px rgba(16, 39, 77, 0.12);
     border-color: #cbd9f1;
-}`r`n
+}
 
 .dashboard-stat-card.is-clickable:focus-visible {
     outline: 2px solid #7aa6ff;
@@ -667,6 +683,7 @@
     box-shadow: inset 4px 0 0 #2f6eea;
 }
 </style>
+
 
 
 
