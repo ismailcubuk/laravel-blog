@@ -35,6 +35,48 @@
         }
     }
 
+    function sum(values) {
+        return (values || []).reduce(function (total, value) {
+            return total + Number(value || 0);
+        }, 0);
+    }
+
+    function updateInsights(rawBlogs, rawUsers, labels) {
+        const blogsTotalElement = byId('activityBlogsTotal');
+        const usersTotalElement = byId('activityUsersTotal');
+        const peakDayElement = byId('activityPeakDay');
+
+        const blogsTotal = sum(rawBlogs);
+        const usersTotal = sum(rawUsers);
+
+        if (blogsTotalElement) {
+            blogsTotalElement.textContent = String(blogsTotal);
+        }
+
+        if (usersTotalElement) {
+            usersTotalElement.textContent = String(usersTotal);
+        }
+
+        if (peakDayElement) {
+            let peakIndex = -1;
+            let peakValue = -1;
+
+            for (let i = 0; i < labels.length; i += 1) {
+                const dayTotal = Number(rawBlogs[i] || 0) + Number(rawUsers[i] || 0);
+                if (dayTotal > peakValue) {
+                    peakValue = dayTotal;
+                    peakIndex = i;
+                }
+            }
+
+            if (peakIndex === -1 || peakValue <= 0) {
+                peakDayElement.textContent = '-';
+            } else {
+                peakDayElement.textContent = labels[peakIndex] + ' (' + peakValue + ')';
+            }
+        }
+    }
+
     function renderEmptyState(bodyElement) {
         const emptyState = createFromTemplate('activityEmptyStateTemplate');
         bodyElement.replaceChildren(emptyState || document.createTextNode(''));
@@ -99,6 +141,35 @@
         bodyElement.replaceChildren(list);
     }
 
+    function initLegendToggle(chart) {
+        const legend = byId('activityLegend');
+        if (!legend) {
+            return;
+        }
+
+        const map = {
+            blogs: 0,
+            users: 1,
+        };
+
+        legend.querySelectorAll('[data-series]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const key = button.getAttribute('data-series');
+                const datasetIndex = map[key];
+                if (typeof datasetIndex !== 'number') {
+                    return;
+                }
+
+                const currentlyVisible = chart.isDatasetVisible(datasetIndex);
+                chart.setDatasetVisibility(datasetIndex, !currentlyVisible);
+                chart.update();
+
+                button.classList.toggle('is-muted', currentlyVisible);
+                button.setAttribute('aria-pressed', String(!currentlyVisible));
+            });
+        });
+    }
+
     function initDashboardActivityChart() {
         const canvas = byId('blogChart');
         if (!canvas || !window.Chart) {
@@ -116,15 +187,8 @@
         const activityDates = Array.isArray(data.activityDates) ? data.activityDates : [];
         const newBlogsItemsByDate = data.newBlogsItemsByDate || {};
         const newUsersItemsByDate = data.newUsersItemsByDate || {};
-        const visualMinValue = typeof data.visualMinValue === 'number' ? data.visualMinValue : 0.2;
 
-        const visualNewBlogsData = rawNewBlogsData.map(function (value) {
-            return value === 0 ? visualMinValue : value;
-        });
-
-        const visualNewUsersData = rawNewUsersData.map(function (value) {
-            return value === 0 ? visualMinValue : value;
-        });
+        updateInsights(rawNewBlogsData, rawNewUsersData, activityLabels);
 
         const modalElement = byId('activityDetailModal');
         const activityDetailModal = modalElement && window.bootstrap ? new window.bootstrap.Modal(modalElement) : null;
@@ -132,18 +196,52 @@
         const activityDetailCount = byId('activityDetailCount');
         const activityDetailBody = byId('activityDetailBody');
 
-        new window.Chart(canvas.getContext('2d'), {
+        const ctx = canvas.getContext('2d');
+        const blogsGradient = ctx.createLinearGradient(0, 0, 0, 260);
+        blogsGradient.addColorStop(0, 'rgba(46, 123, 255, 0.95)');
+        blogsGradient.addColorStop(1, 'rgba(46, 123, 255, 0.42)');
+
+        const usersGradient = ctx.createLinearGradient(0, 0, 0, 260);
+        usersGradient.addColorStop(0, 'rgba(32, 178, 107, 0.95)');
+        usersGradient.addColorStop(1, 'rgba(32, 178, 107, 0.42)');
+
+        const chart = new window.Chart(ctx, {
             type: 'bar',
             data: {
                 labels: activityLabels,
                 datasets: [
-                    { label: 'New Blogs', backgroundColor: '#007bff', data: visualNewBlogsData },
-                    { label: 'New Users', backgroundColor: '#28a745', data: visualNewUsersData }
+                    {
+                        label: 'New Blogs',
+                        data: rawNewBlogsData,
+                        backgroundColor: blogsGradient,
+                        borderColor: '#2e7bff',
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        maxBarThickness: 26,
+                        categoryPercentage: 0.62,
+                        barPercentage: 0.9,
+                    },
+                    {
+                        label: 'New Users',
+                        data: rawNewUsersData,
+                        backgroundColor: usersGradient,
+                        borderColor: '#20b26b',
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        maxBarThickness: 26,
+                        categoryPercentage: 0.62,
+                        barPercentage: 0.9,
+                    }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: true,
+                },
                 onHover: function (event, elements) {
                     const target = event && event.native ? event.native.target : null;
                     if (!target) {
@@ -200,27 +298,52 @@
                     activityDetailModal.show();
                 },
                 scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                        },
+                        ticks: {
+                            color: '#667892',
+                            font: {
+                                weight: 600,
+                            },
+                        },
+                    },
                     y: {
                         beginAtZero: true,
-                        suggestedMax: Math.max.apply(null, rawNewBlogsData.concat(rawNewUsersData).concat([1])),
-                        ticks: { display: false }
+                        ticks: {
+                            precision: 0,
+                            color: '#667892',
+                            stepSize: 1,
+                        },
+                        grid: {
+                            color: 'rgba(148, 167, 195, 0.22)',
+                            borderDash: [4, 4],
+                        },
                     }
                 },
                 plugins: {
+                    legend: {
+                        display: false,
+                    },
                     tooltip: {
+                        backgroundColor: '#0f1f3a',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        titleColor: '#fff',
+                        bodyColor: '#dbe8ff',
+                        padding: 10,
                         callbacks: {
                             label: function (context) {
-                                const rawValue = context.dataset.label === 'New Blogs'
-                                    ? rawNewBlogsData[context.dataIndex]
-                                    : rawNewUsersData[context.dataIndex];
-
-                                return context.dataset.label + ': ' + rawValue;
+                                return context.dataset.label + ': ' + context.raw;
                             }
                         }
                     }
                 }
             }
         });
+
+        initLegendToggle(chart);
     }
 
     document.addEventListener('DOMContentLoaded', initDashboardActivityChart);

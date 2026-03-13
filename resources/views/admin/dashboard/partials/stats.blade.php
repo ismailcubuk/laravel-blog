@@ -1,33 +1,59 @@
 @php
+    $newPostsWeek = array_sum($newBlogsData ?? []);
+    $newUsersWeek = array_sum($newUsersData ?? []);
+
     $stats = [
-        ['bg' => 'info', 'icon' => 'fa-file-lines', 'count' => 6, 'label' => 'Site Pages'],
-        ['bg' => 'success', 'icon' => 'fa-users', 'count' => 5, 'label' => 'Users'],
-        ['bg' => 'warning', 'icon' => 'fa-file-lines', 'count' => $totalPosts ?? 0, 'label' => 'Blog Posts'],
-        ['bg' => 'danger', 'icon' => 'fa-chart-line', 'count' => 12, 'label' => 'Website Visits'],
+        [
+            'theme' => 'primary',
+            'icon' => 'bi-journal-richtext',
+            'value' => $totalPosts ?? 0,
+            'label' => 'Total Posts',
+            'hint' => $newPostsWeek . ' published this week',
+            'action' => ['target' => '#allBlogPostsModal', 'label' => 'View all posts'],
+        ],
+        [
+            'theme' => 'success',
+            'icon' => 'bi-people-fill',
+            'value' => $totalUsers ?? 0,
+            'label' => 'Total Users',
+            'hint' => $newUsersWeek . ' joined this week',
+            'action' => ['target' => '#allUsersModal', 'label' => 'View all users'],
+        ],
+        [
+            'theme' => 'amber',
+            'icon' => 'bi-grid-3x3-gap-fill',
+            'value' => $totalCategories ?? 0,
+            'label' => 'Categories',
+            'hint' => 'Content is grouped by topic',
+            'action' => ['target' => '#allCategoriesModal', 'label' => 'View all categories'],
+        ],
+        [
+            'theme' => 'danger',
+            'icon' => 'bi-chat-dots-fill',
+            'value' => $totalComments ?? 0,
+            'label' => 'Comments',
+            'hint' => ($pendingComments ?? 0) . ' pending moderation',
+            'action' => ['target' => '#allCommentsModal', 'label' => 'View all comments'],
+        ],
     ];
 @endphp
 
-<div class="row">
+<section class="dashboard-stats-grid">
     @foreach($stats as $stat)
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-{{ $stat['bg'] }}">
-                <div class="inner">
-                    <h3>{{ $stat['count'] }}</h3>
-                    <p>{{ $stat['label'] }}</p>
-                </div>
-                <div class="icon">
-                    <i class="fa-solid {{ $stat['icon'] }}"></i>
-                </div>
-                @if($stat['label'] === 'Blog Posts')
-                    <a href="#" class="small-box-footer" data-bs-toggle="modal" data-bs-target="#allBlogPostsModal">
-                        More info <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                @else
-                    <a href="#" class="small-box-footer">
-                        More info <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                @endif
+        <article
+            class="dashboard-stat-card stat-{{ $stat['theme'] }} is-clickable"
+            role="button"
+            tabindex="0"
+            data-bs-toggle="modal"
+            data-bs-target="{{ $stat['action']['target'] }}"
+        >
+            <div class="dashboard-stat-top">
+                <span class="dashboard-stat-label">{{ $stat['label'] }}</span>
+                <span class="dashboard-stat-icon"><i class="bi {{ $stat['icon'] }}"></i></span>
             </div>
-        </div>
+            <strong class="dashboard-stat-value">{{ $stat['value'] }}</strong>
+            <p class="dashboard-stat-hint">{{ $stat['hint'] }}</p>
+            <span class="dashboard-stat-action">{{ $stat['action']['label'] }}</span>
+        </article>
     @endforeach
-</div>
+</section>

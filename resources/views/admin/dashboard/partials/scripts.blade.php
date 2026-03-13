@@ -15,3 +15,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ asset('assets/js/admin/dashboard/activity.js') }}"></script>
 <script src="{{ asset('assets/js/admin/dashboard/all-posts-modal.js') }}"></script>
+<script src="{{ asset('assets/js/admin/dashboard/all-users-modal.js') }}"></script>
+<script src="{{ asset('assets/js/admin/dashboard/all-categories-modal.js') }}"></script>
+<script src="{{ asset('assets/js/admin/dashboard/all-comments-modal.js') }}"></script>

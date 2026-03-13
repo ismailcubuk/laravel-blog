@@ -4,6 +4,9 @@
     @include('admin.dashboard.partials.header')
     @include('admin.dashboard.partials.stats')
     @include('admin.dashboard.partials.all-posts-modal')
+    @include('admin.dashboard.partials.all-users-modal')
+    @include('admin.dashboard.partials.all-categories-modal')
+    @include('admin.dashboard.partials.all-comments-modal')
 
     <div class="row g-4">
         @include('admin.dashboard.partials.blog-activity-card')

@@ -1,32 +1,31 @@
-<div class="col-lg-6">
-    <div class="card card-primary h-100 dashboard-card">
-        <div class="card-header">
-            <h3 class="card-title">Latest Blog Posts</h3>
-        </div>
-        <div class="card-body p-0 latest-posts-body">
+<div class="col-lg-4">
+    <section class="dashboard-panel latest-panel h-100">
+        <header class="dashboard-panel-header">
+            <h3 class="dashboard-panel-title">Latest Blog Posts</h3>
+            <a href="{{ route('admin.content.posts.index') }}" class="dashboard-panel-link">Manage</a>
+        </header>
+
+        <div class="latest-posts-list">
             @forelse($latestPosts as $post)
-                <a href="{{ route('post.show', $post->slug) }}" class="d-flex p-3 border-bottom latest-post-item">
-                    <div class="me-3">
-                        <img
-                            src="{{ $post->image ? asset(ltrim($post->image, '/')) : 'https://picsum.photos/seed/' . $post->id . '/200/300' }}"
-                            width="80"
-                            height="80"
-                            style="object-fit:cover; border-radius:6px;"
-                        >
-                    </div>
-                    <div class="flex-grow-1">
-                        <h5 class="mb-1">{{ $post->title }}</h5>
-                        <p class="mb-1 text-muted latest-post-excerpt">
-                            {{ \Illuminate\Support\Str::limit(strip_tags($post->content), 90) }}
+                <a href="{{ route('post.show', $post->slug) }}" class="latest-post-item">
+                    <img
+                        src="{{ $post->image ? asset(ltrim($post->image, '/')) : 'https://picsum.photos/seed/' . $post->id . '/240/240' }}"
+                        alt="{{ $post->title }}"
+                        class="latest-post-thumb"
+                    >
+                    <div class="latest-post-content">
+                        <h4 class="latest-post-title">{{ $post->title }}</h4>
+                        <p class="latest-post-meta">
+                            <span>{{ optional($post->category)->name ?? 'Uncategorized' }}</span>
+                            <span>-</span>
+                            <span>{{ optional($post->created_at)->format('d.m.Y') }}</span>
                         </p>
-                        <small class="text-secondary">
-                            <i class="fa fa-calendar"></i> {{ optional($post->created_at)->format('d.m.Y') }}
-                        </small>
+                        <p class="latest-post-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($post->content), 96) }}</p>
                     </div>
                 </a>
             @empty
-                <div class="p-3 text-muted">Henüz blog yazısı bulunmuyor.</div>
+                <div class="latest-post-empty">No blog posts yet.</div>
             @endforelse
         </div>
-    </div>
+    </section>
 </div>
