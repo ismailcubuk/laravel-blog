@@ -73,6 +73,7 @@
     box-shadow: 0 12px 24px rgba(11, 35, 72, 0.07);
     padding: 16px;
     min-height: 122px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .dashboard-stat-card::after {
@@ -601,6 +602,12 @@
 
 .dashboard-stat-card.is-clickable {
     cursor: pointer;
+}
+
+.dashboard-stat-card.is-clickable:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 32px rgba(16, 39, 77, 0.12);
+    border-color: #cbd9f1;
 }`r`n
 
 .dashboard-stat-card.is-clickable:focus-visible {
@@ -660,6 +667,7 @@
     box-shadow: inset 4px 0 0 #2f6eea;
 }
 </style>
+
 
 
 
