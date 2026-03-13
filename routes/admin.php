@@ -68,7 +68,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/settings/general', [SettingController::class, 'general'])->name('settings.general');
         Route::put('/settings/general', [SettingController::class, 'update'])->name('settings.general.update');
-        Route::view('/settings/social', 'admin.settings.social')->name('settings.social');
-        Route::view('/settings/mail', 'admin.settings.mail')->name('settings.mail');
+        Route::get('/settings/social', [SettingController::class, 'social'])->name('settings.social');
+        Route::put('/settings/social', [SettingController::class, 'updateSocial'])->name('settings.social.update');
+        Route::get('/settings/mail', [SettingController::class, 'mail'])->name('settings.mail');
+        Route::put('/settings/mail', [SettingController::class, 'updateMail'])->name('settings.mail.update');
     });
 });

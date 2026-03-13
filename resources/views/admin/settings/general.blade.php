@@ -63,37 +63,6 @@
                     </div>
                 </div>
 
-                {{-- Social Links --}}
-                <h5 class="mb-3">Social Links</h5>
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Facebook</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="facebook_url" class="form-control" value="{{ $settings['facebook_url'] ?? '' }}">
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Twitter</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="twitter_url" class="form-control" value="{{ $settings['twitter_url'] ?? '' }}">
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Instagram</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="instagram_url" class="form-control" value="{{ $settings['instagram_url'] ?? '' }}">
-                    </div>
-                </div>
-
-                <div class="mb-4 row">
-                    <label class="col-sm-2 col-form-label">LinkedIn</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="linkedin_url" class="form-control" value="{{ $settings['linkedin_url'] ?? '' }}">
-                    </div>
-                </div>
-
                 <div class="text-end">
                     <button type="submit" class="btn btn-success btn-lg">Save Settings</button>
                 </div>
