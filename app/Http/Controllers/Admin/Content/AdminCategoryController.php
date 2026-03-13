@@ -9,11 +9,26 @@ use Illuminate\Support\Str;
 
 class AdminCategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::withCount('posts')->latest()->paginate(10);
+        $allowedSorts = ['name', 'slug', 'created_at'];
+        $sort = (string) $request->query('sort', 'created_at');
+        $direction = strtolower((string) $request->query('direction', 'desc'));
 
-        return view('admin.content.categories', compact('categories'));
+        if (!in_array($sort, $allowedSorts, true)) {
+            $sort = 'created_at';
+        }
+
+        if (!in_array($direction, ['asc', 'desc'], true)) {
+            $direction = 'desc';
+        }
+
+        $categories = Category::withCount('posts')
+            ->orderBy($sort, $direction)
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.content.categories', compact('categories', 'sort', 'direction'));
     }
 
     public function store(Request $request)
@@ -78,5 +93,3 @@ class AdminCategoryController extends Controller
         return $slug;
     }
 }
-
-

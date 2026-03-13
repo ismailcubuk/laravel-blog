@@ -3,19 +3,46 @@
 namespace App\Http\Controllers\Admin\Content;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class AdminPostController extends Controller
 {
     // Listeleme
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with(['category', 'user'])->latest()->paginate(10);
+        $allowedSorts = ['title', 'author', 'category', 'created_at'];
+        $sort = (string) $request->query('sort', 'created_at');
+        $direction = strtolower((string) $request->query('direction', 'desc'));
+
+        if (!in_array($sort, $allowedSorts, true)) {
+            $sort = 'created_at';
+        }
+
+        if (!in_array($direction, ['asc', 'desc'], true)) {
+            $direction = 'desc';
+        }
+
+        $sortColumn = match ($sort) {
+            'author' => 'users.name',
+            'category' => 'categories.name',
+            default => 'posts.' . $sort,
+        };
+
+        $posts = Post::query()
+            ->leftJoin('users', 'users.id', '=', 'posts.user_id')
+            ->leftJoin('categories', 'categories.id', '=', 'posts.category_id')
+            ->select('posts.*')
+            ->with(['category', 'user'])
+            ->orderBy($sortColumn, $direction)
+            ->paginate(10)
+            ->withQueryString();
 
         return view('admin.content.posts.index', [
-            'posts' => $posts
+            'posts' => $posts,
+            'sort' => $sort,
+            'direction' => $direction,
         ]);
     }
 
@@ -102,3 +129,4 @@ class AdminPostController extends Controller
             ->with('success', 'Post deleted successfully');
     }
 }
+

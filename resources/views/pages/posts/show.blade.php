@@ -15,6 +15,22 @@
             overflow: hidden;
         }
 
+        .comments .author-thumb {
+            width: 100px;
+            min-width: 100px;
+            height: 100px;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .comments .author-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: inherit;
+        }
+
         .sidebar-item.submit-comment {
             clear: both;
             margin-top: 36px !important;
@@ -304,7 +320,7 @@
                                                     @forelse($post->comments as $comment)
                                                         <li>
                                                             <div class="author-thumb">
-                                                                <img src="{{ asset('assets/images/comment-author-01.jpg') }}" alt="{{ $comment->name }}">
+                                                                <img src="{{ optional($comment->user)->avatar_path ? asset($comment->user->avatar_path) : asset('assets/images/comment-author-01.jpg') }}" alt="{{ $comment->name }}">
                                                             </div>
                                                             <div class="right-content">
                                                                 <h4>
@@ -378,11 +394,11 @@
                                                         @if($comment->reply_message)
                                                             <li class="replied">
                                                                 <div class="author-thumb">
-                                                                    <img src="{{ asset('assets/images/comment-author-02.jpg') }}" alt="Admin Reply">
+                                                                    <img src="{{ optional($comment->repliedBy)->avatar_path ? asset($comment->repliedBy->avatar_path) : asset('assets/images/comment-author-02.jpg') }}" alt="Admin Reply">
                                                                 </div>
                                                                 <div class="right-content">
                                                                     <h4>
-                                                                        {{ optional($comment->user)->name ?: 'Thirteen Man' }}
+                                                                        {{ optional($comment->repliedBy)->name ?: 'Admin' }}
                                                                         <span>{{ optional($comment->replied_at)->format('M d, Y') }}</span>
                                                                     </h4>
 

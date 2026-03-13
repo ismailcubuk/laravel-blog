@@ -36,7 +36,7 @@
 
                 {{-- Content --}}
                 <li class="nav-item {{ $menuStates['content'] ? 'menu-open' : '' }}" data-menu-key="content">
-                    <a href="#" class="nav-link {{ $menuStates['content'] ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-newspaper"></i>
                         <p>
                             Content
@@ -70,7 +70,7 @@
 
                 {{-- Pages --}}
                 <li class="nav-item {{ $menuStates['pages'] ? 'menu-open' : '' }}" data-menu-key="pages">
-                    <a href="#" class="nav-link {{ $menuStates['pages'] ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-file-lines"></i>
                         <p>
                             Pages
@@ -104,7 +104,7 @@
 
                 {{-- Users --}}
                 <li class="nav-item {{ $menuStates['users'] ? 'menu-open' : '' }}" data-menu-key="users">
-                    <a href="#" class="nav-link {{ $menuStates['users'] ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-user"></i>
                         <p>
                             Users
@@ -112,6 +112,13 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.users.profile') }}"
+                               class="nav-link {{ request()->routeIs('admin.users.profile*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Profile Settings</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('admin.users.list') }}"
                                class="nav-link {{ request()->routeIs('admin.users.list') ? 'active' : '' }}">
@@ -139,7 +146,7 @@
 
                 {{-- Settings --}}
                 <li class="nav-item {{ $menuStates['settings'] ? 'menu-open' : '' }}" data-menu-key="settings">
-                    <a href="#" class="nav-link {{ $menuStates['settings'] ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-gear"></i>
                         <p>
                             Settings
@@ -173,10 +180,13 @@
 
                 {{-- Logout --}}
                 <li class="nav-item">
-                    <a href="{{ route('admin.logout') }}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-sign-out-alt"></i>
-                        <p>Logout</p>
-                    </a>
+                    <form method="POST" action="{{ route('admin.logout') }}">
+                        @csrf
+                        <button type="submit" class="nav-link btn btn-link text-start w-100 border-0">
+                            <i class="nav-icon fa-solid fa-sign-out-alt"></i>
+                            <p>Logout</p>
+                        </button>
+                    </form>
                 </li>
 
             </ul>

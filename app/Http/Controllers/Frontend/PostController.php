@@ -45,6 +45,7 @@ class PostController extends Controller
                     ->orderByDesc('created_at')
                     ->orderByDesc('id'),
                 'comments.user',
+                'comments.repliedBy',
             ])
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->where('slug', $slug)

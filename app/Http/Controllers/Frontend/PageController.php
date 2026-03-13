@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Page;
 use App\Models\PageSection;
 use App\Models\Post;
+use App\Models\Setting;
+use App\Services\Mail\MailWorkflowService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    // BLOG PAGE
     public function blog(Request $request)
     {
         $search = trim((string) $request->query('search', ''));
@@ -47,7 +49,6 @@ class PageController extends Controller
         return view('pages.blog', compact('posts', 'recentPosts', 'categories'));
     }
 
-    // CONTACT PAGE
     public function contact()
     {
         $page = Page::firstOrCreate(
@@ -57,14 +58,36 @@ class PageController extends Controller
                 'contact_phone' => '',
                 'contact_email' => '',
                 'contact_address' => '',
-                'contact_map_iframe' => ''
+                'contact_map_iframe' => '',
             ]
         );
 
         return view('pages.contact', compact('page'));
     }
 
-    // ABOUT PAGE
+    public function submitContact(Request $request, MailWorkflowService $mailWorkflow): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'subject' => ['nullable', 'string', 'max:255'],
+            'message' => ['required', 'string', 'max:3000'],
+        ]);
+
+        $contactPage = Page::firstWhere('slug', 'contact');
+        $fallbackEmail = Setting::get('mail_from_address', config('mail.from.address'));
+        $toEmail = $contactPage?->contact_email ?: $fallbackEmail;
+
+        $mailWorkflow->sendContactFormMessageToSite($toEmail, [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'subject' => $data['subject'] ?? null,
+            'message' => $data['message'],
+        ]);
+
+        return back()->with('success', 'Your message has been sent successfully.');
+    }
+
     public function about()
     {
         $page = Page::firstOrCreate(
@@ -72,7 +95,7 @@ class PageController extends Controller
             [
                 'title' => 'About Us',
                 'description' => 'ABOUT US',
-                'hero_image' => '/assets/images/about-us.jpg'
+                'hero_image' => '/assets/images/about-us.jpg',
             ]
         );
 

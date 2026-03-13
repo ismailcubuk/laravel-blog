@@ -132,6 +132,8 @@ class SettingController extends Controller
 
         Setting::updateOrCreate(['key' => 'mail_mailer'], ['value' => 'smtp']);
         Setting::updateOrCreate(['key' => 'mail_encryption'], ['value' => 'tls']);
+        Setting::updateOrCreate(['key' => 'mail_host'], ['value' => 'smtp.gmail.com']);
+        Setting::updateOrCreate(['key' => 'mail_port'], ['value' => '587']);
 
         foreach ($fields as $field) {
             if ($field === 'mail_password' && empty($validated[$field])) {
@@ -147,3 +149,4 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Mail settings updated successfully!');
     }
 }
+

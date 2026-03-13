@@ -1,6 +1,65 @@
 @extends('admin.layouts.app')
 
 @section('content')
+@php
+    $currentSort = $sort ?? 'created_at';
+    $currentDirection = $direction ?? 'desc';
+
+    $nextDirection = fn (string $column) => $currentSort === $column && $currentDirection === 'asc' ? 'desc' : 'asc';
+
+    $sortIcon = function (string $column) use ($currentSort, $currentDirection): string {
+        if ($currentSort !== $column) {
+            return 'bi-arrow-down-up';
+        }
+
+        return $currentDirection === 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up';
+    };
+@endphp
+
+@push('styles')
+<style>
+    .sort-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: inherit;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .sort-link:hover {
+        color: #1f6bff;
+    }
+
+    .categories-table {
+        table-layout: fixed;
+    }
+
+    .category-name-col {
+        width: 34%;
+    }
+
+    .category-slug-col {
+        width: 24%;
+    }
+
+    .category-name-input {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .category-slug-value {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+@endpush
+
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0 text-primary">Categories</h1>
@@ -32,7 +91,7 @@
     <div class="row g-4">
         <div class="col-lg-12">
             <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white d-flex align-items-center">
+                <div class="card-header d-flex align-items-center">
                     <h5 class="mb-0">Category List</h5>
                     <button
                         type="button"
@@ -45,11 +104,27 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped align-middle mb-0">
-                            <thead class="table-dark">
+                        <table class="table table-hover table-striped align-middle mb-0 categories-table">
+                            <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Slug</th>
+                                    <th class="category-name-col">
+                                        <a
+                                            href="{{ route('admin.content.categories.index', array_merge(request()->except('page'), ['sort' => 'name', 'direction' => $nextDirection('name')])) }}"
+                                            class="sort-link"
+                                        >
+                                            Name
+                                            <i class="bi {{ $sortIcon('name') }}"></i>
+                                        </a>
+                                    </th>
+                                    <th class="category-slug-col">
+                                        <a
+                                            href="{{ route('admin.content.categories.index', array_merge(request()->except('page'), ['sort' => 'slug', 'direction' => $nextDirection('slug')])) }}"
+                                            class="sort-link"
+                                        >
+                                            Slug
+                                            <i class="bi {{ $sortIcon('slug') }}"></i>
+                                        </a>
+                                    </th>
                                     <th>Posts</th>
                                     <th>Created</th>
                                     <th class="text-end">Actions</th>
@@ -58,19 +133,19 @@
                             <tbody>
                                 @forelse($categories as $category)
                                     <tr>
-                                        <td>
+                                        <td class="category-name-col">
                                             <span id="categoryNameText-{{ $category->id }}">{{ $category->name }}</span>
                                             <input
                                                 type="text"
                                                 id="categoryNameInput-{{ $category->id }}"
                                                 name="name"
                                                 value="{{ $category->name }}"
-                                                class="form-control form-control-sm d-none"
+                                                class="form-control form-control-sm d-none category-name-input"
                                                 form="updateCategoryForm-{{ $category->id }}"
                                                 required
                                             >
                                         </td>
-                                        <td>{{ $category->slug }}</td>
+                                        <td class="category-slug-col"><code class="category-slug-value">{{ $category->slug }}</code></td>
                                         <td>{{ $category->posts_count }}</td>
                                         <td>{{ optional($category->created_at)->format('d M Y') }}</td>
                                         <td class="text-end">

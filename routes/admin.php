@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Content\AdminCommentController;
 use App\Http\Controllers\Admin\Pages\AdminPageController;
 use App\Http\Controllers\Admin\Settings\SettingController;
 use App\Http\Controllers\Admin\Users\PermissionController;
+use App\Http\Controllers\Admin\Users\ProfileController;
 use App\Http\Controllers\Admin\Users\RoleController;
 use App\Http\Controllers\Admin\Users\UserController;
 
@@ -19,9 +20,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+    Route::get('/verify-email', [AuthController::class, 'verifyEmail'])->name('email.verify');
+    Route::get('/users/profile/email-change/{requestId}', [ProfileController::class, 'verifyEmailChange'])->name('users.profile.email.verify');
 
     Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendPasswordResetLink'])->name('password.email');
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
     Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -51,6 +56,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/privacy-policy', 'admin.pages.privacy')->name('pages.privacy');
 
         Route::get('/users', [UserController::class, 'index'])->name('users.list');
+        Route::get('/users/profile', [ProfileController::class, 'edit'])->name('users.profile');
+        Route::put('/users/profile', [ProfileController::class, 'update'])->name('users.profile.update');
+        Route::put('/users/profile/password', [ProfileController::class, 'updatePassword'])->name('users.profile.password');
         Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.role.update');
         Route::get('/users/roles', [RoleController::class, 'index'])->name('users.roles');
         Route::post('/users/roles', [RoleController::class, 'store'])->name('users.roles.store');
@@ -74,3 +82,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/settings/mail', [SettingController::class, 'updateMail'])->name('settings.mail.update');
     });
 });
+
+
+

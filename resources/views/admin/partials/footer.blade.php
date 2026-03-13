@@ -1,5 +1,3 @@
 <footer class="app-footer">
-
-    <strong>Copyright © 2026</strong>
-
+    <strong>&copy; {{ now()->year }} {{ $settings['site_name'] ?? config('app.name', 'My Website') }}</strong>
 </footer>
