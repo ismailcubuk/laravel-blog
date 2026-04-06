@@ -41,6 +41,11 @@
         }, 0);
     }
 
+    function formatCount(value, singular, plural) {
+        const total = Number(value || 0);
+        return total + ' ' + (total === 1 ? singular : plural);
+    }
+
     function flattenItemsByDate(itemsByDate) {
         return Object.values(itemsByDate || {}).reduce(function (all, items) {
             if (Array.isArray(items)) {
@@ -83,11 +88,11 @@
         const usersTotal = sum(rawUsers);
 
         if (blogsTotalElement) {
-            blogsTotalElement.textContent = String(blogsTotal);
+            blogsTotalElement.textContent = formatCount(blogsTotal, 'blog', 'blogs');
         }
 
         if (usersTotalElement) {
-            usersTotalElement.textContent = String(usersTotal);
+            usersTotalElement.textContent = formatCount(usersTotal, 'user', 'users');
         }
 
         if (peakDayElement) {
@@ -95,7 +100,7 @@
             if (!peakDayInfo) {
                 peakDayElement.textContent = '-';
             } else {
-                peakDayElement.textContent = peakDayInfo.label + ' (' + peakDayInfo.value + ')';
+                peakDayElement.textContent = peakDayInfo.label + ' - ' + formatCount(peakDayInfo.value, 'action', 'actions');
             }
         }
     }
