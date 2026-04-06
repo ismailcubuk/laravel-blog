@@ -5,6 +5,17 @@
     <meta charset="utf-8">
     @php($siteName = $settings['site_name'] ?? config('app.name', 'My Website'))
     @php($pageTitle = trim($__env->yieldContent('title')))
+    @php($themeKey = $settings['ui_theme'] ?? 'orange')
+    @php($uiTheme = in_array($themeKey, ['orange', 'blue', 'emerald', 'rose', 'violet'], true) ? $themeKey : 'orange')
+    @php($modeKey = $settings['ui_mode'] ?? 'white')
+    @php($uiMode = in_array($modeKey, ['white', 'dark'], true) ? $modeKey : 'white')
+    @php($themePalette = [
+        'orange' => ['primary' => '#f48840', 'secondary' => '#fb9857', 'focus' => '#f5b58a', 'rgb' => '244, 136, 64'],
+        'blue' => ['primary' => '#1f6bff', 'secondary' => '#0f4fd9', 'focus' => '#93b8ff', 'rgb' => '31, 107, 255'],
+        'emerald' => ['primary' => '#10b981', 'secondary' => '#059669', 'focus' => '#6ee7b7', 'rgb' => '16, 185, 129'],
+        'rose' => ['primary' => '#e11d48', 'secondary' => '#be123c', 'focus' => '#f9a8d4', 'rgb' => '225, 29, 72'],
+        'violet' => ['primary' => '#7c3aed', 'secondary' => '#6d28d9', 'focus' => '#c4b5fd', 'rgb' => '124, 58, 237'],
+    ][$uiTheme])
     <title>{{ $siteName }}{{ $pageTitle ? ' ' . $pageTitle : ' Admin Panel' }}</title>
 
     <!-- AdminLTE CSS -->
@@ -22,17 +33,21 @@
     <link rel="icon" href="{{ asset($settings['site_favicon'] ?? 'default-favicon.ico') }}" type="image/x-icon">
     <style>
         :root {
-            --admin-bg-a: #f8fbff;
-            --admin-bg-b: #f1f4fb;
-            --admin-surface: #ffffff;
-            --admin-border: #e2e8f4;
-            --admin-text: #1a2433;
-            --admin-muted: #6b778e;
-            --admin-primary: #1f6bff;
-            --admin-primary-2: #0f4fd9;
-            --admin-success: #179d6d;
-            --admin-danger: #d13c4a;
-            --admin-shadow: 0 14px 30px rgba(16, 33, 61, 0.08);
+            --admin-bg-a: {{ $uiMode === 'dark' ? '#0b1220' : '#f8fbff' }};
+            --admin-bg-b: {{ $uiMode === 'dark' ? '#111a2e' : '#f1f4fb' }};
+            --admin-surface: {{ $uiMode === 'dark' ? '#0f172a' : '#ffffff' }};
+            --admin-border: {{ $uiMode === 'dark' ? '#25324a' : '#e2e8f4' }};
+            --admin-text: {{ $uiMode === 'dark' ? '#e2e8f0' : '#1a2433' }};
+            --admin-muted: {{ $uiMode === 'dark' ? '#e2e8f0' : '#1f2e46' }};
+            --admin-primary: {{ $themePalette['primary'] }};
+            --admin-primary-2: {{ $themePalette['secondary'] }};
+            --admin-success: {{ $uiMode === 'dark' ? '#34d399' : '#179d6d' }};
+            --admin-danger: {{ $uiMode === 'dark' ? '#fb7185' : '#d13c4a' }};
+            --admin-primary-rgb: {{ $themePalette['rgb'] }};
+            --admin-focus: {{ $themePalette['focus'] }};
+            --admin-input-bg: {{ $uiMode === 'dark' ? '#111b2f' : '#fbfcff' }};
+            --admin-input-border: {{ $uiMode === 'dark' ? '#334155' : '#d6deec' }};
+            --admin-shadow: {{ $uiMode === 'dark' ? '0 14px 30px rgba(2, 6, 23, 0.45)' : '0 14px 30px rgba(16, 33, 61, 0.08)' }};
         }
 
         body {
@@ -58,8 +73,8 @@
             border: 0;
             border-radius: 12px;
             color: #fff;
-            background: linear-gradient(135deg, #1f6bff 0%, #3a84ff 100%);
-            box-shadow: 0 10px 22px rgba(31, 107, 255, 0.28);
+            background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-2) 100%);
+            box-shadow: 0 10px 22px rgba(var(--admin-primary-rgb), 0.28);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -73,7 +88,7 @@
 
         .admin-sidebar-toggle:focus-visible {
             outline: 0;
-            box-shadow: 0 0 0 4px rgba(31, 107, 255, 0.18);
+            box-shadow: 0 0 0 4px rgba(var(--admin-primary-rgb), 0.18);
         }
 
         .app-content h1 {
@@ -83,12 +98,12 @@
         }
 
         .app-content .text-primary {
-            color: #1f4ba8 !important;
+            color: var(--admin-primary) !important;
         }
 
         .app-footer {
             border-top: 1px solid var(--admin-border);
-            background: rgba(255, 255, 255, 0.8);
+            background: {{ $uiMode === 'dark' ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255, 255, 255, 0.8)' }};
             backdrop-filter: blur(4px);
             color: var(--admin-muted);
             font-weight: 600;
@@ -96,7 +111,7 @@
 
         .app-sidebar {
             border-right: 1px solid rgba(255, 255, 255, 0.06);
-            background: linear-gradient(180deg, #0f1f3a 0%, #162b4f 100%) !important;
+            background: {{ $uiMode === 'dark' ? 'linear-gradient(180deg, #020617 0%, #0f172a 100%)' : 'linear-gradient(180deg, #0f1f3a 0%, #162b4f 100%)' }} !important;
         }
 
         .admin-sidebar-backdrop {
@@ -132,9 +147,9 @@
         }
 
         .sidebar-menu .nav-link.active {
-            background: linear-gradient(135deg, #1f6bff 0%, #3a84ff 100%);
+            background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-2) 100%);
             color: #fff;
-            box-shadow: 0 10px 20px rgba(31, 107, 255, 0.35);
+            box-shadow: 0 10px 20px rgba(var(--admin-primary-rgb), 0.35);
         }
 
         .sidebar-menu .nav-item.menu-open > .nav-link {
@@ -175,22 +190,43 @@
 
         .card-body {
             padding: 1.15rem;
+            color: var(--admin-text);
+        }
+
+        .card-body h1,
+        .card-body h2,
+        .card-body h3,
+        .card-body h4,
+        .card-body h5,
+        .card-body h6,
+        .card-body p,
+        .card-body small,
+        .card-body li {
+            color: var(--admin-text);
+        }
+
+        .card-body .text-muted {
+            color: var(--admin-muted) !important;
+        }
+
+        .text-muted {
+            color: var(--admin-muted) !important;
         }
 
         .form-label,
         .col-form-label {
-            color: #3a4860;
+            color: {{ $uiMode === 'dark' ? '#cbd5e1' : '#3a4860' }};
             font-weight: 600;
             font-size: 0.88rem;
         }
 
         .form-control,
         .form-select {
-            border: 1px solid #d6deec;
+            border: 1px solid var(--admin-input-border);
             border-radius: 12px;
             min-height: 42px;
             color: var(--admin-text);
-            background: #fbfcff;
+            background: var(--admin-input-bg);
         }
 
         textarea.form-control {
@@ -199,9 +235,9 @@
 
         .form-control:focus,
         .form-select:focus {
-            border-color: #93b8ff;
-            box-shadow: 0 0 0 4px rgba(31, 107, 255, 0.12);
-            background: #fff;
+            border-color: var(--admin-focus);
+            box-shadow: 0 0 0 4px rgba(var(--admin-primary-rgb), 0.12);
+            background: var(--admin-surface);
         }
 
         .btn {
@@ -214,7 +250,7 @@
 
         .btn-primary {
             background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-2) 100%);
-            box-shadow: 0 10px 18px rgba(31, 107, 255, 0.24);
+            box-shadow: 0 10px 18px rgba(var(--admin-primary-rgb), 0.24);
         }
 
         .btn-success {
@@ -228,11 +264,11 @@
         }
 
         .table {
-            border-color: #e4ebf5;
+            border-color: var(--admin-border);
         }
 
         .table th {
-            color: #40506c;
+            color: {{ $uiMode === 'dark' ? '#cbd5e1' : '#40506c' }};
             font-weight: 700;
             border-bottom-width: 1px;
         }
@@ -267,8 +303,8 @@
         .pagination .page-link {
             border-radius: 10px !important;
             margin: 0 3px;
-            border-color: #d7e1f1;
-            color: #35507f;
+            border-color: var(--admin-border);
+            color: {{ $uiMode === 'dark' ? '#cbd5e1' : '#35507f' }};
         }
 
         .pagination .active > .page-link {
@@ -325,7 +361,7 @@
     @stack('styles')
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed ">
+<body class="hold-transition sidebar-mini layout-fixed {{ $uiMode === 'dark' ? 'admin-dark' : 'admin-light' }}">
 
     <div class="app-wrapper">
         {{-- Sidebar --}}

@@ -16,6 +16,8 @@ class SettingController extends Controller
             'site_favicon' => null,
             'site_tagline' => '',
             'footer_text' => '',
+            'ui_theme' => 'orange',
+            'ui_mode' => 'white',
         ];
 
         $settings = Setting::all()->pluck('value', 'key')->toArray();
@@ -61,6 +63,8 @@ class SettingController extends Controller
             'site_favicon' => ['nullable', 'file', 'mimes:ico,png,jpg,jpeg,svg', 'max:1024'],
             'site_tagline' => ['nullable', 'string', 'max:255'],
             'footer_text' => ['nullable', 'string', 'max:255'],
+            'ui_theme' => ['required', 'in:orange,blue,emerald,rose,violet'],
+            'ui_mode' => ['required', 'in:white,dark'],
         ]);
 
         $fields = [
@@ -69,6 +73,8 @@ class SettingController extends Controller
             'site_favicon',
             'site_tagline',
             'footer_text',
+            'ui_theme',
+            'ui_mode',
         ];
 
         foreach ($fields as $field) {
@@ -149,4 +155,3 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Mail settings updated successfully!');
     }
 }
-

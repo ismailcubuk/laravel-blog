@@ -682,10 +682,126 @@
     background-color: #eef5ff;
     box-shadow: inset 4px 0 0 #2f6eea;
 }
+
+.admin-dark .dashboard-hero {
+    border-color: #334155;
+    background:
+        radial-gradient(circle at 88% 14%, rgba(148, 163, 184, 0.18), transparent 36%),
+        linear-gradient(145deg, #0f172a 0%, #111b2f 100%);
+}
+
+.admin-dark .dashboard-hero-kicker {
+    color: #93c5fd;
+}
+
+.admin-dark .dashboard-hero-title {
+    color: #f8fafc;
+}
+
+.admin-dark .dashboard-hero-subtitle {
+    color: #e2e8f0;
+}
+
+.admin-dark .dashboard-ghost-btn {
+    background: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+.admin-dark .dashboard-ghost-btn:hover {
+    background: #111b2f;
+    color: #ffffff;
+}
+
+.admin-dark .dashboard-stat-card,
+.admin-dark .dashboard-panel,
+.admin-dark .activity-insight-card,
+.admin-dark .activity-post-item,
+.admin-dark .activity-user-item {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+.admin-dark .dashboard-stat-label,
+.admin-dark .dashboard-stat-hint,
+.admin-dark .activity-insight-label,
+.admin-dark .latest-post-meta,
+.admin-dark .latest-post-excerpt,
+.admin-dark .latest-post-empty,
+.admin-dark .activity-post-excerpt,
+.admin-dark .activity-user-email,
+.admin-dark .activity-time-chip,
+.admin-dark .activity-modal-headline small {
+    color: #e2e8f0;
+}
+
+.admin-dark .dashboard-stat-value,
+.admin-dark .latest-post-title,
+.admin-dark .activity-insight-value,
+.admin-dark .activity-post-title,
+.admin-dark .activity-user-name,
+.admin-dark .activity-modal-headline .modal-title {
+    color: #f8fafc;
+}
+
+.admin-dark .latest-post-item,
+.admin-dark .activity-post-item,
+.admin-dark .activity-user-item,
+.admin-dark .activity-time-chip,
+.admin-dark .activity-count-badge {
+    border-color: #334155;
+}
+
+.admin-dark .latest-post-item:hover,
+.admin-dark .all-posts-item:hover,
+.admin-dark .all-users-item:hover,
+.admin-dark .all-categories-item:hover,
+.admin-dark .all-comments-item:hover,
+.admin-dark .activity-post-item:hover,
+.admin-dark .activity-user-item:hover {
+    background-color: #111b2f;
+}
+
+.admin-dark .activity-modal-body {
+    background: #0b1220;
+}
+
+.admin-dark .activity-empty-icon {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+}
+
+.admin-dark .all-posts-modal-header,
+.admin-dark .all-users-modal-header,
+.admin-dark .all-categories-modal-header,
+.admin-dark .all-comments-modal-header,
+.admin-dark .activity-modal-header {
+    background: linear-gradient(135deg, #0f172a, #111b2f);
+    border-bottom-color: #334155;
+}
+
+.admin-dark .modal-content,
+.admin-dark .all-posts-modal-content,
+.admin-dark .all-users-modal-content,
+.admin-dark .all-categories-modal-content,
+.admin-dark .all-comments-modal-content,
+.admin-dark .activity-modal-dialog .modal-content {
+    background: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+.admin-dark .modal-body .text-muted,
+.admin-dark .modal-content .text-muted {
+    color: #e2e8f0 !important;
+}
+
+.admin-dark .dashboard-hero-content,
+.admin-dark .dashboard-hero-content * {
+    color: #f8fafc !important;
+}
+
+.admin-dark .dashboard-hero-content .dashboard-hero-subtitle {
+    color: #e2e8f0 !important;
+}
 </style>
-
-
-
-
-
-

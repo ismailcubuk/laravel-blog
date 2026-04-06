@@ -254,6 +254,64 @@
             background: #dc3545;
             color: #fff;
         }
+
+        .front-dark .replied .right-content h4,
+        .front-dark .comments ul li:not(.replied) .right-content h4 {
+            border-bottom-color: rgba(148, 163, 184, 0.3);
+        }
+
+        .front-dark .comment-status-dropdown {
+            border-color: rgba(148, 163, 184, 0.35);
+            background: #0f172a;
+            box-shadow: 0 14px 34px rgba(2, 6, 23, 0.5);
+        }
+
+        .front-dark .comment-status-option {
+            color: #e2e8f0;
+        }
+
+        .front-dark .comment-status-option:hover {
+            background: rgba(148, 163, 184, 0.15);
+        }
+
+        .front-dark .comment-status-option.is-current {
+            background: rgba(148, 163, 184, 0.2);
+            color: #f8fafc;
+        }
+
+        .front-dark .comment-status-option.approved-option {
+            color: #86efac;
+        }
+
+        .front-dark .comment-status-option.pending-option {
+            color: #fde68a;
+        }
+
+        .front-dark .comment-status-badge.approved {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        .front-dark .comment-status-badge.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fde68a;
+        }
+
+        .front-dark .reply-inline-edit textarea {
+            border-color: rgba(var(--front-primary-rgb), 0.6);
+            background: rgba(var(--front-primary-rgb), 0.12);
+            color: #e2e8f0;
+        }
+
+        .front-dark .reply-inline-edit textarea:focus {
+            border-color: var(--front-primary);
+            background: rgba(var(--front-primary-rgb), 0.2);
+        }
+
+        .front-dark .reply-modern-button.cancel {
+            background: rgba(148, 163, 184, 0.2);
+            color: #e2e8f0;
+        }
     </style>
 
     <div class="heading-page header-text">

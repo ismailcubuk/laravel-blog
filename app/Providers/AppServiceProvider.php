@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
             'site_logo' => null,
             'site_favicon' => null,
             'site_tagline' => '',
-            'footer_text' => '© 2026 My Website',
+            'footer_text' => 'Copyright 2026 My Website',
             'facebook_url' => '#',
             'twitter_url' => '#',
             'instagram_url' => '#',
@@ -34,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
             'mail_password' => env('MAIL_PASSWORD'),
             'mail_encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'mail_from_address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+            'ui_theme' => 'orange',
+            'ui_mode' => 'white',
         ];
 
         $settings = array_merge($defaultSettings, $settings);
