@@ -116,8 +116,8 @@
                                 default => 'col-12',
                             };
                         @endphp
-                        <div class="card mb-3 p-3 section-entry">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="section-entry mb-3">
+                            <div class="d-flex justify-content-between align-items-center section-entry-header">
                                 <div class="d-flex align-items-center gap-2 flex-wrap">
                                     <span class="section-layout-icon section-layout-icon-grid section-layout-icon-grid-{{ $sectionIcon }}">
                                         @for($i = 0; $i < (int) $sectionIcon; $i++)
@@ -130,15 +130,15 @@
                                     </span>
                                     <div class="section-collapsed-summary d-inline-flex align-items-center flex-wrap gap-1">
                                         @foreach($section as $columnIndex => $column)
-                                            <span class="badge bg-light text-dark border">{{ $column->title ?: 'Column ' . ($columnIndex + 1) }}</span>
+                                            <span class="section-summary-chip">{{ $column->title ?: 'Column ' . ($columnIndex + 1) }}</span>
                                         @endforeach
                                     </div>
                                 </div>
                                 <div class="d-flex gap-2">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveSectionUp(this)">&uarr;</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveSectionDown(this)">&darr;</button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="toggleSectionCollapse(this)">Expand</button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSection(this)">Remove</button>
+                                    <button type="button" class="btn btn-sm section-action-btn section-action-btn-move" onclick="moveSectionUp(this)">&uarr;</button>
+                                    <button type="button" class="btn btn-sm section-action-btn section-action-btn-move" onclick="moveSectionDown(this)">&darr;</button>
+                                    <button type="button" class="btn btn-sm section-action-btn section-action-btn-toggle" onclick="toggleSectionCollapse(this)">Expand</button>
+                                    <button type="button" class="btn btn-sm section-action-btn section-action-btn-remove" onclick="removeSection(this)">Remove</button>
                                 </div>
                             </div>
                             <div class="section-editor-body d-none">
@@ -146,7 +146,7 @@
                                 <div class="row g-2">
                                     @foreach($section as $columnIndex => $column)
                                         <div class="{{ $columnClass }}">
-                                            <div class="p-2 border rounded bg-light-subtle h-100">
+                                            <div class="section-column-shell">
                                                 <input class="form-control mb-1" name="sections[{{$sectionIndex}}][columns][{{$columnIndex}}][title]" value="{{$column->title}}" maxlength="255" placeholder="Column Title">
                                                 <textarea class="form-control" name="sections[{{$sectionIndex}}][columns][{{$columnIndex}}][content]" placeholder="Column Content">{{$column->content}}</textarea>
                                             </div>
@@ -253,7 +253,91 @@
     }
 
     .section-entry {
-        border-color: #dce6f4;
+        border: 1px solid var(--admin-border);
+        background: var(--admin-surface);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .section-entry-header {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--admin-border);
+        background: rgba(var(--admin-primary-rgb), 0.04);
+    }
+
+    .section-editor-body {
+        padding: 12px 14px 14px;
+    }
+
+    .section-entry .section-layout-copy strong {
+        color: var(--admin-text);
+    }
+
+    .section-entry .section-layout-copy small {
+        color: var(--admin-muted);
+    }
+
+    .section-column-shell {
+        padding: 2px;
+    }
+
+    .section-summary-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--admin-border);
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        color: var(--admin-text);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .section-action-btn {
+        border-radius: 999px;
+        min-height: 32px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        border: 1px solid var(--admin-border);
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .section-action-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .section-action-btn-move {
+        color: var(--admin-text);
+    }
+
+    .section-action-btn-move:hover {
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        color: var(--admin-text);
+    }
+
+    .section-action-btn-toggle {
+        color: var(--admin-primary);
+        border-color: rgba(var(--admin-primary-rgb), 0.45);
+        background: rgba(var(--admin-primary-rgb), 0.1);
+    }
+
+    .section-action-btn-toggle:hover {
+        background: rgba(var(--admin-primary-rgb), 0.18);
+        color: var(--admin-primary);
+    }
+
+    .section-action-btn-remove {
+        color: #f87171;
+        border-color: rgba(248, 113, 113, 0.4);
+        background: rgba(248, 113, 113, 0.08);
+    }
+
+    .section-action-btn-remove:hover {
+        background: rgba(248, 113, 113, 0.16);
+        color: #fecaca;
     }
 
     @media (max-width: 1199.98px) {
@@ -310,9 +394,9 @@
         const sectionMeta = getSectionMeta(type);
 
         let html = '';
-        html += `<div class="card mb-3 p-3 section-entry">`;
+        html += `<div class="section-entry mb-3">`;
         html += `
-            <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex justify-content-between align-items-center section-entry-header">
                 <div class="d-flex align-items-center gap-2 flex-wrap">
                     <span class="section-layout-icon section-layout-icon-grid section-layout-icon-grid-${sectionMeta.icon}">
                         ${Array.from({ length: sectionMeta.columns }).map(() => '<span></span>').join('')}
@@ -324,10 +408,10 @@
                     <div class="section-collapsed-summary d-inline-flex align-items-center flex-wrap gap-1"></div>
                 </div>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveSectionUp(this)">&uarr;</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveSectionDown(this)">&darr;</button>
-                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="toggleSectionCollapse(this)">Collapse</button>
-                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSection(this)">Remove</button>
+                    <button type="button" class="btn btn-sm section-action-btn section-action-btn-move" onclick="moveSectionUp(this)">&uarr;</button>
+                    <button type="button" class="btn btn-sm section-action-btn section-action-btn-move" onclick="moveSectionDown(this)">&darr;</button>
+                    <button type="button" class="btn btn-sm section-action-btn section-action-btn-toggle" onclick="toggleSectionCollapse(this)">Collapse</button>
+                    <button type="button" class="btn btn-sm section-action-btn section-action-btn-remove" onclick="removeSection(this)">Remove</button>
                 </div>
             </div>
         `;
@@ -339,7 +423,7 @@
         for (let i = 0; i < counts[type]; i++) {
             html += `
                 <div class="${columnClass}">
-                    <div class="p-2 border rounded bg-light-subtle h-100">
+                    <div class="section-column-shell">
                         <input class="form-control mb-1" name="sections[${sectionIndex}][columns][${i}][title]" maxlength="255" placeholder="Column Title">
                         <textarea class="form-control" name="sections[${sectionIndex}][columns][${i}][content]" placeholder="Column Content"></textarea>
                     </div>
@@ -363,12 +447,12 @@
     }
 
     function removeSection(button) {
-        button.closest('.card').remove();
+        button.closest('.section-entry').remove();
         updateSectionOrders();
     }
 
     function toggleSectionCollapse(button) {
-        const card = button.closest('.card');
+        const card = button.closest('.section-entry');
         if (!card) return;
 
         const body = card.querySelector('.section-editor-body');
@@ -392,7 +476,7 @@
 
         titleInputs.forEach((input, index) => {
             const value = (input.value || '').trim();
-            badges.push(`<span class="badge bg-light text-dark border">${value || ('Column ' + (index + 1))}</span>`);
+            badges.push(`<span class="section-summary-chip">${value || ('Column ' + (index + 1))}</span>`);
         });
 
         summary.innerHTML = badges.join('');
@@ -403,14 +487,14 @@
         if (!target || !(target instanceof HTMLInputElement)) return;
         if (!target.name || !target.name.includes('[columns]') || !target.name.endsWith('[title]')) return;
 
-        const card = target.closest('.card');
+        const card = target.closest('.section-entry');
         if (card) {
             updateSectionSummary(card);
         }
     });
 
     function moveSectionUp(button) {
-        const card = button.closest('.card');
+        const card = button.closest('.section-entry');
         if (!card) return;
         const container = card.parentNode;
         const prev = card.previousElementSibling;
@@ -423,7 +507,7 @@
     }
 
     function moveSectionDown(button) {
-        const card = button.closest('.card');
+        const card = button.closest('.section-entry');
         if (!card) return;
         const container = card.parentNode;
         const next = card.nextElementSibling;
@@ -440,14 +524,14 @@
             return;
         }
 
-        const cardsBefore = Array.from(container.querySelectorAll(':scope > .card'));
+        const cardsBefore = Array.from(container.querySelectorAll(':scope > .section-entry'));
         const firstRects = new Map(
             cardsBefore.map((card) => [card, card.getBoundingClientRect()])
         );
 
         mutateFn();
 
-        const cardsAfter = Array.from(container.querySelectorAll(':scope > .card'));
+        const cardsAfter = Array.from(container.querySelectorAll(':scope > .section-entry'));
         cardsAfter.forEach((card) => {
             const firstRect = firstRects.get(card);
             if (!firstRect) {
@@ -476,7 +560,7 @@
     }
 
     function updateSectionOrders() {
-        const cards = document.querySelectorAll('#sections-area .card');
+        const cards = document.querySelectorAll('#sections-area .section-entry');
         cards.forEach((card, newIndex) => {
             card.querySelectorAll('input, textarea').forEach((input) => {
                 input.name = input.name.replace(/sections\[\d+\]/, `sections[${newIndex}]`);
@@ -486,3 +570,10 @@
 </script>
 @endpush
 @endsection
+
+
+
+
+
+
+
