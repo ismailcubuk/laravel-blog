@@ -29,20 +29,24 @@ class DashboardController extends Controller
         $allPosts = Post::query()
             ->with(['user:id,name'])
             ->latest()
+            ->limit(120)
             ->get(['id', 'title', 'slug', 'content', 'image', 'user_id', 'created_at']);
 
         $allUsers = User::query()
             ->latest()
+            ->limit(120)
             ->get(['id', 'name', 'email', 'role', 'avatar_path', 'created_at']);
 
         $allCategories = Category::query()
             ->withCount('posts')
             ->latest()
+            ->limit(120)
             ->get(['id', 'name', 'slug', 'created_at']);
 
         $allComments = Comment::query()
             ->with(['post:id,title,slug'])
             ->latest()
+            ->limit(120)
             ->get(['id', 'post_id', 'name', 'email', 'message', 'status', 'created_at']);
 
         $latestPosts = Post::query()
@@ -70,3 +74,4 @@ class DashboardController extends Controller
         ));
     }
 }
+

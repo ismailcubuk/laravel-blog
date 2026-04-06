@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Settings;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -20,7 +21,7 @@ class SettingController extends Controller
             'ui_mode' => 'white',
         ];
 
-        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $settings = Setting::allAsKeyValue();
         $settings = array_merge($defaultSettings, $settings);
 
         return view('admin.settings.general', compact('settings'));
@@ -35,7 +36,7 @@ class SettingController extends Controller
             'linkedin_url' => '',
         ];
 
-        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $settings = Setting::allAsKeyValue();
         $settings = array_merge($defaultSettings, $settings);
 
         return view('admin.settings.social', compact('settings'));
@@ -49,7 +50,8 @@ class SettingController extends Controller
             'mail_from_address' => 'hello@example.com',
         ];
 
-        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $settings = Setting::allAsKeyValue();
+        $settings['mail_password'] = Setting::maybeDecrypt($settings['mail_password'] ?? null);
         $settings = array_merge($defaultSettings, $settings);
 
         return view('admin.settings.mail', compact('settings'));
@@ -77,10 +79,16 @@ class SettingController extends Controller
             'ui_mode',
         ];
 
+        $currentSettings = Setting::allAsKeyValue();
+
         foreach ($fields as $field) {
             $value = $validated[$field] ?? null;
 
             if ($request->hasFile($field)) {
+                if (in_array($field, ['site_logo', 'site_favicon'], true)) {
+                    $this->deleteStorageAsset($currentSettings[$field] ?? null);
+                }
+
                 $path = $request->file($field)->store('uploads', 'public');
                 $value = 'storage/' . $path;
             } elseif (in_array($field, ['site_logo', 'site_favicon'], true) && $value === null) {
@@ -93,16 +101,18 @@ class SettingController extends Controller
             );
         }
 
+        Setting::clearCache();
+
         return redirect()->back()->with('success', 'Settings updated successfully!');
     }
 
     public function updateSocial(Request $request)
     {
         $validated = $request->validate([
-            'facebook_url' => ['nullable', 'string', 'max:255'],
-            'twitter_url' => ['nullable', 'string', 'max:255'],
-            'instagram_url' => ['nullable', 'string', 'max:255'],
-            'linkedin_url' => ['nullable', 'string', 'max:255'],
+            'facebook_url' => ['nullable', 'url', 'max:255'],
+            'twitter_url' => ['nullable', 'url', 'max:255'],
+            'instagram_url' => ['nullable', 'url', 'max:255'],
+            'linkedin_url' => ['nullable', 'url', 'max:255'],
         ]);
 
         $fields = [
@@ -118,6 +128,8 @@ class SettingController extends Controller
                 ['value' => $validated[$field] ?? null]
             );
         }
+
+        Setting::clearCache();
 
         return redirect()->back()->with('success', 'Social settings updated successfully!');
     }
@@ -146,12 +158,28 @@ class SettingController extends Controller
                 continue;
             }
 
+            $value = $validated[$field] ?? null;
+            if ($field === 'mail_password' && !empty($value)) {
+                $value = Setting::maybeEncrypt($value);
+            }
+
             Setting::updateOrCreate(
                 ['key' => $field],
-                ['value' => $validated[$field] ?? null]
+                ['value' => $value]
             );
         }
 
+        Setting::clearCache();
+
         return redirect()->back()->with('success', 'Mail settings updated successfully!');
+    }
+
+    private function deleteStorageAsset(?string $assetPath): void
+    {
+        if (!$assetPath || !str_starts_with($assetPath, 'storage/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete(substr($assetPath, 8));
     }
 }

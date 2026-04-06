@@ -15,18 +15,18 @@ use App\Http\Controllers\Admin\Users\UserController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1')->name('login.post');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,10')->name('register.post');
     Route::get('/verify-email', [AuthController::class, 'verifyEmail'])->name('email.verify');
     Route::get('/users/profile/email-change/{requestId}', [ProfileController::class, 'verifyEmailChange'])->name('users.profile.email.verify');
 
     Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('password.request');
-    Route::post('/forgot-password', [AuthController::class, 'sendPasswordResetLink'])->name('password.email');
+    Route::post('/forgot-password', [AuthController::class, 'sendPasswordResetLink'])->middleware('throttle:4,10')->name('password.email');
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
-    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:6,10')->name('password.update');
 
     Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -82,6 +82,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/settings/mail', [SettingController::class, 'updateMail'])->name('settings.mail.update');
     });
 });
+
 
 
 

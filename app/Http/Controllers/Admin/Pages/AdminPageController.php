@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\PageSection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminPageController extends Controller
 {
@@ -58,16 +59,15 @@ class AdminPageController extends Controller
         // HERO IMAGE
         if ($request->hasFile('hero_image'))
         {
-            $file = $request->file('hero_image');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $file->move(public_path('uploads'), $filename);
-            $page->hero_image = '/uploads/'.$filename;
+            $this->deleteStorageAsset($page->hero_image);
+            $path = $request->file('hero_image')->store('uploads', 'public');
+            $page->hero_image = 'storage/' . $path;
         }
 
 
         // BASIC DATA
         $page->title = $request->title;
-        $page->description = $request->description;
+        $page->description = $this->sanitizeRichHtml($request->description);
         $page->save();
 
 
@@ -87,8 +87,8 @@ class AdminPageController extends Controller
                         'section_type' => $section['type'] ?? 'full-width',
                         'section_order' => $order,
                         'column_index' => $columnIndex,
-                        'title' => $column['title'] ?? null,
-                        'content' => $column['content'] ?? null
+                        'title' => isset($column['title']) ? trim((string) $column['title']) : null,
+                        'content' => $this->sanitizeRichHtml($column['content'] ?? null)
                     ]);
                 }
             }
@@ -115,21 +115,44 @@ class AdminPageController extends Controller
     public function updateContact(Request $request)
     {
 
+        $validated = $request->validate([
+            'title' => ['nullable', 'string', 'max:255'],
+            'contact_phone' => ['nullable', 'string', 'max:50'],
+            'contact_email' => ['nullable', 'email', 'max:255'],
+            'contact_address' => ['nullable', 'string', 'max:500'],
+            'contact_map_src' => ['nullable', 'url', 'max:2000'],
+        ]);
+
         $page = Page::firstOrCreate(
             ['slug' => 'contact']
         );
 
-        $page->update([
-
-            'title' => $request->title,
-            'contact_phone' => $request->contact_phone,
-            'contact_email' => $request->contact_email,
-            'contact_address' => $request->contact_address,
-            'contact_map_src' => $request->contact_map_src,
-
-        ]);
+        $page->update($validated);
 
         return back()->with('success', 'Kaydedildi');
     }
 
+    private function sanitizeRichHtml(?string $value): ?string
+    {
+        if ($value === null || trim($value) === '') {
+            return null;
+        }
+
+        $clean = preg_replace('/<\s*(script|style)\b[^>]*>(.*?)<\s*\/\s*\1>/is', '', $value);
+        $clean = preg_replace('/\s+on[a-z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $clean ?? '');
+        $clean = preg_replace('/javascript\s*:/i', '', $clean ?? '');
+
+        $allowedTags = '<p><br><strong><em><ul><ol><li><a><h2><h3><h4><h5><h6><blockquote>';
+
+        return trim(strip_tags((string) $clean, $allowedTags));
+    }
+
+    private function deleteStorageAsset(?string $assetPath): void
+    {
+        if (!$assetPath || !str_starts_with($assetPath, 'storage/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete(substr($assetPath, 8));
+    }
 }

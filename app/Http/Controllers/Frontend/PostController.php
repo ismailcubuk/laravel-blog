@@ -78,11 +78,11 @@ class PostController extends Controller
             'name' => auth()->user()->name,
             'email' => auth()->user()->email,
             'message' => $validated['message'],
-            'status' => 'approved',
+            'status' => 'pending',
         ]);
 
         return redirect()->to(route('post.show', $post->slug) . '#comment-form')
-            ->with('success', 'Your comment was published successfully.');
+            ->with('success', 'Your comment has been submitted and is awaiting moderation.');
     }
 
     public function storeReply(Request $request, string $slug, Comment $comment)
@@ -123,3 +123,4 @@ class PostController extends Controller
             ->with('success', 'Reply deleted successfully.');
     }
 }
+

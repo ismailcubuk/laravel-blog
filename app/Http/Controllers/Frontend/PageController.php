@@ -58,7 +58,7 @@ class PageController extends Controller
                 'contact_phone' => '',
                 'contact_email' => '',
                 'contact_address' => '',
-                'contact_map_iframe' => '',
+                'contact_map_src' => '',
             ]
         );
 

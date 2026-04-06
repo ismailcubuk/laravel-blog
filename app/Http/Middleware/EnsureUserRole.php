@@ -12,7 +12,15 @@ class EnsureUserRole
     {
         $user = $request->user();
 
-        if (!$user || $user->role !== $role) {
+        if (!$user) {
+            abort(403);
+        }
+
+        $directRole = strtolower((string) $user->role) === strtolower($role);
+        $relationalRole = method_exists($user, 'roles')
+            && $user->roles()->whereRaw('LOWER(name) = ?', [strtolower($role)])->exists();
+
+        if (!$directRole && !$relationalRole) {
             abort(403);
         }
 

@@ -41,7 +41,11 @@
           @endif
 
           @if($page->description)
-            <p>{!! $page->description !!}</p>
+            @php
+              $safeDescription = preg_replace('/\s+on[a-z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', (string) $page->description);
+              $safeDescription = preg_replace('/javascript\s*:/i', '', (string) $safeDescription);
+            @endphp
+            <div class="about-section-content">{!! strip_tags((string) $safeDescription, "<p><br><strong><em><ul><ol><li><a><h2><h3><h4><h5><h6><blockquote>") !!}</div>
           @endif
 
         </div>
@@ -72,7 +76,11 @@
               @endif
 
               @if($column->content)
-                <div class="about-section-content">{!! $column->content !!}</div>
+                @php
+                  $safeContent = preg_replace('/\s+on[a-z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', (string) $column->content);
+                  $safeContent = preg_replace('/javascript\s*:/i', '', (string) $safeContent);
+                @endphp
+                <div class="about-section-content">{!! strip_tags((string) $safeContent, "<p><br><strong><em><ul><ol><li><a><h2><h3><h4><h5><h6><blockquote>") !!}</div>
               @endif
 
             </div>

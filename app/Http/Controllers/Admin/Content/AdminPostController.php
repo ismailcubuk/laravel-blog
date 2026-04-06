@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminPostController extends Controller
 {
@@ -83,10 +84,8 @@ class AdminPostController extends Controller
         $post = new Post($validated);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $file->move(public_path('uploads'), $filename);
-            $post->image = '/uploads/'.$filename;
+            $path = $request->file('image')->store('uploads', 'public');
+            $post->image = 'storage/' . $path;
         }
 
         $post->save();
@@ -109,10 +108,9 @@ class AdminPostController extends Controller
         $post->update($validated);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $file->move(public_path('uploads'), $filename);
-            $post->image = '/uploads/'.$filename;
+            $this->deleteStorageAsset($post->image);
+            $path = $request->file('image')->store('uploads', 'public');
+            $post->image = 'storage/' . $path;
             $post->save();
         }
 
@@ -123,10 +121,19 @@ class AdminPostController extends Controller
     // Delete
     public function destroy(Post $post)
     {
+        $this->deleteStorageAsset($post->image);
         $post->delete();
 
         return redirect()->route('admin.content.posts.index')
             ->with('success', 'Post deleted successfully');
     }
-}
 
+    private function deleteStorageAsset(?string $assetPath): void
+    {
+        if (!$assetPath || !str_starts_with($assetPath, 'storage/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete(substr($assetPath, 8));
+    }
+}

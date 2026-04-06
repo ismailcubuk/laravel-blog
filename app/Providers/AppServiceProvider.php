@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $settings = Setting::allAsKeyValue();
 
         $defaultSettings = [
             'site_name' => 'My Website',
@@ -39,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         ];
 
         $settings = array_merge($defaultSettings, $settings);
+        $settings['mail_password'] = Setting::maybeDecrypt($settings['mail_password']);
 
         config([
             'mail.default' => $settings['mail_mailer'] ?: env('MAIL_MAILER', 'smtp'),
