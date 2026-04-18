@@ -68,9 +68,8 @@
                 <hr class="my-4">
                 <h5 class="mb-3">Theme Settings</h5>
 
-                @php($selectedTheme = old('ui_theme', $settings['ui_theme'] ?? 'orange'))
-                @php($selectedMode = old('ui_mode', $settings['ui_mode'] ?? 'white'))
-                @php($isDarkMode = $selectedMode === 'dark')
+@php($selectedTheme = old('ui_theme', $settings['ui_theme'] ?? 'orange'))
+@php($selectedMode = old('ui_mode', $settings['ui_mode'] ?? 'white'))
 
                 <div class="mb-4 row">
                     <label class="col-sm-2 col-form-label">Color Palette</label>
@@ -161,11 +160,11 @@
 
     .theme-card,
     .mode-card {
-        border: 1px solid {{ $isDarkMode ? '#334155' : '#d6deec' }};
+        border: 1px solid var(--admin-input-border);
         border-radius: 10px;
         padding: 12px;
-        background: {{ $isDarkMode ? '#0f172a' : '#ffffff' }};
-        color: {{ $isDarkMode ? '#f8fafc' : '#0f172a' }} !important;
+        background: var(--admin-surface);
+        color: var(--admin-text) !important;
         cursor: pointer;
         transition: all 0.2s ease;
         min-height: 70px;
@@ -198,7 +197,7 @@
         width: 100%;
         height: 22px;
         border-radius: 999px;
-        border: 1px solid {{ $isDarkMode ? '#334155' : '#d6deec' }};
+        border: 1px solid var(--admin-input-border);
         display: block;
     }
 
@@ -220,7 +219,7 @@
 
     .theme-card:hover,
     .mode-card:hover {
-        border-color: {{ $isDarkMode ? '#64748b' : '#b4c5e2' }};
+        border-color: var(--admin-focus);
     }
 
     .theme-card .theme-dots i {
@@ -229,7 +228,7 @@
 
     .mode-grid + small.text-muted,
     .theme-grid + small.text-muted {
-        color: {{ $isDarkMode ? '#e2e8f0' : '#334155' }} !important;
+        color: var(--admin-muted) !important;
     }
 </style>
 @endpush
@@ -257,17 +256,79 @@
         });
     }
 
-    let themeAutoSubmitting = false;
-    document.querySelectorAll('input.theme-input[name="ui_theme"], input.theme-input[name="ui_mode"]').forEach((input) => {
-        input.addEventListener('change', () => {
-            if (!settingsForm || themeAutoSubmitting) {
-                return;
-            }
+    const themePalettes = {
+        orange: { primary: '#f48840', secondary: '#fb9857', focus: '#f5b58a', rgb: '244, 136, 64' },
+        blue: { primary: '#1f6bff', secondary: '#0f4fd9', focus: '#93b8ff', rgb: '31, 107, 255' },
+        emerald: { primary: '#10b981', secondary: '#059669', focus: '#6ee7b7', rgb: '16, 185, 129' },
+        rose: { primary: '#e11d48', secondary: '#be123c', focus: '#f9a8d4', rgb: '225, 29, 72' },
+        violet: { primary: '#7c3aed', secondary: '#6d28d9', focus: '#c4b5fd', rgb: '124, 58, 237' },
+    };
 
-            themeAutoSubmitting = true;
-            settingsForm.requestSubmit();
-        });
+    const modeColors = {
+        white: {
+            bgA: '#f8fbff',
+            bgB: '#f1f4fb',
+            surface: '#ffffff',
+            border: '#e2e8f4',
+            text: '#1a2433',
+            muted: '#1f2e46',
+            inputBg: '#fbfcff',
+            inputBorder: '#d6deec',
+            shadow: '0 14px 30px rgba(16, 33, 61, 0.08)',
+            success: '#179d6d',
+            danger: '#d13c4a',
+        },
+        dark: {
+            bgA: '#0b1220',
+            bgB: '#111a2e',
+            surface: '#0f172a',
+            border: '#25324a',
+            text: '#e2e8f0',
+            muted: '#e2e8f0',
+            inputBg: '#111b2f',
+            inputBorder: '#334155',
+            shadow: '0 14px 30px rgba(2, 6, 23, 0.45)',
+            success: '#34d399',
+            danger: '#fb7185',
+        },
+    };
+
+    const applyAdminPreview = () => {
+        const selectedThemeInput = document.querySelector('input.theme-input[name="ui_theme"]:checked');
+        const selectedModeInput = document.querySelector('input.theme-input[name="ui_mode"]:checked');
+
+        const selectedTheme = selectedThemeInput ? selectedThemeInput.value : 'orange';
+        const selectedMode = selectedModeInput ? selectedModeInput.value : 'white';
+
+        const palette = themePalettes[selectedTheme] ?? themePalettes.orange;
+        const mode = modeColors[selectedMode] ?? modeColors.white;
+
+        const root = document.documentElement;
+        root.style.setProperty('--admin-bg-a', mode.bgA);
+        root.style.setProperty('--admin-bg-b', mode.bgB);
+        root.style.setProperty('--admin-surface', mode.surface);
+        root.style.setProperty('--admin-border', mode.border);
+        root.style.setProperty('--admin-text', mode.text);
+        root.style.setProperty('--admin-muted', mode.muted);
+        root.style.setProperty('--admin-primary', palette.primary);
+        root.style.setProperty('--admin-primary-2', palette.secondary);
+        root.style.setProperty('--admin-focus', palette.focus);
+        root.style.setProperty('--admin-primary-rgb', palette.rgb);
+        root.style.setProperty('--admin-input-bg', mode.inputBg);
+        root.style.setProperty('--admin-input-border', mode.inputBorder);
+        root.style.setProperty('--admin-shadow', mode.shadow);
+        root.style.setProperty('--admin-success', mode.success);
+        root.style.setProperty('--admin-danger', mode.danger);
+
+        document.body.classList.toggle('admin-dark', selectedMode === 'dark');
+        document.body.classList.toggle('admin-light', selectedMode !== 'dark');
+    };
+
+    document.querySelectorAll('input.theme-input[name="ui_theme"], input.theme-input[name="ui_mode"]').forEach((input) => {
+        input.addEventListener('change', applyAdminPreview);
     });
+
+    applyAdminPreview();
 </script>
 @endpush
 
