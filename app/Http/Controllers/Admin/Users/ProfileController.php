@@ -64,12 +64,13 @@ class ProfileController extends Controller
         if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');
             $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $destination = public_path('uploads/profiles');
+            $destination = $this->resolveAvatarDestination();
 
             if (!is_dir($destination)) {
                 mkdir($destination, 0755, true);
             }
 
+            $this->deleteOldAvatar((string) $user->avatar_path);
             $file->move($destination, $filename);
             $data['avatar_path'] = '/uploads/profiles/' . $filename;
         }
@@ -212,6 +213,33 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('admin.login')->with('success', 'Email address updated successfully. You can continue with your new email.');
+    }
+
+    private function resolveAvatarDestination(): string
+    {
+        $preferred = base_path('../uploads/profiles');
+        $fallback = public_path('uploads/profiles');
+
+        return is_dir(dirname($preferred)) ? $preferred : $fallback;
+    }
+
+    private function deleteOldAvatar(string $avatarPath): void
+    {
+        if ($avatarPath === '' || !str_starts_with($avatarPath, '/uploads/profiles/')) {
+            return;
+        }
+
+        $relative = ltrim($avatarPath, '/');
+        $candidates = [
+            base_path('../' . $relative),
+            public_path($relative),
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (is_file($candidate)) {
+                @unlink($candidate);
+            }
+        }
     }
 }
 
