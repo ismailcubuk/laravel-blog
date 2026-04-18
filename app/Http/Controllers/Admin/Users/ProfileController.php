@@ -217,10 +217,7 @@ class ProfileController extends Controller
 
     private function resolveAvatarDestination(): string
     {
-        $preferred = base_path('../uploads/profiles');
-        $fallback = public_path('uploads/profiles');
-
-        return is_dir(dirname($preferred)) ? $preferred : $fallback;
+        return base_path('../uploads/profiles');
     }
 
     private function deleteOldAvatar(string $avatarPath): void
