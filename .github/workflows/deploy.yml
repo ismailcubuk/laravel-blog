@@ -15,15 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.3"
-
-      - name: Install Composer deps
-        run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
-
-      - name: Deploy Laravel app folder
+      - name: Deploy Laravel app core (fast)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -33,20 +25,21 @@ jobs:
           protocol: ftp
           local-dir: ./
           server-dir: /htdocs/laravel_app/
-          log-level: verbose
+          log-level: standard
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
             .github/**
-            public/**
             .env
-            storage/logs/**
-            storage/framework/cache/**
-            storage/framework/sessions/**
-            storage/framework/views/**
+            public/**
+            vendor/**
+            storage/**
+            bootstrap/cache/**
+            tests/**
+            database/*.sqlite
 
-      - name: Deploy public folder to web root
+      - name: Deploy public web root
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -56,7 +49,7 @@ jobs:
           protocol: ftp
           local-dir: ./public/
           server-dir: /htdocs/
-          log-level: verbose
+          log-level: standard
           exclude: |
             **/.git*
             **/.git*/**
