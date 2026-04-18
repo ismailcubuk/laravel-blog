@@ -21,7 +21,7 @@ jobs:
           php-version: "8.3"
 
       - name: Install Composer deps
-        run: composer install --no-dev --optimize-autoloader --no-interaction
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
       - name: Deploy Laravel app folder
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
