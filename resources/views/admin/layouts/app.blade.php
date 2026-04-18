@@ -397,7 +397,7 @@
     @stack('styles')
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed {{ $uiMode === 'dark' ? 'admin-dark' : 'admin-light' }}">
+<body class="hold-transition sidebar-mini sidebar-expand-lg layout-fixed {{ $uiMode === 'dark' ? 'admin-dark' : 'admin-light' }}">
 
     <div class="app-wrapper">
         {{-- Sidebar --}}

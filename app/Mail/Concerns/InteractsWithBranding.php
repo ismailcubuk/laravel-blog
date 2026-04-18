@@ -4,6 +4,7 @@ namespace App\Mail\Concerns;
 
 use App\Models\Setting;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
 
 trait InteractsWithBranding
 {
@@ -40,15 +41,20 @@ trait InteractsWithBranding
 
     protected function injectBrandingCids(Email $message): void
     {
-        $html = $message->getHtmlBody() ?? '';
+        $htmlBody = $message->getHtmlBody();
+        $html = is_string($htmlBody) ? $htmlBody : '';
 
         if ($this->brandLogoAbsolutePath && is_file($this->brandLogoAbsolutePath)) {
-            $logoCid = $message->embedFromPath($this->brandLogoAbsolutePath, 'brand-logo');
+            $logoPart = DataPart::fromPath($this->brandLogoAbsolutePath, 'brand-logo')->asInline();
+            $message->addPart($logoPart);
+            $logoCid = 'cid:' . $logoPart->getContentId();
             $html = str_replace('__CID_LOGO__', $logoCid, $html);
         }
 
         if ($this->brandIconAbsolutePath && is_file($this->brandIconAbsolutePath)) {
-            $iconCid = $message->embedFromPath($this->brandIconAbsolutePath, 'brand-icon');
+            $iconPart = DataPart::fromPath($this->brandIconAbsolutePath, 'brand-icon')->asInline();
+            $message->addPart($iconPart);
+            $iconCid = 'cid:' . $iconPart->getContentId();
             $html = str_replace('__CID_ICON__', $iconCid, $html);
         }
 

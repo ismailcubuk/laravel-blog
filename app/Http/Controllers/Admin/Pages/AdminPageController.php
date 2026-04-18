@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\PageSection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class AdminPageController extends Controller
 {
@@ -60,8 +59,7 @@ class AdminPageController extends Controller
         if ($request->hasFile('hero_image'))
         {
             $this->deleteStorageAsset($page->hero_image);
-            $path = $request->file('hero_image')->store('uploads', 'public');
-            $page->hero_image = 'storage/' . $path;
+            $page->hero_image = $this->storePublicUpload($request->file('hero_image'));
         }
 
 
@@ -153,6 +151,43 @@ class AdminPageController extends Controller
             return;
         }
 
-        Storage::disk('public')->delete(substr($assetPath, 8));
+        $relativePath = ltrim(substr($assetPath, 8), '/');
+        if ($relativePath === '' || str_contains($relativePath, '..')) {
+            return;
+        }
+
+        $candidates = [
+            base_path('../storage/' . $relativePath),
+            public_path('storage/' . $relativePath),
+            storage_path('app/public/' . $relativePath),
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (is_file($candidate)) {
+                @unlink($candidate);
+            }
+        }
+    }
+
+    private function storePublicUpload(\Illuminate\Http\UploadedFile $file): string
+    {
+        $filename = $file->hashName();
+        $destination = $this->resolveUploadDestination();
+
+        if (!is_dir($destination)) {
+            mkdir($destination, 0755, true);
+        }
+
+        $file->move($destination, $filename);
+
+        return 'storage/uploads/' . $filename;
+    }
+
+    private function resolveUploadDestination(): string
+    {
+        $preferred = base_path('../storage/uploads');
+        $fallback = public_path('storage/uploads');
+
+        return is_dir(dirname($preferred)) ? $preferred : $fallback;
     }
 }
