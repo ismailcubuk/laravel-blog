@@ -273,6 +273,42 @@
             border-bottom-width: 1px;
         }
 
+
+        .admin-dark .table {
+            border-color: #334155;
+        }
+
+        .admin-dark .table thead th {
+            background: #0b1f36 !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+
+        .admin-dark .table > :not(caption) > * > * {
+            background: #0f172a !important;
+            color: #e2e8f0 !important;
+            border-color: #334155 !important;
+        }
+
+        .admin-dark .table.table-striped > tbody > tr:nth-of-type(odd) > * {
+            background: #0f172a !important;
+        }
+
+        .admin-dark .table.table-striped > tbody > tr:nth-of-type(even) > * {
+            background: #111b2f !important;
+        }
+
+        .admin-dark .table.table-hover > tbody > tr:hover > * {
+            background: #13213a !important;
+            color: #f8fafc !important;
+        }
+
+        .admin-dark .card-footer.bg-white,
+        .admin-dark .modal-footer.bg-white {
+            background: #0b1220 !important;
+            color: #e2e8f0 !important;
+            border-color: #334155 !important;
+        }
         .table td {
             vertical-align: middle;
         }
@@ -477,3 +513,4 @@
 </body>
 
 </html>
+

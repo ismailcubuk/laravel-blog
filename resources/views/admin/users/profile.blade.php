@@ -204,6 +204,48 @@
             padding: 0 20px;
             box-shadow: 0 12px 22px rgba(209, 60, 74, 0.24);
         }
+        .admin-dark .profile-settings-page {
+            --ps-bg-soft: #0b1220;
+            --ps-text: #f8fafc;
+            --ps-muted: #cbd5e1;
+            --ps-border: #334155;
+        }
+
+        .admin-dark .profile-shell,
+        .admin-dark .profile-card,
+        .admin-dark .profile-card-body {
+            background: #0f172a !important;
+            border-color: #334155 !important;
+            color: #e2e8f0 !important;
+        }
+
+        .admin-dark .profile-hero-title,
+        .admin-dark .profile-label {
+            color: #f8fafc !important;
+        }
+
+        .admin-dark .profile-hero-subtitle,
+        .admin-dark .profile-pill {
+            color: #cbd5e1 !important;
+        }
+
+        .admin-dark .profile-pill {
+            background: rgba(148, 163, 184, 0.16) !important;
+            border-color: #475569 !important;
+        }
+
+        .admin-dark .profile-input,
+        .admin-dark .profile-textarea,
+        .admin-dark .password-toggle-btn {
+            background: #111b2f !important;
+            border-color: #334155 !important;
+            color: #e2e8f0 !important;
+        }
+
+        .admin-dark .profile-input::placeholder,
+        .admin-dark .profile-textarea::placeholder {
+            color: #94a3b8;
+        }
 
         @media (max-width: 991.98px) {
             .profile-shell {
@@ -430,3 +472,4 @@
 </script>
 @endpush
 @endsection
+

@@ -16,7 +16,7 @@
             <h5 class="mb-0">Site Settings</h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.settings.general.update') }}" method="POST" enctype="multipart/form-data">
+            <form id="generalSettingsForm" action="{{ route('admin.settings.general.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -125,7 +125,7 @@
                                 <span class="mode-preview mode-preview-dark"></span>
                             </label>
                         </div>
-                        <small class="text-muted d-block mt-2">Selections apply to both Admin UI and User UI.</small>
+                        <small class="text-muted d-block mt-2">Selections apply to both Admin UI and User UI. Click any palette/mode to apply instantly.</small>
                     </div>
                 </div>
 
@@ -236,22 +236,41 @@
 
 @push('scripts')
 <script>
+    const settingsForm = document.getElementById('generalSettingsForm');
     const logoInput = document.getElementById('siteLogoInput');
     const logoPreview = document.getElementById('siteLogoPreview');
 
-    logoInput.addEventListener('change', e => {
-        const file = e.target.files[0];
-        if (file) logoPreview.src = URL.createObjectURL(file);
-    });
+    if (logoInput && logoPreview) {
+        logoInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (file) logoPreview.src = URL.createObjectURL(file);
+        });
+    }
 
     const faviconInput = document.getElementById('siteFaviconInput');
     const faviconPreview = document.getElementById('siteFaviconPreview');
 
-    faviconInput.addEventListener('change', e => {
-        const file = e.target.files[0];
-        if (file) faviconPreview.src = URL.createObjectURL(file);
+    if (faviconInput && faviconPreview) {
+        faviconInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (file) faviconPreview.src = URL.createObjectURL(file);
+        });
+    }
+
+    let themeAutoSubmitting = false;
+    document.querySelectorAll('input.theme-input[name="ui_theme"], input.theme-input[name="ui_mode"]').forEach((input) => {
+        input.addEventListener('change', () => {
+            if (!settingsForm || themeAutoSubmitting) {
+                return;
+            }
+
+            themeAutoSubmitting = true;
+            settingsForm.requestSubmit();
+        });
     });
 </script>
 @endpush
 
 @endsection
+
+

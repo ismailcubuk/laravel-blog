@@ -1,10 +1,10 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container-fluid py-4 users-page">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <h1 class="mb-0 text-primary">User List</h1>
-        <form method="GET" action="{{ route('admin.users.list') }}" class="d-flex" style="max-width: 320px; width: 100%;">
+        <form method="GET" action="{{ route('admin.users.list') }}" class="d-flex users-search-form">
             <input type="text" name="q" value="{{ $search }}" class="form-control me-2" placeholder="Search name, email, role">
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
@@ -48,13 +48,13 @@
         @endforeach
     </div>
 
-    <div class="card shadow-sm">
+    <div class="card shadow-sm users-table-card">
         <div class="card-header">
             <h5 class="mb-0">Users</h5>
         </div>
         <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+            <div class="table-responsive users-table-wrap">
+                <table class="table table-hover align-middle mb-0 users-table">
                     <thead>
                         <tr>
                             <th>User</th>
@@ -134,12 +134,187 @@
                     </tbody>
                 </table>
             </div>
-            <div class="p-3">
-                {{ $users->links() }}
+            <div class="p-3 users-pagination-wrap">
+                {{ $users->onEachSide(1)->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    .users-page {
+        padding-bottom: 0.5rem;
+    }
+
+    .users-search-form {
+        max-width: 340px;
+        width: 100%;
+    }
+
+    .users-table-card {
+        overflow: hidden;
+    }
+
+    .users-table-wrap {
+        overflow-x: auto;
+    }
+
+        .users-table {
+        --users-row-bg: #ffffff;
+        --users-row-color: #0f172a;
+        --users-row-border: #cfd8e6;
+        --users-row-hover: #f4f7fc;
+    }
+
+    .admin-dark .users-table {
+        --users-row-bg: #0f172a;
+        --users-row-color: #f8fafc;
+        --users-row-border: #334155;
+        --users-row-hover: #111b2f;
+    }
+
+    .users-table > :not(caption) > * > * {
+        background-color: var(--users-row-bg) !important;
+        color: var(--users-row-color) !important;
+        border-color: var(--users-row-border) !important;
+    }
+
+    .users-table tbody tr:hover > * {
+        background-color: var(--users-row-hover) !important;
+    }
+    .users-table thead th {
+        background: rgba(var(--admin-primary-rgb), 0.06);
+        color: var(--admin-text);
+        border-bottom: 1px solid var(--admin-border);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+
+    .users-table tbody tr {
+        background: transparent;
+    }
+
+    .users-table tbody tr:hover {
+        background: rgba(var(--admin-primary-rgb), 0.06);
+    }
+
+    .users-table td,
+    .users-table th {
+        border-color: var(--admin-border);
+        color: var(--admin-text);
+        white-space: nowrap;
+    }
+
+    .users-pagination-wrap {
+        border-top: 1px solid var(--admin-border);
+        background: rgba(var(--admin-primary-rgb), 0.02);
+    }
+
+    .users-pagination-wrap nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .users-pagination-wrap .pagination {
+        margin: 0;
+    }
+
+    .users-pagination-wrap .page-link {
+        border-radius: 10px;
+        border-color: var(--admin-border);
+        background: var(--admin-surface);
+        color: var(--admin-text);
+    }
+
+    
+    .admin-dark     .users-table {
+        --users-row-bg: #ffffff;
+        --users-row-color: #0f172a;
+        --users-row-border: #cfd8e6;
+        --users-row-hover: #f4f7fc;
+    }
+
+    .admin-dark .users-table {
+        --users-row-bg: #0f172a;
+        --users-row-color: #f8fafc;
+        --users-row-border: #334155;
+        --users-row-hover: #111b2f;
+    }
+
+    .users-table > :not(caption) > * > * {
+        background-color: var(--users-row-bg) !important;
+        color: var(--users-row-color) !important;
+        border-color: var(--users-row-border) !important;
+    }
+
+    .users-table tbody tr:hover > * {
+        background-color: var(--users-row-hover) !important;
+    }
+    .users-table thead th {
+        background: #0b1f36;
+        color: #f8fafc;
+        border-bottom-color: #334155;
+    }
+
+    .admin-dark .users-table tbody tr {
+        background: #0f172a;
+    }
+
+    .admin-dark .users-table tbody tr:hover {
+        background: #111b2f;
+    }
+
+    .admin-dark .users-table td,
+    .admin-dark .users-table th {
+        color: #e2e8f0;
+        border-color: #334155;
+    }
+
+    .admin-dark .users-table .fw-semibold,
+    .admin-dark .users-table td:first-child {
+        color: #f8fafc !important;
+    }
+
+    .admin-dark .users-pagination-wrap {
+        border-top-color: #334155;
+        background: #0b1220;
+    }
+
+    .admin-dark .users-pagination-wrap .page-link {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-color: #334155;
+    }
+
+    .admin-dark .users-pagination-wrap .page-item.disabled .page-link {
+        color: #64748b;
+        background: #0b1220;
+        border-color: #334155;
+    }
+
+    .users-pagination-wrap svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    @media (max-width: 991.98px) {
+        .users-search-form {
+            max-width: 100%;
+        }
+
+        .users-pagination-wrap nav {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+@endpush
 
 <script>
 function toggleRoleEdit(userId, enableEdit) {
@@ -167,3 +342,5 @@ function toggleRoleEdit(userId, enableEdit) {
 }
 </script>
 @endsection
+
+

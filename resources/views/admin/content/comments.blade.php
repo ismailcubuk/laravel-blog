@@ -454,6 +454,54 @@
             border-color: #f48840;
             box-shadow: 0 0 0 0.2rem rgba(244, 136, 64, 0.16);
         }
+        .admin-dark .admin-comments-table th,
+        .admin-dark .admin-comments-table td {
+            border-color: #334155 !important;
+            color: #e2e8f0 !important;
+            background: #0f172a !important;
+        }
+
+        .admin-dark .admin-comments-table tbody tr {
+            background: #0f172a !important;
+        }
+
+        .admin-dark .admin-comments-table tbody tr:hover {
+            background: #111b2f !important;
+        }
+
+        .admin-dark .admin-comments-comment-card,
+        .admin-dark .admin-comments-comment-trigger,
+        .admin-dark .admin-comment-reply-block,
+        .admin-dark .admin-comment-modal-post,
+        .admin-dark .admin-comments-reply-popover,
+        .admin-dark .admin-comment-reply-modal .modal-content {
+            background: #111b2f !important;
+            border-color: #334155 !important;
+            color: #e2e8f0 !important;
+        }
+
+        .admin-dark .admin-comments-author-name,
+        .admin-dark .admin-comments-post-title,
+        .admin-dark .admin-comment-modal-post-title,
+        .admin-dark .admin-comment-reply-post,
+        .admin-dark .admin-comment-reply-author {
+            color: #f8fafc !important;
+        }
+
+        .admin-dark .admin-comments-author-mail,
+        .admin-dark .admin-comments-submitted-time,
+        .admin-dark .admin-comment-reply-label,
+        .admin-dark .admin-comment-modal-post-info li,
+        .admin-dark .admin-comment-modal-post-info a,
+        .admin-dark .admin-comments-comment,
+        .admin-dark .admin-comment-reply-message {
+            color: #cbd5e1 !important;
+        }
+
+        .admin-dark .card-footer.bg-white.admin-comments-footer {
+            background: #0b1220 !important;
+            border-top-color: #334155 !important;
+        }
 
         @media (max-width: 1599.98px) {
             .admin-comments-wrap {
@@ -1114,3 +1162,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endsection
+
