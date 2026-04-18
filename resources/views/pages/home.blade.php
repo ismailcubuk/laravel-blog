@@ -9,11 +9,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h3 class="front-section-title mb-0">Guncel Yazilar</h3>
-                        <a href="{{ route('blog') }}" class="front-btn">Tumunu Gor</a>
-                    </div>
-
                     @include('partials.blog-posts')
 
                     <div class="mt-4 d-flex justify-content-center">
