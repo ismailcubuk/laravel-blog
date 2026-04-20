@@ -13,6 +13,18 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->query('q', ''));
+        $roleFilter = trim((string) $request->query('role', ''));
+        $sort = (string) $request->query('sort', 'created_at');
+        $direction = strtolower((string) $request->query('direction', 'desc'));
+
+        $allowedSorts = ['name', 'email', 'role', 'created_at'];
+        if (!in_array($sort, $allowedSorts, true)) {
+            $sort = 'created_at';
+        }
+
+        if (!in_array($direction, ['asc', 'desc'], true)) {
+            $direction = 'desc';
+        }
 
         $usersQuery = User::query()
             ->with(['roles:id,name'])
@@ -27,7 +39,16 @@ class UserController extends Controller
                         });
                 });
             })
-            ->orderByDesc('created_at');
+            ->when($roleFilter !== '', function ($query) use ($roleFilter) {
+                $query->where(function ($inner) use ($roleFilter) {
+                    $inner->whereRaw('LOWER(COALESCE(NULLIF(role, ""), "user")) = ?', [strtolower($roleFilter)])
+                        ->orWhereHas('roles', function ($roleQuery) use ($roleFilter) {
+                            $roleQuery->whereRaw('LOWER(name) = ?', [strtolower($roleFilter)]);
+                        });
+                });
+            })
+            ->orderBy($sort, $direction)
+            ->orderBy('id', 'desc');
 
         $users = $usersQuery->paginate(12)->withQueryString();
 
@@ -45,6 +66,9 @@ class UserController extends Controller
             'roleCounts' => $roleCounts,
             'roles' => $roles,
             'search' => $search,
+            'roleFilter' => $roleFilter,
+            'sort' => $sort,
+            'direction' => $direction,
         ]);
     }
 

@@ -36,7 +36,11 @@
                         <input type="email" name="email" class="form-control" value="{{ old('email', $email) }}" required>
                         <label>Email</label>
                     </div>
-                    <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+                    <div class="input-group-text">
+                        <span class="auth-icon-svg" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="input-group mb-3">
@@ -44,8 +48,10 @@
                         <input type="password" name="password" id="newPasswordInput" class="form-control" required>
                         <label>New Password</label>
                     </div>
-                    <button type="button" class="input-group-text bg-white border-start-0" id="toggleNewPassword" aria-label="Show password">
-                        <span class="bi bi-eye"></span>
+                    <button type="button" class="input-group-text border-start-0" id="toggleNewPassword" aria-label="Show password">
+                        <span class="auth-icon-svg" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </span>
                     </button>
                 </div>
 
@@ -54,8 +60,10 @@
                         <input type="password" name="password_confirmation" id="confirmPasswordInput" class="form-control" required>
                         <label>Confirm Password</label>
                     </div>
-                    <button type="button" class="input-group-text bg-white border-start-0" id="toggleConfirmPassword" aria-label="Show password">
-                        <span class="bi bi-eye"></span>
+                    <button type="button" class="input-group-text border-start-0" id="toggleConfirmPassword" aria-label="Show password">
+                        <span class="auth-icon-svg" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </span>
                     </button>
                 </div>
 
@@ -72,12 +80,13 @@
         const button = document.getElementById(buttonId);
         if (!input || !button) return;
 
+        const eyeIcon = '<span class="auth-icon-svg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>';
+        const eyeSlashIcon = '<span class="auth-icon-svg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6c2.2 0 4.1.7 5.7 1.6"></path><path d="M22 12s-3.5 6-10 6c-2.2 0-4.1-.7-5.7-1.6"></path><path d="M3 3l18 18"></path></svg></span>';
+
         button.addEventListener('click', () => {
             const isHidden = input.type === 'password';
             input.type = isHidden ? 'text' : 'password';
-            button.innerHTML = isHidden
-                ? '<span class="bi bi-eye-slash"></span>'
-                : '<span class="bi bi-eye"></span>';
+            button.innerHTML = isHidden ? eyeSlashIcon : eyeIcon;
         });
     };
 

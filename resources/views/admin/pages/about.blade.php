@@ -176,8 +176,8 @@
     }
 
     .section-layout-btn {
-        border: 1px solid #d6e2f5;
-        background: #f8fbff;
+        border: 1px solid var(--admin-border);
+        background: var(--admin-surface);
         border-radius: 12px;
         padding: 10px 12px;
         display: flex;
@@ -188,8 +188,8 @@
     }
 
     .section-layout-btn:hover {
-        background: #eef5ff;
-        border-color: #bcd0f5;
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        border-color: rgba(var(--admin-primary-rgb), 0.35);
         transform: translateY(-1px);
     }
 
@@ -197,8 +197,8 @@
         width: 30px;
         height: 30px;
         border-radius: 8px;
-        background: #e5efff;
-        color: #1f6bff;
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        color: var(--admin-primary);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -215,7 +215,7 @@
 
     .section-layout-icon-grid span {
         display: block;
-        background: #7aa9ff;
+        background: var(--admin-primary);
         border-radius: 2px;
         min-width: 0;
     }
@@ -244,12 +244,12 @@
 
     .section-layout-copy strong {
         font-size: 0.88rem;
-        color: #1f2f48;
+        color: var(--admin-text);
     }
 
     .section-layout-copy small {
         font-size: 0.75rem;
-        color: #647a97;
+        color: var(--admin-muted);
     }
 
     .section-entry {

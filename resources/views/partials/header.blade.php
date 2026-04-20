@@ -26,7 +26,7 @@
             height: 48px;
             border-radius: 12px;
             object-fit: cover;
-            border: 1px solid #dce5f3;
+            border: 1px solid var(--front-border);
             background: var(--front-surface);
             padding: 4px;
         }

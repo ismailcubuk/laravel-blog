@@ -28,7 +28,58 @@
     }
 
     .sort-link:hover {
-        color: #1f6bff;
+        color: var(--admin-primary);
+    }
+
+    .flash-toast {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 1080;
+        min-width: 280px;
+        max-width: min(92vw, 360px);
+        border: 1px solid rgba(34, 197, 94, 0.45);
+        border-radius: 12px;
+        background: #0b3b2e;
+        color: #86efac;
+        box-shadow: 0 14px 30px rgba(2, 6, 23, 0.35);
+        padding: 0.75rem 0.9rem;
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .flash-toast.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .flash-toast-head {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-weight: 700;
+        font-size: 0.92rem;
+        line-height: 1.35;
+    }
+
+    .flash-toast-progress {
+        margin-top: 0.6rem;
+        width: 100%;
+        height: 4px;
+        border-radius: 999px;
+        background: rgba(187, 247, 208, 0.22);
+        overflow: hidden;
+    }
+
+    .flash-toast-progress-bar {
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #86efac 0%, #bbf7d0 100%);
+        transform-origin: left center;
+        transition: width 4s linear;
     }
 </style>
 @endpush
@@ -39,9 +90,13 @@
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="flash-toast" id="flashToast" role="status" aria-live="polite" aria-atomic="true">
+            <div class="flash-toast-head">
+                <span>{{ session('success') }}</span>
+            </div>
+            <div class="flash-toast-progress" aria-hidden="true">
+                <div class="flash-toast-progress-bar" id="flashProgressBar"></div>
+            </div>
         </div>
     @endif
 
@@ -171,4 +226,32 @@
         </div>
     </div>
 </div>
+
+@if(session('success'))
+@push('scripts')
+<script>
+    (function () {
+        const toast = document.getElementById('flashToast');
+        const progressBar = document.getElementById('flashProgressBar');
+        if (!toast || !progressBar) {
+            return;
+        }
+
+        const durationMs = 4000;
+
+        requestAnimationFrame(() => {
+            toast.classList.add('is-visible');
+            requestAnimationFrame(() => {
+                progressBar.style.width = '0%';
+            });
+        });
+
+        setTimeout(() => {
+            toast.classList.remove('is-visible');
+            setTimeout(() => toast.remove(), 260);
+        }, durationMs);
+    })();
+</script>
+@endpush
+@endif
 @endsection

@@ -40,7 +40,9 @@
                         <label>Email</label>
                     </div>
                     <div class="input-group-text">
-                        <span class="bi bi-envelope"></span>
+                        <span class="auth-icon-svg" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
+                        </span>
                     </div>
                 </div>
 

@@ -37,7 +37,11 @@
                         <input type="text" name="name" class="form-control" value="{{ old('name') }}">
                         <label>Full Name</label>
                     </div>
-                    <div class="input-group-text"><span class="bi bi-person"></span></div>
+                    <div class="input-group-text">
+                        <span class="auth-icon-svg" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c1.8-3.5 5-5 8-5s6.2 1.5 8 5"></path></svg>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="input-group mb-3">
@@ -45,7 +49,11 @@
                         <input type="email" name="email" class="form-control" value="{{ old('email') }}">
                         <label>Email</label>
                     </div>
-                    <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+                    <div class="input-group-text">
+                        <span class="auth-icon-svg" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="input-group mb-3">
@@ -53,7 +61,11 @@
                         <input type="password" name="password" class="form-control">
                         <label>Password</label>
                     </div>
-                    <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+                    <div class="input-group-text">
+                        <span class="auth-icon-svg" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="input-group mb-3">
@@ -61,7 +73,11 @@
                         <input type="password" name="password_confirmation" class="form-control">
                         <label>Confirm Password</label>
                     </div>
-                    <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+                    <div class="input-group-text">
+                        <span class="auth-icon-svg" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="row mb-3">

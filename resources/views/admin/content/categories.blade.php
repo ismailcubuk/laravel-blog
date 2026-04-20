@@ -28,7 +28,7 @@
     }
 
     .sort-link:hover {
-        color: #1f6bff;
+        color: var(--admin-primary);
     }
 
     .categories-table {

@@ -2,7 +2,7 @@
     <style>
         .front-footer {
             margin-top: 2rem;
-            border-top: 1px solid #e2e8f4;
+            border-top: 1px solid var(--front-border);
             background: var(--front-surface);
             backdrop-filter: blur(6px);
             padding: 1.3rem 0;

@@ -48,7 +48,7 @@
 
                         <div class="col-md-6">
                             <label class="form-label">Map Preview</label>
-                            <div id="map_preview" style="width: 100%; height: 250px; border: 1px solid #ddd;">
+                            <div id="map_preview" style="width: 100%; height: 250px; border: 1px solid var(--admin-border); border-radius: 12px; overflow: hidden; background: var(--admin-input-bg);">
                                 @if($page->contact_map_src)
                                     <iframe src="{{ $page->contact_map_src }}" width="100%" height="100%" frameborder="0"
                                         style="border:0;" allowfullscreen>

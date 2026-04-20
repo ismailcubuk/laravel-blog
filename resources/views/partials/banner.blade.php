@@ -11,7 +11,7 @@
         .front-hero-slider .item {
             position: relative;
             min-height: 380px;
-            border: 1px solid #dce4f2;
+            border: 1px solid var(--front-border);
             border-radius: 18px;
             overflow: hidden;
             box-shadow: 0 16px 32px rgba(15, 31, 58, 0.2);

@@ -38,7 +38,7 @@
             --admin-surface: {{ $uiMode === 'dark' ? '#0f172a' : '#ffffff' }};
             --admin-border: {{ $uiMode === 'dark' ? '#25324a' : '#e2e8f4' }};
             --admin-text: {{ $uiMode === 'dark' ? '#e2e8f0' : '#1a2433' }};
-            --admin-muted: {{ $uiMode === 'dark' ? '#e2e8f0' : '#1f2e46' }};
+            --admin-muted: {{ $uiMode === 'dark' ? '#94a3b8' : '#1f2e46' }};
             --admin-primary: {{ $themePalette['primary'] }};
             --admin-primary-2: {{ $themePalette['secondary'] }};
             --admin-success: {{ $uiMode === 'dark' ? '#34d399' : '#179d6d' }};
@@ -340,12 +340,111 @@
             border-radius: 10px !important;
             margin: 0 3px;
             border-color: var(--admin-border);
+            background: {{ $uiMode === 'dark' ? 'rgba(15, 23, 42, 0.86)' : '#ffffff' }};
             color: {{ $uiMode === 'dark' ? '#cbd5e1' : '#35507f' }};
+            font-weight: 700;
+            min-width: 38px;
+            text-align: center;
+        }
+
+        .pagination .page-link:hover {
+            background: {{ $uiMode === 'dark' ? 'rgba(30, 41, 59, 0.95)' : '#f8fbff' }};
+            color: {{ $uiMode === 'dark' ? '#f8fafc' : '#1f3b63' }};
+            border-color: {{ $uiMode === 'dark' ? '#475569' : '#bcd0f5' }};
         }
 
         .pagination .active > .page-link {
             background: var(--admin-primary);
             border-color: var(--admin-primary);
+            color: #fff;
+        }
+
+        .pagination .disabled .page-link {
+            background: {{ $uiMode === 'dark' ? 'rgba(15, 23, 42, 0.72)' : '#f3f6fb' }};
+            color: {{ $uiMode === 'dark' ? '#64748b' : '#8aa0c2' }};
+            border-color: var(--admin-border);
+        }
+
+        .admin-dark .alert-success {
+            border-color: rgba(34, 197, 94, 0.45);
+            background: #0b3b2e;
+            color: #86efac;
+        }
+
+        .admin-dark .alert-danger {
+            border-color: rgba(251, 113, 133, 0.45);
+            background: #4c1d24;
+            color: #fda4af;
+        }
+
+        .admin-dark .form-control,
+        .admin-dark .form-select,
+        .admin-dark textarea.form-control {
+            color: #e2e8f0 !important;
+            -webkit-text-fill-color: #e2e8f0;
+            caret-color: #f8fafc;
+        }
+
+        .admin-dark .form-control::placeholder,
+        .admin-dark textarea.form-control::placeholder {
+            color: #94a3b8 !important;
+            opacity: 1;
+        }
+
+        .admin-dark .form-select option {
+            color: #e2e8f0;
+            background: #0f172a;
+        }
+
+        .admin-dark input[type="file"].form-control::file-selector-button {
+            color: #e2e8f0;
+            background: #1e293b;
+            border: 1px solid #334155;
+        }
+
+        .auto-alert-host {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1080;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            width: min(92vw, 380px);
+            pointer-events: none;
+        }
+
+        .auto-alert-toast {
+            pointer-events: auto;
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.22s ease, transform 0.22s ease;
+        }
+
+        .auto-alert-toast.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .auto-alert-toast .alert.is-auto-toast {
+            margin: 0;
+            box-shadow: 0 14px 30px rgba(2, 6, 23, 0.32);
+        }
+
+        .auto-alert-progress {
+            margin-top: 0.42rem;
+            height: 4px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: rgba(148, 163, 184, 0.22);
+        }
+
+        .auto-alert-progress-bar {
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.66));
+            transition: width var(--alert-duration, 4000ms) linear;
         }
 
         @media (max-width: 991.98px) {
@@ -426,6 +525,67 @@
 
     <!-- AdminLTE JS -->
     <script src="{{ asset('adminlte/js/adminlte.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const alerts = Array.from(document.querySelectorAll('.alert'))
+                .filter((node) => !node.closest('.modal') && !node.hasAttribute('data-no-toast'));
+
+            if (!alerts.length) {
+                return;
+            }
+
+            let host = document.getElementById('autoAlertHost');
+            if (!host) {
+                host = document.createElement('div');
+                host.id = 'autoAlertHost';
+                host.className = 'auto-alert-host';
+                document.body.appendChild(host);
+            }
+
+            const dismissToast = function (toast) {
+                toast.classList.remove('is-visible');
+                setTimeout(function () {
+                    toast.remove();
+                }, 220);
+            };
+
+            alerts.forEach(function (alertNode) {
+                const durationMs = alertNode.classList.contains('alert-danger') ? 6000 : 4000;
+                const toast = document.createElement('div');
+                toast.className = 'auto-alert-toast';
+                toast.style.setProperty('--alert-duration', durationMs + 'ms');
+
+                alertNode.classList.add('is-auto-toast');
+                const closeButton = alertNode.querySelector('.btn-close');
+                if (closeButton) {
+                    closeButton.remove();
+                }
+
+                const progress = document.createElement('div');
+                progress.className = 'auto-alert-progress';
+
+                const progressBar = document.createElement('div');
+                progressBar.className = 'auto-alert-progress-bar';
+                progress.appendChild(progressBar);
+
+                toast.appendChild(alertNode);
+                toast.appendChild(progress);
+                host.appendChild(toast);
+
+                requestAnimationFrame(function () {
+                    toast.classList.add('is-visible');
+                    requestAnimationFrame(function () {
+                        progressBar.style.width = '0%';
+                    });
+                });
+
+                setTimeout(function () {
+                    dismissToast(toast);
+                }, durationMs);
+            });
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
