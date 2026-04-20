@@ -36,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
             'mail_from_address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
             'ui_theme' => 'orange',
             'ui_mode' => 'white',
+            'brand_primary_color' => '#f48840',
+            'brand_secondary_color' => '#fb9857',
+            'maintenance_mode' => '0',
+            'maintenance_message' => '',
         ];
 
         $settings = array_merge($defaultSettings, $settings);

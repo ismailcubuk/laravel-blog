@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    <div class="card shadow-sm">
+    <div class="card shadow-sm settings-page-card">
         <div class="card-header">
             <h5 class="mb-0">Site Settings</h5>
         </div>
@@ -20,89 +20,78 @@
                 @csrf
                 @method('PUT')
                 <div class="settings-shell">
-                    <div class="settings-section-head">
-                        <h5 class="mb-1">Site Identity</h5>
-                        <p class="mb-0 text-muted">Control blog brand details, visuals, and theme behavior from one place.</p>
+                    <div class="settings-panel">
+                        <div class="settings-panel-head">Core Information</div>
+                        <div class="settings-panel-body row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Site Name</label>
+                                <input type="text" name="site_name" class="form-control" value="{{ old('site_name', $settings['site_name'] ?? '') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Site Tagline</label>
+                                <input type="text" name="site_tagline" class="form-control" value="{{ old('site_tagline', $settings['site_tagline'] ?? '') }}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Footer Text</label>
+                                <input type="text" name="footer_text" class="form-control" value="{{ old('footer_text', $settings['footer_text'] ?? '') }}">
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="row g-4 mb-4">
-                        <div class="col-xl-8">
-                            <div class="settings-panel h-100">
-                                <div class="settings-panel-head">Core Information</div>
-                                <div class="settings-panel-body row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Site Name</label>
-                                        <input type="text" name="site_name" class="form-control" value="{{ old('site_name', $settings['site_name'] ?? '') }}">
+                    <div class="settings-panel">
+                        <div class="settings-panel-head">Brand Assets</div>
+                        <div class="settings-panel-body row g-3">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="asset-block">
+                                    <label class="form-label">Site Logo</label>
+                                    <div class="settings-preview asset-preview mb-2">
+                                        <img id="siteLogoPreview" src="{{ asset($settings['site_logo'] ?? 'default-logo.png') }}"
+                                             alt="Logo" class="img-fluid border rounded asset-preview-image">
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <label class="form-label">Site Tagline</label>
-                                        <input type="text" name="site_tagline" class="form-control" value="{{ old('site_tagline', $settings['site_tagline'] ?? '') }}">
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label class="form-label">Footer Text</label>
-                                        <input type="text" name="footer_text" class="form-control" value="{{ old('footer_text', $settings['footer_text'] ?? '') }}">
+                                    <div class="asset-file-name" id="siteLogoFileName">No file selected</div>
+                                    <div class="pro-upload" data-file-upload>
+                                        <input type="file" name="site_logo" class="pro-upload-input" id="siteLogoInput" accept="image/*">
+                                        <label for="siteLogoInput" class="pro-upload-trigger pro-upload-trigger-button">
+                                            <span class="pro-upload-icon"><i class="bi bi-cloud-arrow-up"></i></span>
+                                            <span class="pro-upload-texts">
+                                                <span class="pro-upload-title">Change Logo</span>
+                                                <span class="pro-upload-sub">PNG, JPG, SVG</span>
+                                            </span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-xl-4">
-                            <div class="settings-panel h-100">
-                                <div class="settings-panel-head">Brand Assets</div>
-                                <div class="settings-panel-body d-grid gap-3">
-                                    <div class="asset-card">
-                                        <label class="form-label">Site Logo</label>
-                                        <div class="settings-preview asset-preview mb-2">
-                                            <img id="siteLogoPreview" src="{{ asset($settings['site_logo'] ?? 'default-logo.png') }}"
-                                                 alt="Logo" class="img-fluid border rounded" style="max-height:100px;">
-                                        </div>
-                                        <div class="asset-file-name" id="siteLogoFileName">No file selected</div>
-                                        <div class="pro-upload" data-file-upload>
-                                            <input type="file" name="site_logo" class="pro-upload-input" id="siteLogoInput" accept="image/*">
-                                            <label for="siteLogoInput" class="pro-upload-trigger pro-upload-trigger-button">
-                                                <span class="pro-upload-icon"><i class="bi bi-cloud-arrow-up"></i></span>
-                                                <span class="pro-upload-texts">
-                                                    <span class="pro-upload-title">Change Logo</span>
-                                                    <span class="pro-upload-sub">PNG, JPG, SVG</span>
-                                                </span>
-                                            </label>
-                                        </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="asset-block">
+                                    <label class="form-label">Site Favicon</label>
+                                    <div class="settings-preview asset-preview mb-2">
+                                        <img id="siteFaviconPreview" src="{{ asset($settings['site_favicon'] ?? 'default-favicon.ico') }}"
+                                             alt="Favicon" class="img-fluid border rounded asset-preview-image">
                                     </div>
-
-                                    <div class="asset-card">
-                                        <label class="form-label">Site Favicon</label>
-                                        <div class="settings-preview asset-preview mb-2">
-                                            <img id="siteFaviconPreview" src="{{ asset($settings['site_favicon'] ?? 'default-favicon.ico') }}"
-                                                 alt="Favicon" class="img-fluid border rounded" style="max-height:32px;">
-                                        </div>
-                                        <div class="asset-file-name" id="siteFaviconFileName">No file selected</div>
-                                        <div class="pro-upload" data-file-upload>
-                                            <input type="file" name="site_favicon" class="pro-upload-input" id="siteFaviconInput" accept="image/*">
-                                            <label for="siteFaviconInput" class="pro-upload-trigger pro-upload-trigger-button">
-                                                <span class="pro-upload-icon"><i class="bi bi-cloud-arrow-up"></i></span>
-                                                <span class="pro-upload-texts">
-                                                    <span class="pro-upload-title">Change Favicon</span>
-                                                    <span class="pro-upload-sub">ICO, PNG, SVG</span>
-                                                </span>
-                                            </label>
-                                        </div>
+                                    <div class="asset-file-name" id="siteFaviconFileName">No file selected</div>
+                                    <div class="pro-upload" data-file-upload>
+                                        <input type="file" name="site_favicon" class="pro-upload-input" id="siteFaviconInput" accept="image/*">
+                                        <label for="siteFaviconInput" class="pro-upload-trigger pro-upload-trigger-button">
+                                            <span class="pro-upload-icon"><i class="bi bi-cloud-arrow-up"></i></span>
+                                            <span class="pro-upload-texts">
+                                                <span class="pro-upload-title">Change Favicon</span>
+                                                <span class="pro-upload-sub">ICO, PNG, SVG</span>
+                                            </span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="settings-section-head mb-3">
-                        <h5 class="mb-1">Theme Settings</h5>
-                        <p class="mb-0 text-muted">Apply palette and mode for both admin and frontend instantly.</p>
+                    <div class="settings-section-head mb-2">
+                        <h5 class="mb-0">Theme Settings</h5>
                     </div>
 
 @php($selectedTheme = old('ui_theme', $settings['ui_theme'] ?? 'orange'))
 @php($selectedMode = old('ui_mode', $settings['ui_mode'] ?? 'white'))
 
-                    <div class="settings-panel mb-4">
+                    <div class="settings-panel mb-3">
                         <div class="settings-panel-head">Color Palette</div>
                         <div class="settings-panel-body">
                             <div class="theme-grid">
@@ -155,12 +144,45 @@
                                     <span class="mode-preview mode-preview-dark"></span>
                                 </label>
                             </div>
-                            <small class="text-muted d-block mt-2">Selections apply to both Admin UI and User UI. Click any palette/mode to apply instantly.</small>
+                        </div>
+                    </div>
+
+                    <div class="settings-panel maintenance-panel">
+                        <div class="settings-panel-head">Maintenance</div>
+                        <div class="settings-panel-body row g-3">
+                            <div class="col-12">
+                                <div class="maintenance-switch">
+                                    <div class="maintenance-switch-meta">
+                                        <span class="maintenance-title">Maintenance Mode</span>
+                                        <span class="maintenance-sub">Show a short notice on public pages during temporary updates.</span>
+                                    </div>
+                                    <input type="hidden" name="maintenance_mode" value="0">
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        id="maintenanceModeSwitch"
+                                        name="maintenance_mode"
+                                        value="1"
+                                        {{ old('maintenance_mode', $settings['maintenance_mode'] ?? '0') === '1' ? 'checked' : '' }}
+                                    >
+                                    <label for="maintenanceModeSwitch" class="form-check-label fw-semibold mb-0">Enabled</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Maintenance Message</label>
+                                <input
+                                    type="text"
+                                    name="maintenance_message"
+                                    class="form-control"
+                                    maxlength="255"
+                                    value="{{ old('maintenance_message', $settings['maintenance_message'] ?? '') }}"
+                                    placeholder="We are doing scheduled maintenance. Please check back soon."
+                                >
+                            </div>
                         </div>
                     </div>
 
                     <div class="settings-savebar">
-                        <div class="text-muted small">Changes are applied live in preview and saved permanently when you submit.</div>
                         <button type="submit" class="ui-btn ui-btn-success">Save Settings</button>
                     </div>
                 </div>
@@ -173,7 +195,28 @@
 <style>
     .settings-shell {
         display: grid;
-        gap: 1rem;
+        gap: 0.75rem;
+    }
+
+    .settings-page-card {
+        border: 0;
+        border-radius: 16px;
+        background: transparent;
+        box-shadow: none !important;
+    }
+
+    .settings-page-card > .card-header {
+        border: 0;
+        border-radius: 16px 16px 0 0;
+        background: rgba(var(--admin-primary-rgb), 0.08);
+        padding: 0.75rem 1rem;
+    }
+
+    .settings-page-card > .card-body {
+        border: 0;
+        border-radius: 0 0 16px 16px;
+        background: rgba(var(--admin-primary-rgb), 0.03);
+        padding: 0.8rem 1rem 0.95rem;
     }
 
     .settings-section-head h5 {
@@ -182,31 +225,32 @@
     }
 
     .settings-panel {
-        border: 1px solid var(--admin-input-border);
+        border: 0;
         border-radius: 14px;
-        background: rgba(var(--admin-primary-rgb), 0.03);
+        background: rgba(var(--admin-primary-rgb), 0.025);
+        box-shadow: inset 0 0 0 1px rgba(var(--admin-primary-rgb), 0.06);
         overflow: hidden;
     }
 
     .settings-panel-head {
-        padding: 0.75rem 0.9rem;
-        border-bottom: 1px solid var(--admin-input-border);
+        padding: 0.6rem 0.8rem;
+        border-bottom: 1px solid rgba(var(--admin-primary-rgb), 0.08);
         font-size: 0.8rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.03em;
         color: var(--admin-muted);
-        background: rgba(var(--admin-primary-rgb), 0.06);
+        background: transparent;
     }
 
     .settings-panel-body {
-        padding: 0.95rem;
+        padding: 0.75rem;
     }
 
     .settings-preview {
-        border: 1px dashed var(--admin-input-border);
+        border: 1px dashed rgba(var(--admin-primary-rgb), 0.16);
         border-radius: 12px;
-        min-height: 54px;
+        min-height: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -214,19 +258,30 @@
         background: rgba(var(--admin-primary-rgb), 0.03);
     }
 
-    .asset-card {
-        border: 1px solid var(--admin-input-border);
-        border-radius: 12px;
-        padding: 0.75rem;
-        background: rgba(var(--admin-primary-rgb), 0.02);
+    .asset-block {
+        border-radius: 10px;
+        padding: 0.15rem 0.1rem 0.1rem;
+    }
+
+    .asset-block + .asset-block {
+        margin-top: 0.65rem;
+        padding-top: 0.85rem;
+        border-top: 1px solid rgba(var(--admin-primary-rgb), 0.1);
     }
 
     .asset-preview {
-        min-height: 86px;
+        min-height: 72px;
+    }
+
+    .asset-preview-image {
+        width: 84px;
+        height: 84px;
+        object-fit: contain;
+        display: block;
     }
 
     .asset-file-name {
-        margin: 0 0 0.55rem;
+        margin: 0 0 0.45rem;
         font-size: 0.78rem;
         font-weight: 700;
         color: var(--admin-muted);
@@ -236,14 +291,15 @@
     }
 
     .settings-savebar {
-        margin-top: 0.3rem;
-        border: 1px solid var(--admin-input-border);
+        margin-top: 0.15rem;
+        border: 0;
         border-radius: 14px;
-        padding: 0.8rem 0.9rem;
-        background: rgba(var(--admin-primary-rgb), 0.04);
+        padding: 0.65rem 0.8rem;
+        background: transparent;
+        box-shadow: none;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-end;
         gap: 0.7rem;
         flex-wrap: wrap;
     }
@@ -266,8 +322,8 @@
         border-radius: 14px;
         background: linear-gradient(180deg, rgba(var(--admin-primary-rgb), 0.08), rgba(var(--admin-primary-rgb), 0.03));
         color: var(--admin-text);
-        min-height: 58px;
-        padding: 0.65rem 0.8rem;
+        min-height: 44px;
+        padding: 0.5rem 0.65rem;
         display: flex;
         align-items: center;
         gap: 0.75rem;
@@ -276,9 +332,10 @@
     }
 
     .pro-upload-trigger.pro-upload-trigger-button {
-        min-height: 44px;
-        padding: 0.55rem 0.72rem;
+        min-height: 40px;
+        padding: 0.45rem 0.62rem;
         border-radius: 11px;
+        background: rgba(var(--admin-primary-rgb), 0.07);
     }
 
     .pro-upload-trigger:hover {
@@ -293,9 +350,9 @@
     }
 
     .pro-upload-icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
         background: rgba(var(--admin-primary-rgb), 0.18);
         display: inline-flex;
         align-items: center;
@@ -312,13 +369,13 @@
     }
 
     .pro-upload-title {
-        font-size: 0.9rem;
+        font-size: 0.84rem;
         font-weight: 800;
         line-height: 1.2;
     }
 
     .pro-upload-sub {
-        font-size: 0.76rem;
+        font-size: 0.72rem;
         color: var(--admin-muted);
     }
 
@@ -354,18 +411,17 @@
     }
 
     .admin-dark .settings-panel {
-        border-color: #334155;
-        background: rgba(15, 23, 42, 0.82);
+        background: rgba(15, 23, 42, 0.76);
+        box-shadow: inset 0 0 0 1px rgba(51, 65, 85, 0.68);
     }
 
-    .admin-dark .asset-card {
-        border-color: #334155;
-        background: rgba(15, 23, 42, 0.72);
+    .admin-dark .asset-block + .asset-block {
+        border-top-color: rgba(71, 85, 105, 0.7);
     }
 
     .admin-dark .settings-panel-head {
-        border-bottom-color: #334155;
-        background: rgba(30, 41, 59, 0.72);
+        background: rgba(15, 23, 42, 0.06);
+        border-bottom-color: rgba(71, 85, 105, 0.65);
         color: #cbd5e1;
     }
 
@@ -375,8 +431,74 @@
     }
 
     .admin-dark .settings-savebar {
-        border-color: #334155;
-        background: rgba(15, 23, 42, 0.86);
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .admin-dark .settings-page-card > .card-header {
+        background: rgba(15, 23, 42, 0.78);
+    }
+
+    .admin-dark .settings-page-card > .card-body {
+        background: rgba(15, 23, 42, 0.44);
+    }
+
+    .color-field {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+    }
+
+    .color-field .form-control-color {
+        width: 52px;
+        min-width: 52px;
+        padding: 0.18rem;
+        border-radius: 10px;
+    }
+
+    .color-field .color-hex-readonly {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        letter-spacing: 0.02em;
+    }
+
+    .maintenance-switch {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.9rem;
+        padding: 0.75rem 0.8rem;
+        border-radius: 12px;
+        background: rgba(var(--admin-primary-rgb), 0.05);
+        box-shadow: inset 0 0 0 1px rgba(var(--admin-primary-rgb), 0.12);
+    }
+
+    .maintenance-switch-meta {
+        min-width: 0;
+        display: grid;
+        gap: 2px;
+    }
+
+    .maintenance-title {
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: var(--admin-text);
+    }
+
+    .maintenance-sub {
+        font-size: 0.78rem;
+        color: var(--admin-muted);
+    }
+
+    .maintenance-switch .form-check-input {
+        margin: 0;
+        width: 2.7rem;
+        height: 1.45rem;
+        cursor: pointer;
+    }
+
+    .maintenance-switch .form-check-label {
+        font-size: 0.82rem;
+        color: var(--admin-muted);
     }
 
     .theme-grid,
@@ -403,12 +525,12 @@
     .mode-card {
         border: 1px solid var(--admin-input-border);
         border-radius: 10px;
-        padding: 12px;
+        padding: 10px;
         background: var(--admin-surface);
         color: var(--admin-text) !important;
         cursor: pointer;
         transition: all 0.2s ease;
-        min-height: 70px;
+        min-height: 58px;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
@@ -477,6 +599,11 @@
             padding: 0.8rem;
         }
 
+        .maintenance-switch {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
         .settings-savebar {
             flex-direction: column;
             align-items: stretch;
@@ -524,6 +651,40 @@
         });
     }
 
+    const hexToRgb = (hex) => {
+        const value = (hex || '').trim().replace('#', '');
+        if (!/^[0-9a-fA-F]{3}$|^[0-9a-fA-F]{6}$/.test(value)) {
+            return null;
+        }
+
+        const normalized = value.length === 3
+            ? value.split('').map((ch) => ch + ch).join('')
+            : value;
+
+        const int = parseInt(normalized, 16);
+        const r = (int >> 16) & 255;
+        const g = (int >> 8) & 255;
+        const b = int & 255;
+        return `${r}, ${g}, ${b}`;
+    };
+
+    const bindColorField = (name) => {
+        const colorInput = document.querySelector(`input[name="${name}"]`);
+        const textInput = colorInput ? colorInput.parentElement.querySelector('.color-hex-readonly') : null;
+        if (!colorInput || !textInput) {
+            return;
+        }
+
+        const sync = () => {
+            textInput.value = colorInput.value;
+            applyAdminPreview();
+        };
+
+        colorInput.addEventListener('input', sync);
+        colorInput.addEventListener('change', sync);
+        sync();
+    };
+
     const themePalettes = {
         orange: { primary: '#f48840', secondary: '#fb9857', focus: '#f5b58a', rgb: '244, 136, 64' },
         blue: { primary: '#1f6bff', secondary: '#0f4fd9', focus: '#93b8ff', rgb: '31, 107, 255' },
@@ -570,6 +731,11 @@
 
         const palette = themePalettes[selectedTheme] ?? themePalettes.orange;
         const mode = modeColors[selectedMode] ?? modeColors.white;
+        const primaryColorInput = document.querySelector('input[name="brand_primary_color"]');
+        const secondaryColorInput = document.querySelector('input[name="brand_secondary_color"]');
+        const customPrimary = primaryColorInput ? primaryColorInput.value : '';
+        const customSecondary = secondaryColorInput ? secondaryColorInput.value : '';
+        const primaryRgb = hexToRgb(customPrimary);
 
         const root = document.documentElement;
         root.style.setProperty('--admin-bg-a', mode.bgA);
@@ -578,10 +744,10 @@
         root.style.setProperty('--admin-border', mode.border);
         root.style.setProperty('--admin-text', mode.text);
         root.style.setProperty('--admin-muted', mode.muted);
-        root.style.setProperty('--admin-primary', palette.primary);
-        root.style.setProperty('--admin-primary-2', palette.secondary);
+        root.style.setProperty('--admin-primary', customPrimary || palette.primary);
+        root.style.setProperty('--admin-primary-2', customSecondary || palette.secondary);
         root.style.setProperty('--admin-focus', palette.focus);
-        root.style.setProperty('--admin-primary-rgb', palette.rgb);
+        root.style.setProperty('--admin-primary-rgb', primaryRgb || palette.rgb);
         root.style.setProperty('--admin-input-bg', mode.inputBg);
         root.style.setProperty('--admin-input-border', mode.inputBorder);
         root.style.setProperty('--admin-shadow', mode.shadow);
@@ -596,6 +762,8 @@
         input.addEventListener('change', applyAdminPreview);
     });
 
+    bindColorField('brand_primary_color');
+    bindColorField('brand_secondary_color');
     applyAdminPreview();
 </script>
 @endpush
