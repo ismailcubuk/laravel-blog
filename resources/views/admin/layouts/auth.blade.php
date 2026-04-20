@@ -205,13 +205,60 @@
             color: var(--auth-muted) !important;
         }
 
-        .btn-primary {
-            border: 0;
+        .btn:not(.btn-close) {
+            --auth-btn-bg: rgba(148, 163, 184, 0.18);
+            --auth-btn-color: var(--auth-text);
+            --auth-btn-border: rgba(148, 163, 184, 0.4);
+            --auth-btn-shadow: none;
+            --auth-btn-hover-bg: rgba(148, 163, 184, 0.28);
+            --auth-btn-hover-border: rgba(148, 163, 184, 0.62);
+            border: 1px solid var(--auth-btn-border);
             border-radius: 12px;
             min-height: 42px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--auth-primary) 0%, var(--auth-primary-2) 100%);
-            box-shadow: 0 10px 18px rgba(31, 107, 255, 0.28);
+            padding: 0.45rem 0.95rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.38rem;
+            color: var(--auth-btn-color) !important;
+            background: var(--auth-btn-bg);
+            box-shadow: var(--auth-btn-shadow);
+            transition: transform 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+        }
+
+        .btn:not(.btn-close):hover {
+            background: var(--auth-btn-hover-bg);
+            border-color: var(--auth-btn-hover-border);
+            color: var(--auth-btn-color) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn:not(.btn-close):focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 4px rgba(31, 107, 255, 0.18);
+        }
+
+        .btn-primary:not(.btn-close),
+        .btn-outline-primary:not(.btn-close) {
+            --auth-btn-bg: linear-gradient(135deg, var(--auth-primary) 0%, var(--auth-primary-2) 100%);
+            --auth-btn-color: #ffffff;
+            --auth-btn-border: transparent;
+            --auth-btn-shadow: 0 10px 18px rgba(31, 107, 255, 0.28);
+            --auth-btn-hover-bg: linear-gradient(135deg, var(--auth-primary) 0%, var(--auth-primary-2) 100%);
+            --auth-btn-hover-border: transparent;
+        }
+
+        .btn-secondary:not(.btn-close),
+        .btn-outline-secondary:not(.btn-close),
+        .btn-light:not(.btn-close),
+        .btn-outline-light:not(.btn-close) {
+            --auth-btn-bg: rgba(148, 163, 184, 0.18);
+            --auth-btn-color: var(--auth-text);
+            --auth-btn-border: rgba(148, 163, 184, 0.4);
+            --auth-btn-shadow: none;
+            --auth-btn-hover-bg: rgba(148, 163, 184, 0.28);
+            --auth-btn-hover-border: rgba(148, 163, 184, 0.62);
         }
 
         .alert {

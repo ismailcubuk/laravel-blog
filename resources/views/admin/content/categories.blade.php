@@ -57,6 +57,14 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+
+    .category-actions {
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.35rem;
+        flex-wrap: wrap;
+    }
 </style>
 @endpush
 
@@ -95,7 +103,7 @@
                     <h5 class="mb-0">Category List</h5>
                     <button
                         type="button"
-                        class="btn btn-success btn-sm ms-auto"
+                        class="ui-btn ui-btn-success ui-btn-sm ms-auto"
                         data-bs-toggle="modal"
                         data-bs-target="#newCategoryModal"
                     >
@@ -149,6 +157,7 @@
                                         <td>{{ $category->posts_count }}</td>
                                         <td>{{ optional($category->created_at)->format('d M Y') }}</td>
                                         <td class="text-end">
+                                            <div class="category-actions">
                                             <form
                                                 id="updateCategoryForm-{{ $category->id }}"
                                                 action="{{ route('admin.content.categories.update', $category) }}"
@@ -160,7 +169,7 @@
                                             </form>
                                             <button
                                                 type="button"
-                                                class="btn btn-sm btn-outline-primary"
+                                                class="ui-btn ui-btn-neutral ui-btn-sm"
                                                 id="editCategoryBtn-{{ $category->id }}"
                                                 onclick="toggleCategoryEdit({{ $category->id }}, true)"
                                             >
@@ -169,14 +178,14 @@
                                             <button
                                                 type="submit"
                                                 form="updateCategoryForm-{{ $category->id }}"
-                                                class="btn btn-sm btn-primary d-none"
+                                                class="ui-btn ui-btn-primary ui-btn-sm d-none"
                                                 id="saveCategoryBtn-{{ $category->id }}"
                                             >
                                                 Save
                                             </button>
                                             <button
                                                 type="button"
-                                                class="btn btn-sm btn-secondary d-none"
+                                                class="ui-btn ui-btn-neutral ui-btn-sm d-none"
                                                 id="cancelCategoryBtn-{{ $category->id }}"
                                                 onclick="toggleCategoryEdit({{ $category->id }}, false)"
                                             >
@@ -190,8 +199,9 @@
                                             >
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                                <button type="submit" class="ui-btn ui-btn-danger ui-btn-sm">Delete</button>
                                             </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
@@ -227,8 +237,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success">Save Category</button>
+                    <button type="button" class="ui-btn ui-btn-neutral" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="ui-btn ui-btn-success">Save Category</button>
                 </div>
             </form>
         </div>

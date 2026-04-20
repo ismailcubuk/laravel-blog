@@ -115,6 +115,88 @@
             text-decoration: none;
         }
 
+        .btn:not(.btn-close) {
+            --front-btn-bg: rgba(var(--front-primary-rgb), 0.14);
+            --front-btn-color: var(--front-text);
+            --front-btn-border: rgba(var(--front-primary-rgb), 0.34);
+            --front-btn-shadow: 0 8px 18px rgba(var(--front-primary-rgb), 0.14);
+            --front-btn-hover-bg: rgba(var(--front-primary-rgb), 0.22);
+            --front-btn-hover-border: rgba(var(--front-primary-rgb), 0.62);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.38rem;
+            min-height: 40px;
+            padding: 0.45rem 0.95rem;
+            border-radius: 12px;
+            border: 1px solid var(--front-btn-border);
+            background: var(--front-btn-bg);
+            color: var(--front-btn-color) !important;
+            font-size: 0.86rem;
+            font-weight: 800;
+            line-height: 1;
+            text-decoration: none;
+            box-shadow: var(--front-btn-shadow);
+            transition: transform 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+        }
+
+        .btn:not(.btn-close):hover {
+            background: var(--front-btn-hover-bg);
+            border-color: var(--front-btn-hover-border);
+            color: var(--front-btn-color) !important;
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+        .btn:not(.btn-close):focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 4px rgba(var(--front-primary-rgb), 0.16);
+        }
+
+        .btn-primary:not(.btn-close),
+        .btn-outline-primary:not(.btn-close),
+        .btn-success:not(.btn-close),
+        .btn-outline-success:not(.btn-close) {
+            --front-btn-bg: linear-gradient(135deg, var(--front-primary) 0%, var(--front-primary-2) 100%);
+            --front-btn-color: #ffffff;
+            --front-btn-border: transparent;
+            --front-btn-shadow: 0 10px 18px rgba(var(--front-primary-rgb), 0.24);
+            --front-btn-hover-bg: linear-gradient(135deg, var(--front-primary) 0%, var(--front-primary-2) 100%);
+            --front-btn-hover-border: transparent;
+        }
+
+        .btn-warning:not(.btn-close),
+        .btn-outline-warning:not(.btn-close) {
+            --front-btn-bg: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --front-btn-color: #ffffff;
+            --front-btn-border: transparent;
+            --front-btn-shadow: 0 10px 18px rgba(217, 119, 6, 0.24);
+            --front-btn-hover-bg: linear-gradient(135deg, #f9ab17 0%, #db800d 100%);
+            --front-btn-hover-border: transparent;
+        }
+
+        .btn-danger:not(.btn-close),
+        .btn-outline-danger:not(.btn-close) {
+            --front-btn-bg: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --front-btn-color: #ffffff;
+            --front-btn-border: transparent;
+            --front-btn-shadow: 0 10px 18px rgba(220, 38, 38, 0.24);
+            --front-btn-hover-bg: linear-gradient(135deg, #f05252 0%, #e03232 100%);
+            --front-btn-hover-border: transparent;
+        }
+
+        .btn-secondary:not(.btn-close),
+        .btn-outline-secondary:not(.btn-close),
+        .btn-light:not(.btn-close),
+        .btn-outline-light:not(.btn-close) {
+            --front-btn-bg: rgba(148, 163, 184, 0.18);
+            --front-btn-color: var(--front-text);
+            --front-btn-border: rgba(148, 163, 184, 0.4);
+            --front-btn-shadow: none;
+            --front-btn-hover-bg: rgba(148, 163, 184, 0.26);
+            --front-btn-hover-border: rgba(148, 163, 184, 0.62);
+        }
+
         .heading-page .page-heading {
             padding: 2.4rem 0;
             border: 1px solid var(--front-border);

@@ -81,6 +81,14 @@
         transform-origin: left center;
         transition: width 4s linear;
     }
+
+    .posts-actions {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        flex-wrap: wrap;
+    }
 </style>
 @endpush
 
@@ -105,7 +113,7 @@
             <div class="card shadow-sm">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="mb-0">Posts List</h5>
-                    <a href="{{ route('admin.content.posts.create') }}" class="btn btn-success btn-sm ms-auto">
+                    <a href="{{ route('admin.content.posts.create') }}" class="ui-btn ui-btn-success ui-btn-sm ms-auto">
                         <i class="bi bi-plus-lg"></i> New Post
                     </a>
                 </div>
@@ -176,12 +184,14 @@
                                         <td>{{ $post->category->name ?? 'N/A' }}</td>
                                         <td>{{ $post->created_at->format('d M Y') }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.content.posts.edit', $post) }}" class="btn btn-sm btn-warning me-1">Edit</a>
-                                            <form action="{{ route('admin.content.posts.destroy', $post) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this post?')">Delete</button>
-                                            </form>
+                                            <div class="posts-actions">
+                                                <a href="{{ route('admin.content.posts.edit', $post) }}" class="ui-btn ui-btn-warning ui-btn-sm">Edit</a>
+                                                <form action="{{ route('admin.content.posts.destroy', $post) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="ui-btn ui-btn-danger ui-btn-sm" onclick="return confirm('Delete this post?')">Delete</button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty

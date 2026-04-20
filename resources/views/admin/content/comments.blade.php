@@ -248,12 +248,17 @@
             flex-wrap: nowrap;
         }
 
-        .admin-comments-actions .btn {
+        .admin-comments-actions .btn,
+        .admin-comments-actions .ui-btn {
             white-space: nowrap;
             padding: 0.28rem 0.42rem;
             font-size: 0.68rem;
             line-height: 1.2;
             border-radius: 0.5rem;
+        }
+
+        .admin-comments-actions .ui-btn {
+            white-space: nowrap;
         }
 
         .admin-comments-actions form {
@@ -614,7 +619,8 @@
                 display: inline-block;
             }
 
-            .admin-comments-actions .btn {
+            .admin-comments-actions .btn,
+            .admin-comments-actions .ui-btn {
                 width: auto;
             }
 
@@ -680,7 +686,8 @@
                 margin-top: 0;
             }
 
-            .admin-comments-actions .btn {
+            .admin-comments-actions .btn,
+            .admin-comments-actions .ui-btn {
                 width: 100%;
             }
 
@@ -790,8 +797,8 @@
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end gap-2">
-                        <button type="submit" class="btn btn-primary w-100">Apply</button>
-                        <a href="{{ route('admin.content.comments') }}" class="btn btn-outline-secondary w-100">Reset</a>
+                        <button type="submit" class="ui-btn ui-btn-primary w-100">Apply</button>
+                        <a href="{{ route('admin.content.comments') }}" class="ui-btn ui-btn-neutral w-100">Reset</a>
                     </div>
                 </div>
             </form>
@@ -917,7 +924,7 @@
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="approved">
-                                            <button type="submit" class="btn btn-sm btn-success" {{ $comment->status === 'approved' ? 'disabled' : '' }}>
+                                            <button type="submit" class="ui-btn ui-btn-success ui-btn-sm" {{ $comment->status === 'approved' ? 'disabled' : '' }}>
                                                 Approve
                                             </button>
                                         </form>
@@ -925,14 +932,14 @@
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="pending">
-                                            <button type="submit" class="btn btn-sm btn-warning" {{ $comment->status === 'pending' ? 'disabled' : '' }}>
+                                            <button type="submit" class="ui-btn ui-btn-warning ui-btn-sm" {{ $comment->status === 'pending' ? 'disabled' : '' }}>
                                                 Pending
                                             </button>
                                         </form>
                                         <form method="POST" action="{{ route('admin.content.comments.destroy', $comment) }}" class="d-inline" onsubmit="return confirm('Delete this comment?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">
+                                            <button type="submit" class="ui-btn ui-btn-danger ui-btn-sm">
                                                 Delete
                                             </button>
                                         </form>
@@ -1026,10 +1033,10 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="ui-btn ui-btn-neutral" data-bs-dismiss="modal">Cancel</button>
                     <div class="d-flex align-items-center gap-2">
-                        <button type="submit" form="adminCommentReplyDeleteForm" id="adminCommentReplyDeleteButton" class="btn btn-danger d-none" onclick="return confirm('Delete this reply?')">Delete Reply</button>
-                        <button type="submit" class="btn btn-primary">Publish Reply</button>
+                        <button type="submit" form="adminCommentReplyDeleteForm" id="adminCommentReplyDeleteButton" class="ui-btn ui-btn-danger d-none" onclick="return confirm('Delete this reply?')">Delete Reply</button>
+                        <button type="submit" class="ui-btn ui-btn-primary">Publish Reply</button>
                     </div>
                 </div>
             </form>

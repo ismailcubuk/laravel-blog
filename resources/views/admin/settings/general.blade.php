@@ -19,117 +19,150 @@
             <form id="generalSettingsForm" action="{{ route('admin.settings.general.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-
-                <h5 class="mb-3">Site Information</h5>
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Site Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="site_name" class="form-control" value="{{ old('site_name', $settings['site_name'] ?? '') }}">
+                <div class="settings-shell">
+                    <div class="settings-section-head">
+                        <h5 class="mb-1">Site Identity</h5>
+                        <p class="mb-0 text-muted">Control blog brand details, visuals, and theme behavior from one place.</p>
                     </div>
-                </div>
 
-                <div class="mb-3 row align-items-center">
-                    <label class="col-sm-2 col-form-label">Site Logo</label>
-                    <div class="col-sm-10">
-                        <input type="file" name="site_logo" class="form-control" id="siteLogoInput">
-                        <div class="mt-2">
-                            <img id="siteLogoPreview" src="{{ asset($settings['site_logo'] ?? 'default-logo.png') }}"
-                                 alt="Logo" class="img-fluid border rounded" style="max-height:100px;">
+                    <div class="row g-4 mb-4">
+                        <div class="col-xl-8">
+                            <div class="settings-panel h-100">
+                                <div class="settings-panel-head">Core Information</div>
+                                <div class="settings-panel-body row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Site Name</label>
+                                        <input type="text" name="site_name" class="form-control" value="{{ old('site_name', $settings['site_name'] ?? '') }}">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Site Tagline</label>
+                                        <input type="text" name="site_tagline" class="form-control" value="{{ old('site_tagline', $settings['site_tagline'] ?? '') }}">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label">Footer Text</label>
+                                        <input type="text" name="footer_text" class="form-control" value="{{ old('footer_text', $settings['footer_text'] ?? '') }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4">
+                            <div class="settings-panel h-100">
+                                <div class="settings-panel-head">Brand Assets</div>
+                                <div class="settings-panel-body d-grid gap-3">
+                                    <div class="asset-card">
+                                        <label class="form-label">Site Logo</label>
+                                        <div class="settings-preview asset-preview mb-2">
+                                            <img id="siteLogoPreview" src="{{ asset($settings['site_logo'] ?? 'default-logo.png') }}"
+                                                 alt="Logo" class="img-fluid border rounded" style="max-height:100px;">
+                                        </div>
+                                        <div class="asset-file-name" id="siteLogoFileName">No file selected</div>
+                                        <div class="pro-upload" data-file-upload>
+                                            <input type="file" name="site_logo" class="pro-upload-input" id="siteLogoInput" accept="image/*">
+                                            <label for="siteLogoInput" class="pro-upload-trigger pro-upload-trigger-button">
+                                                <span class="pro-upload-icon"><i class="bi bi-cloud-arrow-up"></i></span>
+                                                <span class="pro-upload-texts">
+                                                    <span class="pro-upload-title">Change Logo</span>
+                                                    <span class="pro-upload-sub">PNG, JPG, SVG</span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="asset-card">
+                                        <label class="form-label">Site Favicon</label>
+                                        <div class="settings-preview asset-preview mb-2">
+                                            <img id="siteFaviconPreview" src="{{ asset($settings['site_favicon'] ?? 'default-favicon.ico') }}"
+                                                 alt="Favicon" class="img-fluid border rounded" style="max-height:32px;">
+                                        </div>
+                                        <div class="asset-file-name" id="siteFaviconFileName">No file selected</div>
+                                        <div class="pro-upload" data-file-upload>
+                                            <input type="file" name="site_favicon" class="pro-upload-input" id="siteFaviconInput" accept="image/*">
+                                            <label for="siteFaviconInput" class="pro-upload-trigger pro-upload-trigger-button">
+                                                <span class="pro-upload-icon"><i class="bi bi-cloud-arrow-up"></i></span>
+                                                <span class="pro-upload-texts">
+                                                    <span class="pro-upload-title">Change Favicon</span>
+                                                    <span class="pro-upload-sub">ICO, PNG, SVG</span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="mb-3 row align-items-center">
-                    <label class="col-sm-2 col-form-label">Site Favicon</label>
-                    <div class="col-sm-10">
-                        <input type="file" name="site_favicon" class="form-control" id="siteFaviconInput">
-                        <div class="mt-2">
-                            <img id="siteFaviconPreview" src="{{ asset($settings['site_favicon'] ?? 'default-favicon.ico') }}"
-                                 alt="Favicon" class="img-fluid border rounded" style="max-height:32px;">
-                        </div>
+                    <div class="settings-section-head mb-3">
+                        <h5 class="mb-1">Theme Settings</h5>
+                        <p class="mb-0 text-muted">Apply palette and mode for both admin and frontend instantly.</p>
                     </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Site Tagline</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="site_tagline" class="form-control" value="{{ old('site_tagline', $settings['site_tagline'] ?? '') }}">
-                    </div>
-                </div>
-
-                <div class="mb-4 row">
-                    <label class="col-sm-2 col-form-label">Footer Text</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="footer_text" class="form-control" value="{{ old('footer_text', $settings['footer_text'] ?? '') }}">
-                    </div>
-                </div>
-
-                <hr class="my-4">
-                <h5 class="mb-3">Theme Settings</h5>
 
 @php($selectedTheme = old('ui_theme', $settings['ui_theme'] ?? 'orange'))
 @php($selectedMode = old('ui_mode', $settings['ui_mode'] ?? 'white'))
 
-                <div class="mb-4 row">
-                    <label class="col-sm-2 col-form-label">Color Palette</label>
-                    <div class="col-sm-10">
-                        <div class="theme-grid">
-                            <input type="radio" class="theme-input" id="theme_orange" name="ui_theme" value="orange" {{ $selectedTheme === 'orange' ? 'checked' : '' }}>
-                            <label class="theme-card" for="theme_orange">
-                                <span class="theme-title">Orange Palette</span>
-                                <span class="theme-dots"><i style="background:#f48840"></i><i style="background:#fb9857"></i><i style="background:#0f1f3a"></i></span>
-                            </label>
+                    <div class="settings-panel mb-4">
+                        <div class="settings-panel-head">Color Palette</div>
+                        <div class="settings-panel-body">
+                            <div class="theme-grid">
+                                <input type="radio" class="theme-input" id="theme_orange" name="ui_theme" value="orange" {{ $selectedTheme === 'orange' ? 'checked' : '' }}>
+                                <label class="theme-card" for="theme_orange">
+                                    <span class="theme-title">Orange Palette</span>
+                                    <span class="theme-dots"><i style="background:#f48840"></i><i style="background:#fb9857"></i><i style="background:#0f1f3a"></i></span>
+                                </label>
 
-                            <input type="radio" class="theme-input" id="theme_blue" name="ui_theme" value="blue" {{ $selectedTheme === 'blue' ? 'checked' : '' }}>
-                            <label class="theme-card" for="theme_blue">
-                                <span class="theme-title">Blue Palette</span>
-                                <span class="theme-dots"><i style="background:#1f6bff"></i><i style="background:#3a84ff"></i><i style="background:#0f1f3a"></i></span>
-                            </label>
+                                <input type="radio" class="theme-input" id="theme_blue" name="ui_theme" value="blue" {{ $selectedTheme === 'blue' ? 'checked' : '' }}>
+                                <label class="theme-card" for="theme_blue">
+                                    <span class="theme-title">Blue Palette</span>
+                                    <span class="theme-dots"><i style="background:#1f6bff"></i><i style="background:#3a84ff"></i><i style="background:#0f1f3a"></i></span>
+                                </label>
 
-                            <input type="radio" class="theme-input" id="theme_emerald" name="ui_theme" value="emerald" {{ $selectedTheme === 'emerald' ? 'checked' : '' }}>
-                            <label class="theme-card" for="theme_emerald">
-                                <span class="theme-title">Emerald Palette</span>
-                                <span class="theme-dots"><i style="background:#10b981"></i><i style="background:#34d399"></i><i style="background:#0f1f3a"></i></span>
-                            </label>
+                                <input type="radio" class="theme-input" id="theme_emerald" name="ui_theme" value="emerald" {{ $selectedTheme === 'emerald' ? 'checked' : '' }}>
+                                <label class="theme-card" for="theme_emerald">
+                                    <span class="theme-title">Emerald Palette</span>
+                                    <span class="theme-dots"><i style="background:#10b981"></i><i style="background:#34d399"></i><i style="background:#0f1f3a"></i></span>
+                                </label>
 
-                            <input type="radio" class="theme-input" id="theme_rose" name="ui_theme" value="rose" {{ $selectedTheme === 'rose' ? 'checked' : '' }}>
-                            <label class="theme-card" for="theme_rose">
-                                <span class="theme-title">Rose Palette</span>
-                                <span class="theme-dots"><i style="background:#e11d48"></i><i style="background:#fb7185"></i><i style="background:#0f1f3a"></i></span>
-                            </label>
+                                <input type="radio" class="theme-input" id="theme_rose" name="ui_theme" value="rose" {{ $selectedTheme === 'rose' ? 'checked' : '' }}>
+                                <label class="theme-card" for="theme_rose">
+                                    <span class="theme-title">Rose Palette</span>
+                                    <span class="theme-dots"><i style="background:#e11d48"></i><i style="background:#fb7185"></i><i style="background:#0f1f3a"></i></span>
+                                </label>
 
-                            <input type="radio" class="theme-input" id="theme_violet" name="ui_theme" value="violet" {{ $selectedTheme === 'violet' ? 'checked' : '' }}>
-                            <label class="theme-card" for="theme_violet">
-                                <span class="theme-title">Violet Palette</span>
-                                <span class="theme-dots"><i style="background:#7c3aed"></i><i style="background:#a78bfa"></i><i style="background:#0f1f3a"></i></span>
-                            </label>
+                                <input type="radio" class="theme-input" id="theme_violet" name="ui_theme" value="violet" {{ $selectedTheme === 'violet' ? 'checked' : '' }}>
+                                <label class="theme-card" for="theme_violet">
+                                    <span class="theme-title">Violet Palette</span>
+                                    <span class="theme-dots"><i style="background:#7c3aed"></i><i style="background:#a78bfa"></i><i style="background:#0f1f3a"></i></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="mb-4 row">
-                    <label class="col-sm-2 col-form-label">UI Mode</label>
-                    <div class="col-sm-10">
-                        <div class="mode-grid">
-                            <input type="radio" class="theme-input" id="mode_white" name="ui_mode" value="white" {{ $selectedMode === 'white' ? 'checked' : '' }}>
-                            <label class="mode-card" for="mode_white">
-                                <span class="mode-title">White Mode</span>
-                                <span class="mode-preview mode-preview-white"></span>
-                            </label>
+                    <div class="settings-panel">
+                        <div class="settings-panel-head">Interface Mode</div>
+                        <div class="settings-panel-body">
+                            <div class="mode-grid">
+                                <input type="radio" class="theme-input" id="mode_white" name="ui_mode" value="white" {{ $selectedMode === 'white' ? 'checked' : '' }}>
+                                <label class="mode-card" for="mode_white">
+                                    <span class="mode-title">White Mode</span>
+                                    <span class="mode-preview mode-preview-white"></span>
+                                </label>
 
-                            <input type="radio" class="theme-input" id="mode_dark" name="ui_mode" value="dark" {{ $selectedMode === 'dark' ? 'checked' : '' }}>
-                            <label class="mode-card" for="mode_dark">
-                                <span class="mode-title">Dark Mode</span>
-                                <span class="mode-preview mode-preview-dark"></span>
-                            </label>
+                                <input type="radio" class="theme-input" id="mode_dark" name="ui_mode" value="dark" {{ $selectedMode === 'dark' ? 'checked' : '' }}>
+                                <label class="mode-card" for="mode_dark">
+                                    <span class="mode-title">Dark Mode</span>
+                                    <span class="mode-preview mode-preview-dark"></span>
+                                </label>
+                            </div>
+                            <small class="text-muted d-block mt-2">Selections apply to both Admin UI and User UI. Click any palette/mode to apply instantly.</small>
                         </div>
-                        <small class="text-muted d-block mt-2">Selections apply to both Admin UI and User UI. Click any palette/mode to apply instantly.</small>
                     </div>
-                </div>
 
-                <div class="text-end">
-                    <button type="submit" class="btn btn-success btn-lg">Save Settings</button>
+                    <div class="settings-savebar">
+                        <div class="text-muted small">Changes are applied live in preview and saved permanently when you submit.</div>
+                        <button type="submit" class="ui-btn ui-btn-success">Save Settings</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -138,6 +171,214 @@
 
 @push('styles')
 <style>
+    .settings-shell {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .settings-section-head h5 {
+        font-weight: 800;
+        letter-spacing: -0.01em;
+    }
+
+    .settings-panel {
+        border: 1px solid var(--admin-input-border);
+        border-radius: 14px;
+        background: rgba(var(--admin-primary-rgb), 0.03);
+        overflow: hidden;
+    }
+
+    .settings-panel-head {
+        padding: 0.75rem 0.9rem;
+        border-bottom: 1px solid var(--admin-input-border);
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: var(--admin-muted);
+        background: rgba(var(--admin-primary-rgb), 0.06);
+    }
+
+    .settings-panel-body {
+        padding: 0.95rem;
+    }
+
+    .settings-preview {
+        border: 1px dashed var(--admin-input-border);
+        border-radius: 12px;
+        min-height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background: rgba(var(--admin-primary-rgb), 0.03);
+    }
+
+    .asset-card {
+        border: 1px solid var(--admin-input-border);
+        border-radius: 12px;
+        padding: 0.75rem;
+        background: rgba(var(--admin-primary-rgb), 0.02);
+    }
+
+    .asset-preview {
+        min-height: 86px;
+    }
+
+    .asset-file-name {
+        margin: 0 0 0.55rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--admin-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .settings-savebar {
+        margin-top: 0.3rem;
+        border: 1px solid var(--admin-input-border);
+        border-radius: 14px;
+        padding: 0.8rem 0.9rem;
+        background: rgba(var(--admin-primary-rgb), 0.04);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+    }
+
+    .pro-upload {
+        position: relative;
+    }
+
+    .pro-upload-input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .pro-upload-trigger {
+        width: 100%;
+        border: 1px solid var(--admin-input-border);
+        border-radius: 14px;
+        background: linear-gradient(180deg, rgba(var(--admin-primary-rgb), 0.08), rgba(var(--admin-primary-rgb), 0.03));
+        color: var(--admin-text);
+        min-height: 58px;
+        padding: 0.65rem 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        cursor: pointer;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .pro-upload-trigger.pro-upload-trigger-button {
+        min-height: 44px;
+        padding: 0.55rem 0.72rem;
+        border-radius: 11px;
+    }
+
+    .pro-upload-trigger:hover {
+        border-color: rgba(var(--admin-primary-rgb), 0.68);
+        box-shadow: 0 10px 20px rgba(var(--admin-primary-rgb), 0.14);
+        transform: translateY(-1px);
+    }
+
+    .pro-upload-input:focus + .pro-upload-trigger {
+        border-color: var(--admin-focus);
+        box-shadow: 0 0 0 4px rgba(var(--admin-primary-rgb), 0.16);
+    }
+
+    .pro-upload-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: rgba(var(--admin-primary-rgb), 0.18);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        color: var(--admin-primary);
+        flex: 0 0 auto;
+    }
+
+    .pro-upload-texts {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .pro-upload-title {
+        font-size: 0.9rem;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+
+    .pro-upload-sub {
+        font-size: 0.76rem;
+        color: var(--admin-muted);
+    }
+
+    .pro-upload-file {
+        margin-left: auto;
+        max-width: 48%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 0.8rem;
+        padding: 0.3rem 0.55rem;
+        border-radius: 999px;
+        border: 1px solid rgba(var(--admin-primary-rgb), 0.3);
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        color: var(--admin-text);
+        font-weight: 700;
+    }
+
+    .admin-dark .pro-upload-trigger {
+        border-color: #334155;
+        background: linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+    }
+
+    .admin-dark .pro-upload-icon {
+        background: rgba(59, 130, 246, 0.2);
+        color: #93c5fd;
+    }
+
+    .admin-dark .pro-upload-file {
+        border-color: #475569;
+        background: rgba(148, 163, 184, 0.16);
+        color: #e2e8f0;
+    }
+
+    .admin-dark .settings-panel {
+        border-color: #334155;
+        background: rgba(15, 23, 42, 0.82);
+    }
+
+    .admin-dark .asset-card {
+        border-color: #334155;
+        background: rgba(15, 23, 42, 0.72);
+    }
+
+    .admin-dark .settings-panel-head {
+        border-bottom-color: #334155;
+        background: rgba(30, 41, 59, 0.72);
+        color: #cbd5e1;
+    }
+
+    .admin-dark .settings-preview {
+        border-color: #334155;
+        background: rgba(15, 23, 42, 0.74);
+    }
+
+    .admin-dark .settings-savebar {
+        border-color: #334155;
+        background: rgba(15, 23, 42, 0.86);
+    }
+
     .theme-grid,
     .mode-grid {
         display: grid;
@@ -230,6 +471,21 @@
     .theme-grid + small.text-muted {
         color: var(--admin-muted) !important;
     }
+
+    @media (max-width: 767.98px) {
+        .settings-panel-body {
+            padding: 0.8rem;
+        }
+
+        .settings-savebar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .settings-savebar .ui-btn {
+            width: 100%;
+        }
+    }
 </style>
 @endpush
 
@@ -238,21 +494,33 @@
     const settingsForm = document.getElementById('generalSettingsForm');
     const logoInput = document.getElementById('siteLogoInput');
     const logoPreview = document.getElementById('siteLogoPreview');
+    const logoFileName = document.getElementById('siteLogoFileName');
 
     if (logoInput && logoPreview) {
         logoInput.addEventListener('change', e => {
             const file = e.target.files[0];
-            if (file) logoPreview.src = URL.createObjectURL(file);
+            if (file) {
+                logoPreview.src = URL.createObjectURL(file);
+            }
+            if (logoFileName) {
+                logoFileName.textContent = file ? file.name : 'No file selected';
+            }
         });
     }
 
     const faviconInput = document.getElementById('siteFaviconInput');
     const faviconPreview = document.getElementById('siteFaviconPreview');
+    const faviconFileName = document.getElementById('siteFaviconFileName');
 
     if (faviconInput && faviconPreview) {
         faviconInput.addEventListener('change', e => {
             const file = e.target.files[0];
-            if (file) faviconPreview.src = URL.createObjectURL(file);
+            if (file) {
+                faviconPreview.src = URL.createObjectURL(file);
+            }
+            if (faviconFileName) {
+                faviconFileName.textContent = file ? file.name : 'No file selected';
+            }
         });
     }
 
