@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -86,5 +88,105 @@ class UserController extends Controller
         ]);
 
         return back()->with('success', 'User role updated successfully.');
+    }
+
+    public function edit(User $user)
+    {
+        $roles = Role::query()
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        $currentRoleId = optional($user->roles->first())->id;
+        if (!$currentRoleId && filled($user->role)) {
+            $normalizedUserRole = strtolower(trim((string) $user->role));
+            $fallbackRole = $roles->first(function ($item) use ($normalizedUserRole) {
+                return strtolower((string) $item->name) === $normalizedUserRole;
+            });
+            $currentRoleId = optional($fallbackRole)->id;
+        }
+
+        return view('admin.users.edit', [
+            'user' => $user->loadMissing('roles:id,name'),
+            'roles' => $roles,
+            'currentRoleId' => $currentRoleId,
+            'statuses' => ['active', 'suspended'],
+            'hasStatusColumn' => Schema::hasColumn('users', 'status'),
+            'hasLastLoginColumn' => Schema::hasColumn('users', 'last_login_at'),
+        ]);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $hasStatusColumn = Schema::hasColumn('users', 'status');
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'role_id' => ['required', 'integer', 'exists:roles,id'],
+            'status' => [$hasStatusColumn ? 'required' : 'nullable', 'in:active,suspended'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'avatar' => ['nullable', 'image', 'max:2048'],
+        ]);
+
+        $role = Role::query()->findOrFail($validated['role_id']);
+
+        $payload = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'role' => Str::lower(trim($role->name)),
+        ];
+
+        if ($hasStatusColumn && array_key_exists('status', $validated) && filled($validated['status'])) {
+            $payload['status'] = $validated['status'];
+        }
+
+        if (filled($validated['password'] ?? null)) {
+            $payload['password'] = Hash::make($validated['password']);
+        }
+
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $destination = $this->resolveAvatarDestination();
+
+            if (!is_dir($destination)) {
+                mkdir($destination, 0755, true);
+            }
+
+            $this->deleteOldAvatar((string) $user->avatar_path);
+            $file->move($destination, $filename);
+            $payload['avatar_path'] = '/uploads/profiles/' . $filename;
+        }
+
+        $user->update($payload);
+        $user->roles()->sync([$role->id]);
+
+        return redirect()
+            ->route('admin.users.edit', $user)
+            ->with('success', 'User updated successfully.');
+    }
+
+    private function resolveAvatarDestination(): string
+    {
+        return base_path('../uploads/profiles');
+    }
+
+    private function deleteOldAvatar(string $avatarPath): void
+    {
+        if ($avatarPath === '' || !str_starts_with($avatarPath, '/uploads/profiles/')) {
+            return;
+        }
+
+        $relative = ltrim($avatarPath, '/');
+        $candidates = [
+            base_path('../' . $relative),
+            public_path($relative),
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (is_file($candidate)) {
+                @unlink($candidate);
+            }
+        }
     }
 }

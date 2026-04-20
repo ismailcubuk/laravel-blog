@@ -171,6 +171,49 @@
             outline: none;
         }
 
+        .form-control:-webkit-autofill,
+        .form-control:-webkit-autofill:hover,
+        .form-control:-webkit-autofill:focus,
+        .form-control:-webkit-autofill:active,
+        .form-select:-webkit-autofill,
+        .form-select:-webkit-autofill:hover,
+        .form-select:-webkit-autofill:focus,
+        .form-select:-webkit-autofill:active,
+        .contact-form input:-webkit-autofill,
+        .contact-form input:-webkit-autofill:hover,
+        .contact-form input:-webkit-autofill:focus,
+        .contact-form input:-webkit-autofill:active,
+        .contact-form textarea:-webkit-autofill,
+        .contact-form textarea:-webkit-autofill:hover,
+        .contact-form textarea:-webkit-autofill:focus,
+        .contact-form textarea:-webkit-autofill:active,
+        .searchText:-webkit-autofill,
+        .searchText:-webkit-autofill:hover,
+        .searchText:-webkit-autofill:focus,
+        .searchText:-webkit-autofill:active {
+            -webkit-text-fill-color: var(--front-text) !important;
+            caret-color: var(--front-text) !important;
+            -webkit-box-shadow: inset 0 0 0 1000px var(--front-input-bg) !important;
+            box-shadow: inset 0 0 0 1000px var(--front-input-bg) !important;
+            transition: background-color 9999s ease-out 0s !important;
+            border: 1px solid var(--front-border) !important;
+        }
+
+        .form-control:-webkit-autofill:focus,
+        .form-control:-webkit-autofill:active,
+        .form-select:-webkit-autofill:focus,
+        .form-select:-webkit-autofill:active,
+        .contact-form input:-webkit-autofill:focus,
+        .contact-form input:-webkit-autofill:active,
+        .contact-form textarea:-webkit-autofill:focus,
+        .contact-form textarea:-webkit-autofill:active,
+        .searchText:-webkit-autofill:focus,
+        .searchText:-webkit-autofill:active {
+            -webkit-box-shadow: inset 0 0 0 1000px var(--front-surface) !important;
+            box-shadow: inset 0 0 0 1000px var(--front-surface) !important;
+            border-color: var(--front-focus) !important;
+        }
+
         .sidebar-item {
             margin-bottom: 1rem;
             padding: 1rem;
@@ -416,6 +459,7 @@
             transition: width var(--alert-duration, 4000ms) linear;
         }
     </style>
+    @include('partials.global-select-styles')
     @stack('styles')
 </head>
 
@@ -494,6 +538,17 @@
             });
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('input.form-control').forEach(function (input) {
+                const type = (input.getAttribute('type') || 'text').toLowerCase();
+                if ((type === 'text' || type === 'email' || type === 'password') && !input.hasAttribute('spellcheck')) {
+                    input.setAttribute('spellcheck', 'false');
+                }
+            });
+        });
+    </script>
+    @include('partials.global-select-scripts')
     @stack('scripts')
 
 </body>

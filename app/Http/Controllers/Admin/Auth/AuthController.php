@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -44,6 +45,21 @@ class AuthController extends Controller
                 return back()->withErrors([
                     'email' => 'Please verify your email before logging in.',
                 ])->onlyInput('email');
+            }
+
+            $hasStatusColumn = Schema::hasColumn('users', 'status');
+            if ($hasStatusColumn && $user && ($user->status ?? 'active') !== 'active') {
+                Auth::logout();
+
+                return back()->withErrors([
+                    'email' => 'Your account is currently suspended. Please contact support.',
+                ])->onlyInput('email');
+            }
+
+            if (Schema::hasColumn('users', 'last_login_at') && $user) {
+                $user->forceFill([
+                    'last_login_at' => now(),
+                ])->save();
             }
 
             if ($user?->role === 'admin') {

@@ -240,6 +240,31 @@
             background: var(--admin-surface);
         }
 
+        .form-control:-webkit-autofill,
+        .form-control:-webkit-autofill:hover,
+        .form-control:-webkit-autofill:focus,
+        .form-control:-webkit-autofill:active,
+        .form-select:-webkit-autofill,
+        .form-select:-webkit-autofill:hover,
+        .form-select:-webkit-autofill:focus,
+        .form-select:-webkit-autofill:active {
+            -webkit-text-fill-color: var(--admin-text) !important;
+            caret-color: var(--admin-text) !important;
+            -webkit-box-shadow: inset 0 0 0 1000px var(--admin-input-bg) !important;
+            box-shadow: inset 0 0 0 1000px var(--admin-input-bg) !important;
+            transition: background-color 9999s ease-out 0s !important;
+            border: 1px solid var(--admin-input-border) !important;
+        }
+
+        .form-control:-webkit-autofill:focus,
+        .form-control:-webkit-autofill:active,
+        .form-select:-webkit-autofill:focus,
+        .form-select:-webkit-autofill:active {
+            -webkit-box-shadow: inset 0 0 0 1000px var(--admin-surface) !important;
+            box-shadow: inset 0 0 0 1000px var(--admin-surface) !important;
+            border-color: var(--admin-focus) !important;
+        }
+
         .btn {
             border-radius: 12px;
             font-weight: 700;
@@ -381,8 +406,34 @@
         .admin-dark .form-select,
         .admin-dark textarea.form-control {
             color: #e2e8f0 !important;
-            -webkit-text-fill-color: #e2e8f0;
+            -webkit-text-fill-color: #e2e8f0 !important;
             caret-color: #f8fafc;
+        }
+
+        .admin-dark .form-control:focus,
+        .admin-dark .form-control:active,
+        .admin-dark .form-control:hover,
+        .admin-dark textarea.form-control:focus,
+        .admin-dark textarea.form-control:active,
+        .admin-dark textarea.form-control:hover {
+            color: #f8fafc !important;
+            -webkit-text-fill-color: #f8fafc !important;
+            caret-color: #f8fafc !important;
+        }
+
+        .admin-dark input.form-control:-webkit-autofill,
+        .admin-dark input.form-control:-webkit-autofill:hover,
+        .admin-dark input.form-control:-webkit-autofill:focus,
+        .admin-dark input.form-control:-webkit-autofill:active,
+        .admin-dark textarea.form-control:-webkit-autofill,
+        .admin-dark textarea.form-control:-webkit-autofill:hover,
+        .admin-dark textarea.form-control:-webkit-autofill:focus,
+        .admin-dark textarea.form-control:-webkit-autofill:active {
+            -webkit-text-fill-color: #f8fafc !important;
+            caret-color: #f8fafc !important;
+            -webkit-box-shadow: inset 0 0 0 1000px #0f172a !important;
+            box-shadow: inset 0 0 0 1000px #0f172a !important;
+            border-color: #334155 !important;
         }
 
         .admin-dark .form-control::placeholder,
@@ -493,6 +544,7 @@
             }
         }
     </style>
+    @include('partials.global-select-styles')
     @stack('styles')
 </head>
 
@@ -667,6 +719,18 @@
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('input.form-control').forEach(function (input) {
+                const type = (input.getAttribute('type') || 'text').toLowerCase();
+                if ((type === 'text' || type === 'email' || type === 'password') && !input.hasAttribute('spellcheck')) {
+                    input.setAttribute('spellcheck', 'false');
+                }
+            });
+        });
+    </script>
+
+    @include('partials.global-select-scripts')
     @yield('scripts')
     @stack('scripts')
 

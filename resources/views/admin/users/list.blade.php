@@ -33,6 +33,27 @@
         </div>
     @endif
 
+    <div class="row g-3 mb-4">
+        <div class="col-lg-3 col-sm-6">
+            <div class="card shadow-sm stats-card">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Total Users</p>
+                    <h3 class="mb-0">{{ $users->total() }}</h3>
+                </div>
+            </div>
+        </div>
+        @foreach($roleCounts as $role => $count)
+            <div class="col-lg-3 col-sm-6">
+                <div class="card shadow-sm stats-card">
+                    <div class="card-body">
+                        <p class="text-muted mb-1 text-capitalize">{{ $role }}</p>
+                        <h3 class="mb-0">{{ $count }}</h3>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
     <form method="GET" action="{{ route('admin.users.list') }}" class="users-filter-bar mb-4">
         <div class="users-filter-main">
             <div class="users-field users-field-search">
@@ -66,27 +87,6 @@
         </div>
     </form>
 
-    <div class="row g-3 mb-4">
-        <div class="col-lg-3 col-sm-6">
-            <div class="card shadow-sm stats-card">
-                <div class="card-body">
-                    <p class="text-muted mb-1">Total Users</p>
-                    <h3 class="mb-0">{{ $users->total() }}</h3>
-                </div>
-            </div>
-        </div>
-        @foreach($roleCounts as $role => $count)
-            <div class="col-lg-3 col-sm-6">
-                <div class="card shadow-sm stats-card">
-                    <div class="card-body">
-                        <p class="text-muted mb-1 text-capitalize">{{ $role }}</p>
-                        <h3 class="mb-0">{{ $count }}</h3>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
     <div class="card shadow-sm users-table-card">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h5 class="mb-0">Users</h5>
@@ -99,6 +99,7 @@
                 <table class="table table-hover align-middle mb-0 users-table">
                     <thead>
                         <tr>
+                            <th class="edit-cell-col">Edit</th>
                             <th>
                                 <a
                                     href="{{ route('admin.users.list', array_merge(request()->except('page'), ['sort' => 'name', 'direction' => $nextDirection('name')])) }}"
@@ -147,68 +148,31 @@
                                     'author' => 'success',
                                     default => 'secondary',
                                 };
-                                $currentRoleId = optional($user->roles->first())->id;
-                                if (!$currentRoleId && filled($user->role)) {
-                                    $fallbackRole = $roles->firstWhere('name', ucfirst((string) $user->role));
-                                    $currentRoleId = optional($fallbackRole)->id;
-                                }
                             @endphp
                             <tr>
+                                <td class="edit-cell-col">
+                                    <a
+                                        href="{{ route('admin.users.edit', $user) }}"
+                                        class="btn edit-user-btn"
+                                        title="Edit user"
+                                        aria-label="Edit user"
+                                    >
+                                        <i class="bi bi-pencil-square"></i>
+                                        <span>Edit</span>
+                                    </a>
+                                </td>
                                 <td class="fw-semibold">{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td class="role-cell-col">
                                     <div class="role-cell" id="roleCell-{{ $user->id }}">
-                                        <div id="roleView-{{ $user->id }}" class="d-flex align-items-center gap-2">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary role-edit-btn"
-                                                data-role-open="{{ $user->id }}"
-                                                title="Edit role"
-                                                aria-label="Edit role"
-                                            >
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <span class="badge bg-{{ $badgeClass }} text-capitalize role-name-badge">{{ $role }}</span>
-                                        </div>
-
-                                        <form
-                                            id="roleForm-{{ $user->id }}"
-                                            action="{{ route('admin.users.role.update', $user) }}"
-                                            method="POST"
-                                            class="role-editor-pop d-none"
-                                        >
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="role-editor-head">Change Role</div>
-                                            <div class="role-editor-controls">
-                                                <select name="role_id" class="form-select form-select-sm role-select" required>
-                                                    @foreach($roles as $roleOption)
-                                                        <option value="{{ $roleOption->id }}" {{ (int) $currentRoleId === (int) $roleOption->id ? 'selected' : '' }}>
-                                                            {{ $roleOption->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <button type="submit" class="btn btn-sm btn-primary role-action-btn" title="Save role" aria-label="Save role">
-                                                    <i class="fa-solid fa-check"></i>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-sm btn-secondary role-action-btn"
-                                                    data-role-cancel="{{ $user->id }}"
-                                                    title="Cancel"
-                                                    aria-label="Cancel role edit"
-                                                >
-                                                    <i class="fa-solid fa-xmark"></i>
-                                                </button>
-                                            </div>
-                                        </form>
+                                        <span class="badge bg-{{ $badgeClass }} text-capitalize role-name-badge">{{ $role }}</span>
                                     </div>
                                 </td>
                                 <td>{{ optional($user->created_at)->format('d M Y') }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center py-4 text-muted">No users found.</td>
+                                <td colspan="5" class="text-center py-4 text-muted">No users found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -329,31 +293,65 @@
         color: var(--admin-primary);
     }
 
+    .edit-cell-col {
+        width: 110px;
+        text-align: center;
+    }
+
     .role-cell-col {
-        width: 220px;
+        width: 180px;
     }
 
     .role-cell {
-        position: relative;
-        display: inline-flex;
+        display: flex;
         align-items: center;
+        width: 100%;
         min-height: 32px;
     }
 
-    .role-edit-btn {
-        width: 28px;
-        height: 28px;
-        min-width: 28px;
-        padding: 0;
-        border-radius: 999px;
+    .edit-user-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 0.4rem;
+        min-height: 34px;
+        padding: 0.32rem 0.72rem;
+        border-radius: 999px;
+        border: 1px solid rgba(var(--admin-primary-rgb), 0.35);
+        background: rgba(var(--admin-primary-rgb), 0.08);
+        color: var(--admin-text);
+        font-size: 0.78rem;
+        font-weight: 700;
         line-height: 1;
+        transition: all 0.18s ease;
     }
 
-    .role-edit-btn i {
-        font-size: 12px;
+    .edit-user-btn i {
+        font-size: 0.86rem;
+    }
+
+    .edit-user-btn:hover {
+        border-color: rgba(var(--admin-primary-rgb), 0.62);
+        background: rgba(var(--admin-primary-rgb), 0.16);
+        color: var(--admin-text);
+        transform: translateY(-1px);
+    }
+
+    .edit-user-btn:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 0.22rem rgba(var(--admin-primary-rgb), 0.28);
+    }
+
+    .admin-dark .edit-user-btn {
+        border-color: rgba(148, 163, 184, 0.35);
+        background: rgba(148, 163, 184, 0.1);
+        color: #e2e8f0;
+    }
+
+    .admin-dark .edit-user-btn:hover {
+        border-color: rgba(148, 163, 184, 0.62);
+        background: rgba(148, 163, 184, 0.2);
+        color: #f8fafc;
     }
 
     .role-name-badge {
@@ -362,60 +360,6 @@
         align-items: center;
         justify-content: center;
         padding: 0.38rem 0.72rem;
-    }
-
-    .role-editor-pop {
-        position: absolute;
-        top: calc(100% + 8px);
-        left: 0;
-        z-index: 60;
-        min-width: 260px;
-        border: 1px solid var(--admin-border);
-        border-radius: 12px;
-        background: var(--admin-surface);
-        box-shadow: 0 14px 28px rgba(2, 6, 23, 0.28);
-        padding: 0.55rem;
-    }
-
-    .role-editor-head {
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: var(--admin-muted);
-        margin-bottom: 0.45rem;
-    }
-
-    .role-editor-controls {
-        display: flex;
-        align-items: center;
-        gap: 0.45rem;
-    }
-
-    .role-select {
-        min-width: 0;
-        height: 38px;
-    }
-
-    .role-action-btn {
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
-        padding: 0;
-        border-radius: 10px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .role-action-btn i {
-        font-size: 13px;
-    }
-
-    .admin-dark .role-editor-pop {
-        border-color: #334155;
-        background: #0f172a;
-        box-shadow: 0 16px 34px rgba(2, 6, 23, 0.6);
     }
 
     .users-pagination-wrap {
@@ -520,77 +464,20 @@
             flex-direction: column;
             align-items: flex-start;
         }
+
+        .edit-cell-col {
+            width: 78px;
+        }
+
+        .edit-user-btn {
+            min-width: 34px;
+            padding: 0.32rem 0.5rem;
+        }
+
+        .edit-user-btn span {
+            display: none;
+        }
     }
 </style>
 @endpush
-
-@push('scripts')
-<script>
-    function closeAllRoleEditors(exceptUserId = null) {
-        document.querySelectorAll('[id^="roleForm-"]').forEach((form) => {
-            const id = Number(form.id.replace('roleForm-', ''));
-            if (exceptUserId !== null && id === exceptUserId) {
-                return;
-            }
-
-            const roleView = document.getElementById('roleView-' + id);
-            form.classList.add('d-none');
-            if (roleView) {
-                roleView.classList.remove('d-none');
-            }
-        });
-    }
-
-    function toggleRoleEdit(userId, enableEdit) {
-        const roleView = document.getElementById('roleView-' + userId);
-        const roleForm = document.getElementById('roleForm-' + userId);
-
-        if (!roleView || !roleForm) {
-            return;
-        }
-
-        if (enableEdit) {
-            closeAllRoleEditors(userId);
-            roleView.classList.add('d-none');
-            roleForm.classList.remove('d-none');
-            const select = roleForm.querySelector('select[name="role_id"]');
-            if (select) {
-                select.focus();
-            }
-            return;
-        }
-
-        roleForm.classList.add('d-none');
-        roleView.classList.remove('d-none');
-    }
-
-    document.addEventListener('click', function (event) {
-        const openBtn = event.target.closest('[data-role-open]');
-        if (openBtn) {
-            const userId = Number(openBtn.getAttribute('data-role-open'));
-            toggleRoleEdit(userId, true);
-            return;
-        }
-
-        const cancelBtn = event.target.closest('[data-role-cancel]');
-        if (cancelBtn) {
-            const userId = Number(cancelBtn.getAttribute('data-role-cancel'));
-            toggleRoleEdit(userId, false);
-            return;
-        }
-
-        const inRoleCell = event.target.closest('.role-cell');
-        if (!inRoleCell) {
-            closeAllRoleEditors();
-        }
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-            closeAllRoleEditors();
-        }
-    });
-</script>
-@endpush
 @endsection
-

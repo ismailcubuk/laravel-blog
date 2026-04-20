@@ -56,6 +56,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::view('/privacy-policy', 'admin.pages.privacy')->name('pages.privacy');
 
         Route::get('/users', [UserController::class, 'index'])->name('users.list');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::get('/users/profile', [ProfileController::class, 'edit'])->name('users.profile');
         Route::put('/users/profile', [ProfileController::class, 'update'])->name('users.profile.update');
         Route::put('/users/profile/password', [ProfileController::class, 'updatePassword'])->name('users.profile.password');

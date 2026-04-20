@@ -95,6 +95,25 @@
             color: var(--auth-text);
         }
 
+        .form-control:-webkit-autofill,
+        .form-control:-webkit-autofill:hover,
+        .form-control:-webkit-autofill:focus,
+        .form-control:-webkit-autofill:active {
+            -webkit-text-fill-color: var(--auth-text) !important;
+            caret-color: var(--auth-text) !important;
+            -webkit-box-shadow: inset 0 0 0 1000px var(--auth-input-bg) !important;
+            box-shadow: inset 0 0 0 1000px var(--auth-input-bg) !important;
+            transition: background-color 9999s ease-out 0s !important;
+            border: 1px solid var(--auth-input-border) !important;
+        }
+
+        .form-control:-webkit-autofill:focus,
+        .form-control:-webkit-autofill:active {
+            -webkit-box-shadow: inset 0 0 0 1000px var(--auth-surface) !important;
+            box-shadow: inset 0 0 0 1000px var(--auth-surface) !important;
+            border-color: #93b8ff !important;
+        }
+
         .form-control::placeholder {
             color: var(--auth-muted);
         }
@@ -290,6 +309,7 @@
             transition: width var(--alert-duration, 4000ms) linear;
         }
     </style>
+    @include('partials.global-select-styles')
     @stack('styles')
 </head>
 
@@ -365,8 +385,20 @@
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('input.form-control').forEach(function (input) {
+                const type = (input.getAttribute('type') || 'text').toLowerCase();
+                if ((type === 'text' || type === 'email' || type === 'password') && !input.hasAttribute('spellcheck')) {
+                    input.setAttribute('spellcheck', 'false');
+                }
+            });
+        });
+    </script>
+
     <!-- AdminLTE JS -->
     <script src="{{ asset('adminlte/js/adminlte.min.js') }}"></script>
+    @include('partials.global-select-scripts')
     @stack('scripts')
 </body>
 
