@@ -12,9 +12,6 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo(fn () => route('admin.login'));
-        $middleware->web(append: [
-            \App\Http\Middleware\SetLocale::class,
-        ]);
 
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureUserRole::class,

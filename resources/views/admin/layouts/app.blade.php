@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="tr">
 
 <head>
     <meta charset="utf-8">
@@ -62,42 +62,6 @@
 
         .app-content {
             padding: 1.1rem 1.2rem;
-        }
-
-        .admin-top-tools {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.6rem;
-            margin-bottom: 0.85rem;
-        }
-
-        .admin-lang-switch {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            border: 1px solid var(--admin-input-border);
-            border-radius: 999px;
-            padding: 0.2rem;
-            background: rgba(var(--admin-primary-rgb), 0.08);
-        }
-
-        .admin-lang-switch button {
-            min-width: 38px;
-            min-height: 30px;
-            border: 0;
-            border-radius: 999px;
-            background: transparent;
-            color: var(--admin-text);
-            font-weight: 800;
-            font-size: 0.72rem;
-            letter-spacing: 0.03em;
-        }
-
-        .admin-lang-switch button.is-active {
-            color: #fff;
-            background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-2) 100%);
-            box-shadow: 0 6px 14px rgba(var(--admin-primary-rgb), 0.24);
         }
 
         .admin-sidebar-toggle {
@@ -810,10 +774,6 @@
                 z-index: 1055;
             }
 
-            .admin-top-tools {
-                margin-bottom: 0.65rem;
-            }
-
             body.sidebar-mobile-open .app-sidebar {
                 transform: translateX(0);
             }
@@ -832,10 +792,6 @@
             .admin-sidebar-toggle {
                 display: none;
             }
-
-            .admin-top-tools {
-                justify-content: flex-end;
-            }
         }
     </style>
     @include('partials.global-select-styles')
@@ -853,21 +809,9 @@
         <main class="app-main">
             <div class="app-content">
                 <div class="container-fluid">
-                    <div class="admin-top-tools">
-                        <button type="button" class="admin-sidebar-toggle" id="adminSidebarToggle" aria-label="Open sidebar" title="Open sidebar">
-                            <i class="fa-solid fa-bars" id="adminSidebarToggleIcon"></i>
-                        </button>
-                        <div class="admin-lang-switch" aria-label="{{ __('ui.language.label') }}">
-                            <form method="POST" action="{{ route('locale.switch', 'tr') }}">
-                                @csrf
-                                <button type="submit" class="{{ app()->getLocale() === 'tr' ? 'is-active' : '' }}">{{ __('ui.language.tr') }}</button>
-                            </form>
-                            <form method="POST" action="{{ route('locale.switch', 'en') }}">
-                                @csrf
-                                <button type="submit" class="{{ app()->getLocale() === 'en' ? 'is-active' : '' }}">{{ __('ui.language.en') }}</button>
-                            </form>
-                        </div>
-                    </div>
+                    <button type="button" class="admin-sidebar-toggle" id="adminSidebarToggle" aria-label="Open sidebar" title="Open sidebar">
+                        <i class="fa-solid fa-bars" id="adminSidebarToggleIcon"></i>
+                    </button>
                     @yield('content')
                 </div>
             </div>

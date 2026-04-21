@@ -1,12 +1,9 @@
 <?php
 
-use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/frontend.php';
 require __DIR__ . '/admin.php';
-
-Route::post('/locale/{locale}', [LocaleController::class, 'update'])->name('locale.switch');
 
 // Shared hosting fallback for /uploads files.
 Route::get('/uploads/{path}', function (string $path) {
