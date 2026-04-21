@@ -20,8 +20,6 @@ class SettingController extends Controller
             'ui_mode' => 'white',
             'brand_primary_color' => '#f48840',
             'brand_secondary_color' => '#fb9857',
-            'maintenance_mode' => '0',
-            'maintenance_message' => '',
         ];
 
         $settings = Setting::allAsKeyValue();
@@ -72,8 +70,6 @@ class SettingController extends Controller
             'ui_mode' => ['required', 'in:white,dark'],
             'brand_primary_color' => ['nullable', 'regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/'],
             'brand_secondary_color' => ['nullable', 'regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/'],
-            'maintenance_mode' => ['nullable', 'in:0,1'],
-            'maintenance_message' => ['nullable', 'string', 'max:255'],
         ]);
 
         $fields = [
@@ -86,8 +82,6 @@ class SettingController extends Controller
             'ui_mode',
             'brand_primary_color',
             'brand_secondary_color',
-            'maintenance_mode',
-            'maintenance_message',
         ];
 
         $currentSettings = Setting::allAsKeyValue();

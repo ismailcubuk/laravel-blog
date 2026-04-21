@@ -67,21 +67,6 @@
             padding: 1.2rem 0 1.8rem;
         }
 
-        .maintenance-banner {
-            margin: 0.9rem auto 0;
-            width: min(1120px, calc(100% - 24px));
-            border-radius: 12px;
-            border: 1px solid rgba(var(--front-primary-rgb), 0.3);
-            background: rgba(var(--front-primary-rgb), 0.1);
-            color: var(--front-text);
-            padding: 0.62rem 0.9rem;
-            font-weight: 700;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .front-card,
         .blog-post,
         .sidebar-item,
@@ -564,13 +549,6 @@
 
     @include('partials.preloader')
     @include('partials.header')
-    @if(($settings['maintenance_mode'] ?? '0') === '1')
-        <div class="maintenance-banner" role="status" aria-live="polite">
-            <i class="bi bi-tools"></i>
-            <span>{{ $settings['maintenance_message'] ?: 'We are currently doing scheduled maintenance. Some features may be limited.' }}</span>
-        </div>
-    @endif
-
     <main class="front-main">
         @yield('content')
     </main>

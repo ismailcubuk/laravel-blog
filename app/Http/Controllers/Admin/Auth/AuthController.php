@@ -32,10 +32,12 @@ class AuthController extends Controller
             'remember' => ['nullable', 'boolean'],
         ]);
 
+        $remember = $request->has('remember');
+
         if (Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
-        ], $request->boolean('remember'))) {
+        ], $remember)) {
             $request->session()->regenerate();
 
             $user = $request->user();

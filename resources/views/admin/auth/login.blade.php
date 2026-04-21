@@ -57,8 +57,8 @@
                 <div class="row mb-3">
                     <div class="col-8">
                         <div class="form-check">
-                            <input type="checkbox" name="remember" value="1" class="form-check-input" {{ old('remember') ? 'checked' : '' }}>
-                            <label class="form-check-label">Remember Me</label>
+                            <input type="checkbox" name="remember" id="rememberMe" value="1" class="form-check-input" {{ old('remember') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="rememberMe">Remember Me</label>
                         </div>
                     </div>
                     <div class="col-4">
