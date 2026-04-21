@@ -282,6 +282,28 @@
 .latest-panel .latest-posts-list {
     max-height: 430px;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--admin-primary-rgb), 0.72) rgba(var(--admin-primary-rgb), 0.12);
+    padding-right: 4px;
+}
+
+.latest-panel .latest-posts-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.latest-panel .latest-posts-list::-webkit-scrollbar-track {
+    background: rgba(var(--admin-primary-rgb), 0.12);
+    border-radius: 999px;
+}
+
+.latest-panel .latest-posts-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(var(--admin-primary-rgb), 0.88), rgba(var(--admin-primary-rgb), 0.64));
+    border-radius: 999px;
+    border: 2px solid rgba(15, 23, 42, 0.08);
+}
+
+.latest-panel .latest-posts-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(var(--admin-primary-rgb), 1), rgba(var(--admin-primary-rgb), 0.78));
 }
 
 .latest-post-item {
@@ -750,6 +772,18 @@
 .admin-dark .activity-time-chip,
 .admin-dark .activity-count-badge {
     border-color: #334155;
+}
+
+.admin-dark .latest-panel .latest-posts-list {
+    scrollbar-color: rgba(var(--admin-primary-rgb), 0.82) rgba(148, 163, 184, 0.16);
+}
+
+.admin-dark .latest-panel .latest-posts-list::-webkit-scrollbar-track {
+    background: rgba(148, 163, 184, 0.16);
+}
+
+.admin-dark .latest-panel .latest-posts-list::-webkit-scrollbar-thumb {
+    border-color: rgba(15, 23, 42, 0.42);
 }
 
 .admin-dark .latest-post-item:hover,

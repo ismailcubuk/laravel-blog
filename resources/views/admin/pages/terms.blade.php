@@ -64,7 +64,7 @@
                 >{{ old('description', $page->description) }}</textarea>
 
                 <div class="terms-editor-actions mt-3">
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn terms-save-btn">
                         <i class="fa-solid fa-floppy-disk me-1"></i>
                         Save Terms
                     </button>
@@ -92,21 +92,27 @@
     .terms-editor-page {
         --terms-border: rgba(var(--admin-primary-rgb), 0.14);
         --terms-soft: rgba(var(--admin-primary-rgb), 0.06);
+        --terms-strong: rgba(var(--admin-primary-rgb), 0.22);
+        --terms-head-bg: linear-gradient(135deg, rgba(var(--admin-primary-rgb), 0.14), rgba(var(--admin-primary-rgb), 0.05));
+        --terms-head-border: rgba(var(--admin-primary-rgb), 0.2);
+        --terms-elev: 0 14px 30px rgba(var(--admin-primary-rgb), 0.14);
     }
     .terms-editor-hero {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        border: 1px solid var(--terms-border);
+        border: 1px solid var(--terms-head-border);
         border-radius: 14px;
-        background: linear-gradient(135deg, rgba(var(--admin-primary-rgb), 0.11), rgba(var(--admin-primary-rgb), 0.03));
+        background: var(--terms-head-bg);
         padding: 0.85rem 1rem;
+        box-shadow: var(--terms-elev);
     }
     .terms-editor-title {
         font-size: 1.55rem;
         font-weight: 800;
         letter-spacing: -0.01em;
+        color: var(--admin-text);
     }
     .terms-editor-subtitle {
         color: var(--admin-muted);
@@ -116,12 +122,15 @@
         align-items: center;
         gap: 0.45rem;
         font-weight: 700;
-        border: 1px solid var(--terms-border);
+        border: 1px solid var(--terms-head-border);
         border-radius: 999px;
         background: var(--terms-soft);
         padding: 0.4rem 0.7rem;
         color: var(--admin-text);
         white-space: nowrap;
+    }
+    .terms-editor-badge i {
+        color: var(--admin-primary);
     }
     .terms-editor-grid {
         display: grid;
@@ -136,13 +145,14 @@
         overflow: hidden;
     }
     .terms-card-head {
-        border-bottom: 1px solid var(--terms-border);
-        background: rgba(var(--admin-primary-rgb), 0.07);
+        border-bottom: 1px solid var(--terms-head-border);
+        background: var(--terms-head-bg);
         padding: 0.75rem 0.95rem;
     }
     .terms-card-head h5 {
         font-weight: 800;
         letter-spacing: 0.01em;
+        color: var(--admin-text);
     }
     .terms-card-body {
         padding: 0.95rem;
@@ -152,13 +162,17 @@
         min-height: 390px;
         max-height: 560px;
     }
+    .terms-card-editor .ck.ck-editor {
+        border-radius: 12px;
+        overflow: hidden;
+    }
     .terms-card-editor .ck.ck-editor__main > .ck-editor__editable {
         background: var(--admin-input-bg);
         color: var(--admin-text);
         border-color: var(--admin-input-border);
     }
     .terms-card-editor .ck.ck-toolbar {
-        background: rgba(var(--admin-primary-rgb), 0.08);
+        background: var(--terms-head-bg);
         border-color: var(--admin-input-border);
     }
     .terms-card-editor .ck.ck-button,
@@ -167,8 +181,11 @@
     }
     .terms-card-editor .ck.ck-button:hover,
     .terms-card-editor .ck.ck-button.ck-on {
-        background: rgba(var(--admin-primary-rgb), 0.18) !important;
+        background: rgba(var(--admin-primary-rgb), 0.2) !important;
         color: var(--admin-text) !important;
+    }
+    .terms-card-editor .ck.ck-button:focus {
+        box-shadow: 0 0 0 3px rgba(var(--admin-primary-rgb), 0.18) !important;
     }
     .terms-card-editor .ck.ck-dropdown__panel,
     .terms-card-editor .ck.ck-list {
@@ -191,7 +208,7 @@
         font-size: 0.78rem;
         font-weight: 700;
         color: var(--admin-muted);
-        border: 1px solid var(--terms-border);
+        border: 1px solid var(--terms-head-border);
         border-radius: 999px;
         padding: 0.22rem 0.55rem;
         background: var(--terms-soft);
@@ -199,6 +216,27 @@
     .terms-editor-actions {
         display: flex;
         justify-content: flex-end;
+    }
+    .terms-save-btn {
+        border: 1px solid rgba(var(--admin-primary-rgb), 0.46);
+        background: linear-gradient(135deg, var(--admin-primary), rgba(var(--admin-primary-rgb), 0.78));
+        color: #fff;
+        font-weight: 700;
+        border-radius: 10px;
+        padding: 0.52rem 0.95rem;
+        box-shadow: 0 10px 22px rgba(var(--admin-primary-rgb), 0.28);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+    .terms-save-btn:hover,
+    .terms-save-btn:focus {
+        color: #fff;
+        filter: brightness(1.04);
+        transform: translateY(-1px);
+        box-shadow: 0 12px 26px rgba(var(--admin-primary-rgb), 0.34);
+    }
+    .terms-save-btn:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 0.22rem var(--terms-strong), 0 12px 26px rgba(var(--admin-primary-rgb), 0.34);
     }
     .terms-preview-title {
         font-weight: 800;
@@ -232,6 +270,18 @@
         color: var(--admin-primary);
         font-weight: 700;
         text-decoration: underline;
+    }
+    .terms-preview-body hr {
+        border-color: var(--terms-head-border);
+    }
+    .terms-preview-body ul,
+    .terms-preview-body ol {
+        padding-left: 1.2rem;
+    }
+    .terms-editor-page .alert-success {
+        border-color: rgba(var(--admin-primary-rgb), 0.32);
+        background: rgba(var(--admin-primary-rgb), 0.1);
+        color: var(--admin-text);
     }
     @media (max-width: 991.98px) {
         .terms-editor-grid {
