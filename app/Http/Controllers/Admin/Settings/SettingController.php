@@ -113,10 +113,10 @@ class SettingController extends Controller
     public function updateSocial(Request $request)
     {
         $validated = $request->validate([
-            'facebook_url' => ['nullable', 'url', 'max:255'],
-            'twitter_url' => ['nullable', 'url', 'max:255'],
-            'instagram_url' => ['nullable', 'url', 'max:255'],
-            'linkedin_url' => ['nullable', 'url', 'max:255'],
+            'facebook_url' => ['nullable', 'string', 'max:255'],
+            'twitter_url' => ['nullable', 'string', 'max:255'],
+            'instagram_url' => ['nullable', 'string', 'max:255'],
+            'linkedin_url' => ['nullable', 'string', 'max:255'],
         ]);
 
         $fields = [
@@ -127,15 +127,48 @@ class SettingController extends Controller
         ];
 
         foreach ($fields as $field) {
+            $value = $this->normalizeSocialUrl($field, $validated[$field] ?? null);
+
             Setting::updateOrCreate(
                 ['key' => $field],
-                ['value' => $validated[$field] ?? null]
+                ['value' => $value]
             );
         }
 
         Setting::clearCache();
 
         return redirect()->back()->with('success', 'Social settings updated successfully!');
+    }
+
+    private function normalizeSocialUrl(string $field, ?string $value): ?string
+    {
+        $value = trim((string) $value);
+        if ($value === '') {
+            return null;
+        }
+
+        if (preg_match('/^https?:\/\//i', $value)) {
+            return $value;
+        }
+
+        $value = preg_replace('/^@+/', '', $value);
+        $value = trim((string) $value, "/ \t\n\r\0\x0B");
+
+        if ($value === '') {
+            return null;
+        }
+
+        if (str_contains($value, '.')) {
+            return 'https://' . $value;
+        }
+
+        return match ($field) {
+            'facebook_url' => 'https://facebook.com/' . $value,
+            'twitter_url' => 'https://x.com/' . $value,
+            'instagram_url' => 'https://instagram.com/' . $value,
+            'linkedin_url' => 'https://linkedin.com/in/' . $value,
+            default => $value,
+        };
     }
 
     public function updateMail(Request $request)

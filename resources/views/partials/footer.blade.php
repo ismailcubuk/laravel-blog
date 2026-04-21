@@ -1,92 +1,179 @@
 <footer class="front-footer">
     <style>
         .front-footer {
-            margin-top: 2rem;
+            margin-top: 2.2rem;
             border-top: 1px solid var(--front-border);
-            background: var(--front-surface);
-            backdrop-filter: blur(6px);
-            padding: 1.3rem 0;
+            background:
+                radial-gradient(1000px 160px at 50% -25%, rgba(var(--front-primary-rgb), 0.08), transparent 58%),
+                var(--front-surface);
+            padding: 1.2rem 0 1.25rem;
+        }
+
+        .front-footer .footer-wrap {
+            border: 1px solid var(--front-border);
+            border-radius: 14px;
+            background: rgba(var(--front-primary-rgb), 0.03);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+            padding: 0.85rem 1rem;
         }
 
         .front-footer .social-icons {
             margin: 0;
             padding: 0;
+            padding-bottom: 0.8rem;
             list-style: none;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 0.65rem;
+            gap: 0;
         }
 
         .front-footer .social-icons li {
             margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .front-footer .social-icons li::before,
+        .front-footer .social-icons li::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        .front-footer .social-icons .social-divider {
+            width: 2rem;
+            justify-content: center;
+            color: var(--front-soft-border);
+            font-weight: 700;
+            user-select: none;
         }
 
         .front-footer .social-icons a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-height: 38px;
+            gap: 0.42rem;
+            min-height: 39px;
             border-radius: 999px;
             border: 1px solid var(--front-border);
-            background: var(--front-surface);
-            padding: 0.35rem 0.82rem;
+            background: rgba(var(--front-primary-rgb), 0.04);
+            padding: 0.35rem 0.86rem;
             color: var(--front-text);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 700;
-            transition: all 0.2s ease;
+            letter-spacing: 0.01em;
+            transition: all 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
         }
 
         .front-footer .social-icons a:hover {
             color: var(--front-primary);
             border-color: var(--front-soft-border);
+            background: rgba(var(--front-primary-rgb), 0.1);
             text-decoration: none;
             transform: translateY(-1px);
         }
 
+        .front-footer .social-icons i {
+            font-size: 0.92rem;
+            opacity: 0.95;
+        }
+
         .front-footer .copyright-text {
             text-align: center;
-            margin-top: 0.95rem;
+            margin-top: 0.8rem;
             color: var(--front-muted);
-            font-size: 0.83rem;
-            font-weight: 600;
+            font-size: 0.82rem;
+            font-weight: 700;
         }
 
         .front-footer .copyright-text p {
             margin: 0;
+            line-height: 1.4;
         }
 
         .front-footer .copyright-text a {
             color: var(--front-primary);
             font-weight: 700;
         }
+
+        @media (max-width: 575.98px) {
+            .front-footer .footer-wrap {
+                padding: 0.75rem 0.75rem;
+            }
+
+            .front-footer .social-icons a {
+                min-height: 36px;
+                padding: 0.32rem 0.72rem;
+                font-size: 0.78rem;
+            }
+        }
     </style>
 
     @php($currentYear = now()->year)
+    @php(
+        $socialHref = function (?string $raw, string $platform): ?string {
+            $raw = trim((string) $raw);
+            if ($raw === '' || $raw === '#') {
+                return null;
+            }
+
+            if (preg_match('/^https?:\/\//i', $raw)) {
+                return $raw;
+            }
+
+            $raw = preg_replace('/^@+/', '', $raw);
+            $raw = trim((string) $raw, "/ \t\n\r\0\x0B");
+            if ($raw === '') {
+                return null;
+            }
+
+            if (str_contains($raw, '.')) {
+                return 'https://' . $raw;
+            }
+
+            return match ($platform) {
+                'facebook' => 'https://facebook.com/' . $raw,
+                'twitter' => 'https://x.com/' . $raw,
+                'instagram' => 'https://instagram.com/' . $raw,
+                'linkedin' => 'https://linkedin.com/in/' . $raw,
+                default => null,
+            };
+        }
+    )
+    @php($facebookHref = $socialHref($settings['facebook_url'] ?? null, 'facebook'))
+    @php($twitterHref = $socialHref($settings['twitter_url'] ?? null, 'twitter'))
+    @php($instagramHref = $socialHref($settings['instagram_url'] ?? null, 'instagram'))
+    @php($linkedinHref = $socialHref($settings['linkedin_url'] ?? null, 'linkedin'))
+    @php(
+        $socialItems = array_values(array_filter([
+            ['label' => 'Facebook', 'href' => $facebookHref, 'icon' => 'facebook'],
+            ['label' => 'Twitter', 'href' => $twitterHref, 'icon' => 'twitter'],
+            ['label' => 'Instagram', 'href' => $instagramHref, 'icon' => 'instagram'],
+            ['label' => 'LinkedIn', 'href' => $linkedinHref, 'icon' => 'linkedin'],
+        ], fn ($item) => !empty($item['href'])))
+    )
 
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
+        <div class="footer-wrap">
+            @if(count($socialItems) > 0)
                 <ul class="social-icons">
-                    @if(!empty($settings['facebook_url']))
-                        <li><a href="https://facebook.com/{{ ltrim($settings['facebook_url'], '@/') }}" target="_blank" rel="noopener">Facebook</a></li>
-                    @endif
-                    @if(!empty($settings['twitter_url']))
-                        <li><a href="https://twitter.com/{{ ltrim($settings['twitter_url'], '@/') }}" target="_blank" rel="noopener">Twitter</a></li>
-                    @endif
-                    @if(!empty($settings['instagram_url']))
-                        <li><a href="https://instagram.com/{{ ltrim($settings['instagram_url'], '@/') }}" target="_blank" rel="noopener">Instagram</a></li>
-                    @endif
-                    @if(!empty($settings['linkedin_url']))
-                        <li><a href="https://linkedin.com/in/{{ ltrim($settings['linkedin_url'], '@/') }}" target="_blank" rel="noopener">LinkedIn</a></li>
-                    @endif
+                    @foreach($socialItems as $item)
+                        @if(!$loop->first)
+                            <li class="social-divider" aria-hidden="true">|</li>
+                        @endif
+                        <li>
+                            <a href="{{ $item['href'] }}" target="_blank" rel="noopener" aria-label="{{ $item['label'] }}">
+                                <i class="fa fa-{{ $item['icon'] }}"></i>
+                                <span>{{ $item['label'] }}</span>
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
-            </div>
-            <div class="col-lg-12">
-                <div class="copyright-text">
-                    <p>{{ $settings['footer_text'] ?: 'Copyright ' . $currentYear . ' ' . ($settings['site_name'] ?? config('app.name')) }}</p>
-                </div>
+            @endif
+
+            <div class="copyright-text">
+                <p>{{ $settings['footer_text'] ?: 'Copyright ' . $currentYear . ' ' . ($settings['site_name'] ?? config('app.name')) }}</p>
             </div>
         </div>
     </div>

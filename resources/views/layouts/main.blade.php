@@ -454,7 +454,8 @@
         }
 
         .front-dark .post-info li::after {
-            background-color: rgba(148, 163, 184, 0.5) !important;
+            background-color: transparent !important;
+            color: #fff !important;
         }
 
         .front-dark .sidebar-item .content ul li,

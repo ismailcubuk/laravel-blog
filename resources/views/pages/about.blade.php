@@ -91,39 +91,6 @@
 
       @endforeach
 
-      {{-- SOCIAL ICONS --}}
-      <div class="row mt-5">
-        <div class="col-lg-12">
-          <ul class="social-icons">
-
-            <li>
-              <a href="#">
-                <i class="fa fa-facebook"></i>
-              </a>
-            </li>
-
-            <li>
-              <a href="#">
-                <i class="fa fa-twitter"></i>
-              </a>
-            </li>
-
-            <li>
-              <a href="#">
-                <i class="fa fa-behance"></i>
-              </a>
-            </li>
-
-            <li>
-              <a href="#">
-                <i class="fa fa-linkedin"></i>
-              </a>
-            </li>
-
-          </ul>
-        </div>
-      </div>
-
     </div>
   </section>
 
