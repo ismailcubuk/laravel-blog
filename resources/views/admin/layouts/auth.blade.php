@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="UTF-8">
@@ -355,12 +355,57 @@
             background: linear-gradient(90deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.66));
             transition: width var(--alert-duration, 4000ms) linear;
         }
+
+        .auth-lang-switch {
+            position: fixed;
+            top: 0.85rem;
+            right: 0.85rem;
+            z-index: 1060;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.24rem;
+            border-radius: 999px;
+            border: 1px solid var(--auth-input-border);
+            background: rgba(15, 23, 42, 0.38);
+            padding: 0.2rem;
+        }
+
+        .auth-lang-switch button {
+            min-width: 38px;
+            height: 30px;
+            border: 0;
+            border-radius: 999px;
+            background: transparent;
+            color: #e2e8f0;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            padding: 0 0.5rem;
+        }
+
+        .auth-lang-switch button.is-active {
+            color: #fff;
+            background: linear-gradient(135deg, var(--auth-primary) 0%, var(--auth-primary-2) 100%);
+            box-shadow: 0 8px 16px rgba(31, 107, 255, 0.26);
+        }
     </style>
     @include('partials.global-select-styles')
     @stack('styles')
 </head>
 
 <body class="login-page">
+
+    <div class="auth-lang-switch" aria-label="{{ __('ui.language.label') }}">
+        <form method="POST" action="{{ route('locale.switch', 'tr') }}">
+            @csrf
+            <button type="submit" class="{{ app()->getLocale() === 'tr' ? 'is-active' : '' }}">{{ __('ui.language.tr') }}</button>
+        </form>
+        <form method="POST" action="{{ route('locale.switch', 'en') }}">
+            @csrf
+            <button type="submit" class="{{ app()->getLocale() === 'en' ? 'is-active' : '' }}">{{ __('ui.language.en') }}</button>
+        </form>
+    </div>
 
     @yield('content')
 

@@ -147,41 +147,6 @@
                         </div>
                     </div>
 
-                    <div class="settings-panel maintenance-panel">
-                        <div class="settings-panel-head">Maintenance</div>
-                        <div class="settings-panel-body row g-3">
-                            <div class="col-12">
-                                <div class="maintenance-switch">
-                                    <div class="maintenance-switch-meta">
-                                        <span class="maintenance-title">Maintenance Mode</span>
-                                        <span class="maintenance-sub">Show a short notice on public pages during temporary updates.</span>
-                                    </div>
-                                    <input type="hidden" name="maintenance_mode" value="0">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input"
-                                        id="maintenanceModeSwitch"
-                                        name="maintenance_mode"
-                                        value="1"
-                                        {{ old('maintenance_mode', $settings['maintenance_mode'] ?? '0') === '1' ? 'checked' : '' }}
-                                    >
-                                    <label for="maintenanceModeSwitch" class="form-check-label fw-semibold mb-0">Enabled</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">Maintenance Message</label>
-                                <input
-                                    type="text"
-                                    name="maintenance_message"
-                                    class="form-control"
-                                    maxlength="255"
-                                    value="{{ old('maintenance_message', $settings['maintenance_message'] ?? '') }}"
-                                    placeholder="We are doing scheduled maintenance. Please check back soon."
-                                >
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="settings-savebar">
                         <button type="submit" class="ui-btn ui-btn-success">Save Settings</button>
                     </div>
@@ -461,46 +426,6 @@
         letter-spacing: 0.02em;
     }
 
-    .maintenance-switch {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.9rem;
-        padding: 0.75rem 0.8rem;
-        border-radius: 12px;
-        background: rgba(var(--admin-primary-rgb), 0.05);
-        box-shadow: inset 0 0 0 1px rgba(var(--admin-primary-rgb), 0.12);
-    }
-
-    .maintenance-switch-meta {
-        min-width: 0;
-        display: grid;
-        gap: 2px;
-    }
-
-    .maintenance-title {
-        font-size: 0.92rem;
-        font-weight: 800;
-        color: var(--admin-text);
-    }
-
-    .maintenance-sub {
-        font-size: 0.78rem;
-        color: var(--admin-muted);
-    }
-
-    .maintenance-switch .form-check-input {
-        margin: 0;
-        width: 2.7rem;
-        height: 1.45rem;
-        cursor: pointer;
-    }
-
-    .maintenance-switch .form-check-label {
-        font-size: 0.82rem;
-        color: var(--admin-muted);
-    }
-
     .theme-grid,
     .mode-grid {
         display: grid;
@@ -597,11 +522,6 @@
     @media (max-width: 767.98px) {
         .settings-panel-body {
             padding: 0.8rem;
-        }
-
-        .maintenance-switch {
-            align-items: flex-start;
-            flex-direction: column;
         }
 
         .settings-savebar {

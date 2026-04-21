@@ -124,6 +124,36 @@
             padding: 0.32rem 0.65rem;
         }
 
+        .front-lang-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.24rem;
+            border-radius: 999px;
+            border: 1px solid {{ $isDarkMode ? 'rgba(148, 163, 184, 0.35)' : 'var(--front-soft-border)' }};
+            background: {{ $isDarkMode ? 'rgba(148, 163, 184, 0.12)' : 'var(--front-soft-bg)' }};
+            padding: 0.2rem;
+        }
+
+        .front-lang-btn {
+            min-width: 38px;
+            height: 30px;
+            border: 0;
+            border-radius: 999px;
+            background: transparent;
+            color: {{ $isDarkMode ? '#e2e8f0' : '#1f2e46' }};
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            padding: 0 0.5rem;
+        }
+
+        .front-lang-btn.is-active {
+            color: #fff;
+            background: linear-gradient(135deg, var(--front-primary) 0%, var(--front-primary-2) 100%);
+            box-shadow: 0 8px 16px rgba(var(--front-primary-rgb), 0.26);
+        }
+
         .front-user-chip .nav-link {
             color: {{ $isDarkMode ? '#f8fafc' : '#13243f' }} !important;
             opacity: 1 !important;
@@ -191,6 +221,11 @@
                 align-items: stretch;
             }
 
+            .front-lang-switch {
+                width: fit-content;
+                margin-left: 0.35rem;
+            }
+
             .front-brand-name,
             .front-brand-tagline {
                 max-width: 170px;
@@ -219,16 +254,27 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('home') }}">Ana Sayfa</a>
+                        <a class="nav-link" href="{{ route('home') }}">{{ __('ui.nav.home') }}</a>
                     </li>
                     <li class="nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('about') }}">Hakkimizda</a>
+                        <a class="nav-link" href="{{ route('about') }}">{{ __('ui.nav.about') }}</a>
                     </li>
                     <li class="nav-item {{ request()->routeIs('blog') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('blog') }}">Blog</a>
+                        <a class="nav-link" href="{{ route('blog') }}">{{ __('ui.nav.blog') }}</a>
                     </li>
                     <li class="nav-item {{ request()->routeIs('contact') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('contact') }}">Iletisim</a>
+                        <a class="nav-link" href="{{ route('contact') }}">{{ __('ui.nav.contact') }}</a>
+                    </li>
+
+                    <li class="nav-item front-lang-switch" aria-label="{{ __('ui.language.label') }}">
+                        <form method="POST" action="{{ route('locale.switch', 'tr') }}">
+                            @csrf
+                            <button type="submit" class="front-lang-btn {{ app()->getLocale() === 'tr' ? 'is-active' : '' }}">{{ __('ui.language.tr') }}</button>
+                        </form>
+                        <form method="POST" action="{{ route('locale.switch', 'en') }}">
+                            @csrf
+                            <button type="submit" class="front-lang-btn {{ app()->getLocale() === 'en' ? 'is-active' : '' }}">{{ __('ui.language.en') }}</button>
+                        </form>
                     </li>
 
                     @auth
@@ -238,17 +284,17 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 @if(Auth::user()->role === 'admin')
-                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Panel</a>
+                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{ __('ui.nav.admin_panel') }}</a>
                                 @endif
                                 <form method="POST" action="{{ route('admin.logout') }}">
                                     @csrf
-                                    <button type="submit" class="dropdown-item">Cikis Yap</button>
+                                    <button type="submit" class="dropdown-item">{{ __('ui.nav.logout') }}</button>
                                 </form>
                             </div>
                         </li>
                     @else
                         <li class="nav-item {{ request()->routeIs('admin.login') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('admin.login') }}">Giris</a>
+                            <a class="nav-link" href="{{ route('admin.login') }}">{{ __('ui.nav.login') }}</a>
                         </li>
                     @endauth
                 </ul>
