@@ -1,4 +1,4 @@
-@extends('layouts.main')
+ï»¿@extends('layouts.main')
 
 @section('title', 'Posts')
 
@@ -21,17 +21,7 @@
 <section class="blog-posts">
     <div class="container">
         @if($bannerPosts->isNotEmpty())
-            <div class="owl-banner owl-carousel mb-4">
-                @foreach($bannerPosts as $bannerPost)
-                    <a class="item" href="{{ route('post.show', $bannerPost->slug) }}" style="text-decoration:none;">
-                        <img src="{{ $bannerPost->image_url }}" alt="{{ $bannerPost->title }}" style="width:100%;height:260px;object-fit:cover;border-radius:14px;">
-                        <div class="item-content mt-2">
-                            <h5 class="mb-1">{{ $bannerPost->title }}</h5>
-                            <small class="text-muted">{{ optional($bannerPost->created_at)->format('d.m.Y') }} · {{ $bannerPost->approved_comments_count }} yorum</small>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
+            @include('partials.banner', ['bannerPosts' => $bannerPosts])
         @endif
 
         <div class="row">
@@ -53,7 +43,7 @@
                 </div>
             @empty
                 <div class="col-12">
-                    <div class="alert alert-danger">Henüz gönderi bulunmuyor.</div>
+                    <div class="alert alert-danger">HenÃ¼z gÃ¶nderi bulunmuyor.</div>
                 </div>
             @endforelse
         </div>
@@ -64,3 +54,4 @@
     </div>
 </section>
 @endsection
+

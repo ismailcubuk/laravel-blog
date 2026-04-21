@@ -380,6 +380,48 @@
 
 .all-posts-item {
     transition: background-color 0.2s ease;
+    background: #ffffff;
+    border-color: #e4ebf7;
+    color: #1f2d44;
+}
+
+#allBlogPostsModal .modal-body,
+#allUsersModal .modal-body,
+#allCategoriesModal .modal-body,
+#allCommentsModal .modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--admin-primary-rgb), 0.72) rgba(var(--admin-primary-rgb), 0.12);
+}
+
+#allBlogPostsModal .modal-body::-webkit-scrollbar,
+#allUsersModal .modal-body::-webkit-scrollbar,
+#allCategoriesModal .modal-body::-webkit-scrollbar,
+#allCommentsModal .modal-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+#allBlogPostsModal .modal-body::-webkit-scrollbar-track,
+#allUsersModal .modal-body::-webkit-scrollbar-track,
+#allCategoriesModal .modal-body::-webkit-scrollbar-track,
+#allCommentsModal .modal-body::-webkit-scrollbar-track {
+    background: rgba(var(--admin-primary-rgb), 0.12);
+    border-radius: 999px;
+}
+
+#allBlogPostsModal .modal-body::-webkit-scrollbar-thumb,
+#allUsersModal .modal-body::-webkit-scrollbar-thumb,
+#allCategoriesModal .modal-body::-webkit-scrollbar-thumb,
+#allCommentsModal .modal-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(var(--admin-primary-rgb), 0.9), rgba(var(--admin-primary-rgb), 0.68));
+    border-radius: 999px;
+    border: 2px solid rgba(15, 23, 42, 0.08);
+}
+
+#allBlogPostsModal .modal-body::-webkit-scrollbar-thumb:hover,
+#allUsersModal .modal-body::-webkit-scrollbar-thumb:hover,
+#allCategoriesModal .modal-body::-webkit-scrollbar-thumb:hover,
+#allCommentsModal .modal-body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(var(--admin-primary-rgb), 1), rgba(var(--admin-primary-rgb), 0.8));
 }
 
 .all-posts-item:hover {
@@ -674,6 +716,9 @@
 
 .all-users-item {
     transition: background-color 0.2s ease;
+    background: #ffffff;
+    border-color: #e4ebf7;
+    color: #1f2d44;
 }
 
 .all-users-item:hover {
@@ -697,6 +742,9 @@
 .all-categories-item,
 .all-comments-item {
     transition: background-color 0.2s ease;
+    background: #ffffff;
+    border-color: #e4ebf7;
+    color: #1f2d44;
 }
 
 .all-categories-item:hover,
@@ -812,6 +860,113 @@
 .admin-dark .activity-modal-header {
     background: linear-gradient(135deg, #0f172a, #111b2f);
     border-bottom-color: #334155;
+}
+
+.admin-dark .all-posts-modal-header .modal-title,
+.admin-dark .all-users-modal-header .modal-title,
+.admin-dark .all-categories-modal-header .modal-title,
+.admin-dark .all-comments-modal-header .modal-title {
+    color: #f8fafc;
+}
+
+.admin-dark .all-posts-modal-header .form-control,
+.admin-dark .all-users-modal-header .form-control,
+.admin-dark .all-categories-modal-header .form-control,
+.admin-dark .all-comments-modal-header .form-control {
+    background: #0b1220;
+    border-color: rgba(var(--admin-primary-rgb), 0.6);
+    color: #e2e8f0;
+    box-shadow: 0 0 0 1px rgba(var(--admin-primary-rgb), 0.2);
+}
+
+.admin-dark .all-posts-modal-header .form-control::placeholder,
+.admin-dark .all-users-modal-header .form-control::placeholder,
+.admin-dark .all-categories-modal-header .form-control::placeholder,
+.admin-dark .all-comments-modal-header .form-control::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+.admin-dark .all-posts-modal-content .modal-body,
+.admin-dark .all-users-modal-content .modal-body,
+.admin-dark .all-categories-modal-content .modal-body,
+.admin-dark .all-comments-modal-content .modal-body {
+    background: #0b1220;
+}
+
+.admin-dark #allBlogPostsModal .modal-body,
+.admin-dark #allUsersModal .modal-body,
+.admin-dark #allCategoriesModal .modal-body,
+.admin-dark #allCommentsModal .modal-body {
+    scrollbar-color: rgba(var(--admin-primary-rgb), 0.82) rgba(148, 163, 184, 0.16);
+}
+
+.admin-dark #allBlogPostsModal .modal-body::-webkit-scrollbar-track,
+.admin-dark #allUsersModal .modal-body::-webkit-scrollbar-track,
+.admin-dark #allCategoriesModal .modal-body::-webkit-scrollbar-track,
+.admin-dark #allCommentsModal .modal-body::-webkit-scrollbar-track {
+    background: rgba(148, 163, 184, 0.16);
+}
+
+.admin-dark #allBlogPostsModal .modal-body::-webkit-scrollbar-thumb,
+.admin-dark #allUsersModal .modal-body::-webkit-scrollbar-thumb,
+.admin-dark #allCategoriesModal .modal-body::-webkit-scrollbar-thumb,
+.admin-dark #allCommentsModal .modal-body::-webkit-scrollbar-thumb {
+    border-color: rgba(15, 23, 42, 0.42);
+}
+
+.admin-dark .all-posts-item,
+.admin-dark .all-users-item,
+.admin-dark .all-categories-item,
+.admin-dark .all-comments-item {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+.admin-dark .all-posts-item .text-muted,
+.admin-dark .all-users-item .text-muted,
+.admin-dark .all-categories-item .text-muted,
+.admin-dark .all-comments-item .text-muted,
+.admin-dark .all-posts-item small,
+.admin-dark .all-users-item small,
+.admin-dark .all-categories-item small,
+.admin-dark .all-comments-item small {
+    color: #cbd5e1 !important;
+}
+
+.admin-dark .all-users-item .badge.text-bg-light,
+.admin-dark .all-categories-item .badge.text-bg-light {
+    background: rgba(var(--admin-primary-rgb), 0.18) !important;
+    color: #f8fafc !important;
+    border-color: rgba(var(--admin-primary-rgb), 0.42) !important;
+}
+
+.admin-dark .all-comments-item .badge.text-bg-success {
+    background: rgba(16, 185, 129, 0.22) !important;
+    color: #86efac !important;
+    border: 1px solid rgba(16, 185, 129, 0.45);
+}
+
+.admin-dark .all-comments-item .badge.text-bg-warning {
+    background: rgba(245, 158, 11, 0.2) !important;
+    color: #fde68a !important;
+    border: 1px solid rgba(245, 158, 11, 0.42);
+}
+
+.admin-dark .all-posts-modal-content .btn-close,
+.admin-dark .all-users-modal-content .btn-close,
+.admin-dark .all-categories-modal-content .btn-close,
+.admin-dark .all-comments-modal-content .btn-close {
+    filter: invert(1) grayscale(100%) brightness(170%);
+    opacity: 0.8;
+}
+
+.admin-dark .all-posts-modal-content .btn-close:hover,
+.admin-dark .all-users-modal-content .btn-close:hover,
+.admin-dark .all-categories-modal-content .btn-close:hover,
+.admin-dark .all-comments-modal-content .btn-close:hover {
+    opacity: 1;
 }
 
 .admin-dark .modal-content,
