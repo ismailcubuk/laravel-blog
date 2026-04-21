@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
 
 class Post extends Model
 {
@@ -40,9 +41,10 @@ class Post extends Model
     public function getImageUrlAttribute(): string
     {
         $rawImage = trim((string) $this->image);
+        $fallback = 'https://picsum.photos/seed/' . $this->id . '/200/300';
 
         if ($rawImage === '') {
-            return 'https://picsum.photos/seed/' . $this->id . '/200/300';
+            return $fallback;
         }
 
         if (preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', $rawImage, $matches)) {
@@ -50,7 +52,25 @@ class Post extends Model
         }
 
         if (Str::startsWith($rawImage, ['http://', 'https://', '//', 'data:'])) {
-            return $rawImage;
+            // Prevent loading arbitrary third-party/data URLs in public listing pages.
+            if (Str::startsWith($rawImage, 'data:')) {
+                return $fallback;
+            }
+
+            $appBaseUrl = config('app.url', URL::to('/'));
+            $appScheme = parse_url($appBaseUrl, PHP_URL_SCHEME) ?: 'https';
+            $candidateUrl = Str::startsWith($rawImage, '//')
+                ? $appScheme . ':' . $rawImage
+                : $rawImage;
+
+            $candidateHost = parse_url($candidateUrl, PHP_URL_HOST);
+            $appHost = parse_url($appBaseUrl, PHP_URL_HOST);
+
+            if (!is_string($candidateHost) || !is_string($appHost)) {
+                return $fallback;
+            }
+
+            return strcasecmp($candidateHost, $appHost) === 0 ? $candidateUrl : $fallback;
         }
 
         return asset(ltrim($rawImage, '/'));

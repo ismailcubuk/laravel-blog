@@ -5,11 +5,33 @@ use Illuminate\Support\Facades\Route;
 require __DIR__ . '/frontend.php';
 require __DIR__ . '/admin.php';
 
+$isUnsafePublicFile = static function (string $relativePath): bool {
+    $extension = strtolower(pathinfo($relativePath, PATHINFO_EXTENSION));
+
+    if ($extension === '') {
+        return true;
+    }
+
+    // Never serve executable or deceptive page/script formats from fallback file routes.
+    $blocked = [
+        'php', 'phtml', 'phar', 'php3', 'php4', 'php5', 'php7', 'php8',
+        'html', 'htm', 'shtml', 'xhtml',
+        'js', 'mjs', 'cjs',
+        'svgz',
+    ];
+
+    return in_array($extension, $blocked, true);
+};
+
 // Shared hosting fallback for /uploads files.
-Route::get('/uploads/{path}', function (string $path) {
+Route::get('/uploads/{path}', function (string $path) use ($isUnsafePublicFile) {
     $relativePath = ltrim(str_replace('\\', '/', $path), '/');
 
     if ($relativePath === '' || str_contains($relativePath, '../')) {
+        abort(404);
+    }
+
+    if ($isUnsafePublicFile($relativePath)) {
         abort(404);
     }
 
@@ -47,10 +69,14 @@ Route::get('/uploads/{path}', function (string $path) {
 })->where('path', '.*');
 
 // Shared hosting fallback for /storage files when symlink/static mapping is unavailable.
-Route::get('/storage/{path}', function (string $path) {
+Route::get('/storage/{path}', function (string $path) use ($isUnsafePublicFile) {
     $relativePath = ltrim(str_replace('\\', '/', $path), '/');
 
     if ($relativePath === '' || str_contains($relativePath, '../')) {
+        abort(404);
+    }
+
+    if ($isUnsafePublicFile($relativePath)) {
         abort(404);
     }
 
