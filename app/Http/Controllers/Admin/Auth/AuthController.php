@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Page;
 use App\Models\User;
 use App\Services\Mail\MailWorkflowService;
 use Carbon\Carbon;
@@ -88,7 +89,15 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        return view('admin.auth.register');
+        $termsPage = Page::firstOrCreate(
+            ['slug' => 'terms-of-use'],
+            [
+                'title' => 'Terms of Use',
+                'description' => '<p>By creating an account or using this website, you agree to these terms.</p>',
+            ]
+        );
+
+        return view('admin.auth.register', compact('termsPage'));
     }
 
     public function register(Request $request)

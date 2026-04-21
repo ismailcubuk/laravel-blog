@@ -31,6 +31,14 @@
             --auth-primary-2: #0f4fd9;
             --auth-input-bg: {{ $isDarkMode ? '#111b2f' : '#fbfcff' }};
             --auth-input-border: {{ $isDarkMode ? '#334155' : '#d6deec' }};
+            --auth-label: {{ $isDarkMode ? '#cbd5e1' : '#4b5b74' }};
+            --auth-label-active: {{ $isDarkMode ? '#e2e8f0' : '#1f2e46' }};
+            --auth-check-label: {{ $isDarkMode ? '#e2e8f0' : '#344258' }};
+            --auth-addon-bg: {{ $isDarkMode ? 'rgba(15, 23, 42, 0.72)' : '#f2f6ff' }};
+            --auth-addon-bg-focus: {{ $isDarkMode ? 'rgba(15, 23, 42, 0.8)' : '#e8f0ff' }};
+            --auth-addon-color: {{ $isDarkMode ? '#cbd5e1' : '#4c5e7d' }};
+            --auth-link: {{ $isDarkMode ? '#93c5fd' : '#1f6bff' }};
+            --auth-link-hover: {{ $isDarkMode ? '#bfdbfe' : '#0f4fd9' }};
         }
 
         body.login-page {
@@ -119,13 +127,13 @@
         }
 
         .form-floating > label {
-            color: #cbd5e1 !important;
+            color: var(--auth-label) !important;
             opacity: 0.95 !important;
         }
 
         .form-floating > .form-control:focus ~ label,
         .form-floating > .form-control:not(:placeholder-shown) ~ label {
-            color: #e2e8f0 !important;
+            color: var(--auth-label-active) !important;
             opacity: 1 !important;
         }
 
@@ -142,7 +150,7 @@
         }
 
         .form-floating > .form-control:-webkit-autofill ~ label {
-            color: #e2e8f0 !important;
+            color: var(--auth-label-active) !important;
             opacity: 1 !important;
             transform: scale(.85) translateY(-.5rem) translateX(.15rem);
         }
@@ -152,7 +160,7 @@
         }
 
         .form-check-label {
-            color: #e2e8f0 !important;
+            color: var(--auth-check-label) !important;
         }
 
         .input-group {
@@ -178,8 +186,8 @@
         .input-group-text {
             border: 0;
             border-left: 1px solid var(--auth-input-border);
-            background: rgba(15, 23, 42, 0.72);
-            color: #cbd5e1;
+            background: var(--auth-addon-bg);
+            color: var(--auth-addon-color);
         }
 
         .input-group:focus-within {
@@ -190,7 +198,7 @@
 
         .input-group:focus-within .input-group-text {
             border-left-color: #93b8ff;
-            background: rgba(15, 23, 42, 0.8);
+            background: var(--auth-addon-bg-focus);
         }
 
         .login-card-body,
@@ -279,12 +287,12 @@
 
         .login-card-body a,
         .register-card-body a {
-            color: #93c5fd;
+            color: var(--auth-link);
         }
 
         .login-card-body a:hover,
         .register-card-body a:hover {
-            color: #bfdbfe;
+            color: var(--auth-link-hover);
         }
 
         .skip-link {
@@ -297,7 +305,7 @@
             justify-content: center;
             width: 1rem;
             height: 1rem;
-            color: #e2e8f0 !important;
+            color: var(--auth-addon-color) !important;
             opacity: 1;
         }
 
@@ -442,6 +450,9 @@
             });
         });
     </script>
+
+    <!-- Bootstrap 5 JS (required for modal) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- AdminLTE JS -->
     <script src="{{ asset('adminlte/js/adminlte.min.js') }}"></script>

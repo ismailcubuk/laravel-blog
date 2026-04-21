@@ -130,6 +130,43 @@ class AdminPageController extends Controller
         return back()->with('success', 'Kaydedildi');
     }
 
+    // ================= TERMS PAGE =================
+
+    public function terms()
+    {
+        $page = Page::firstOrCreate(
+            ['slug' => 'terms-of-use'],
+            [
+                'title' => 'Terms of Use',
+                'description' => '<p>By creating an account or using this website, you agree to these terms.</p>',
+            ]
+        );
+
+        return view('admin.pages.terms', compact('page'));
+    }
+
+    public function updateTerms(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+        ]);
+
+        $page = Page::firstOrCreate(
+            ['slug' => 'terms-of-use'],
+            [
+                'title' => 'Terms of Use',
+                'description' => '',
+            ]
+        );
+
+        $page->title = $validated['title'];
+        $page->description = $this->sanitizeRichHtml($validated['description']) ?? '';
+        $page->save();
+
+        return back()->with('success', 'Terms page updated successfully.');
+    }
+
     private function sanitizeRichHtml(?string $value): ?string
     {
         if ($value === null || trim($value) === '') {

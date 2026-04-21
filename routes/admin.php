@@ -53,6 +53,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/about-us', [AdminPageController::class, 'updateAbout'])->name('pages.about.update');
         Route::get('/contact-us', [AdminPageController::class, 'contact'])->name('pages.contact');
         Route::put('/contact-us', [AdminPageController::class, 'updateContact'])->name('pages.contact.update');
+        Route::get('/terms', [AdminPageController::class, 'terms'])->name('pages.terms');
+        Route::put('/terms', [AdminPageController::class, 'updateTerms'])->name('pages.terms.update');
         Route::view('/privacy-policy', 'admin.pages.privacy')->name('pages.privacy');
 
         Route::get('/users', [UserController::class, 'index'])->name('users.list');

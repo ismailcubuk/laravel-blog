@@ -83,8 +83,15 @@
                 <div class="row mb-3">
                     <div class="col-8 d-flex align-items-center">
                         <div class="form-check">
-                            <input type="checkbox" name="terms" class="form-check-input" {{ old('terms') ? 'checked' : '' }}>
-                            <label class="form-check-label">I agree to the <a href="#">terms</a></label>
+                            <input type="checkbox" name="terms" id="termsCheckbox" class="form-check-input" {{ old('terms') ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                I agree to the
+                                <a href="#"
+                                   class="link-primary text-decoration-underline fw-semibold"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#termsModal"
+                                   onclick="return false;">terms</a>
+                            </label>
                         </div>
                     </div>
                     <div class="col-4">
@@ -101,4 +108,63 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade terms-modal" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="termsModalLabel">{{ $termsPage->title ?? 'Terms of Use' }}</h5>
+                    <small>Last update: April 21, 2026</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="terms-html">
+                    {!! $termsPage->description ?: '<p>Terms content will appear here.</p>' !!}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('styles')
+<style>
+    .terms-modal .modal-content {
+        border-radius: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94));
+        color: #e2e8f0;
+    }
+    .terms-modal .modal-header {
+        border-bottom: 1px solid rgba(148, 163, 184, 0.26);
+        background: linear-gradient(135deg, rgba(30, 64, 175, 0.28), rgba(15, 23, 42, 0.18));
+    }
+    .terms-modal .modal-title { font-weight: 800; }
+    .terms-modal .modal-header small { color: #94a3b8; }
+    .terms-modal .modal-body { padding: 1rem; }
+    .terms-modal .terms-html { color: #cbd5e1; }
+    .terms-modal .terms-html h2,
+    .terms-modal .terms-html h3,
+    .terms-modal .terms-html h4,
+    .terms-modal .terms-html h5,
+    .terms-modal .terms-html h6 {
+        color: #f8fafc;
+        font-weight: 800;
+        margin-top: 1rem;
+        margin-bottom: 0.4rem;
+    }
+    .terms-modal .terms-html p,
+    .terms-modal .terms-html li {
+        color: #cbd5e1;
+        font-size: 0.94rem;
+        line-height: 1.6;
+    }
+    .terms-modal .terms-html a { color: #93c5fd; }
+    .terms-modal .modal-footer { border-top: 1px solid rgba(148, 163, 184, 0.2); }
+</style>
+@endpush
 @endsection
