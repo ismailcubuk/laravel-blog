@@ -18,3 +18,4 @@
 <script src="{{ asset('assets/js/admin/dashboard/all-users-modal.js') }}"></script>
 <script src="{{ asset('assets/js/admin/dashboard/all-categories-modal.js') }}"></script>
 <script src="{{ asset('assets/js/admin/dashboard/all-comments-modal.js') }}"></script>
+<script src="{{ asset('assets/js/admin/dashboard/recent-comments.js') }}"></script>

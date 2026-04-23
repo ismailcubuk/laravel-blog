@@ -367,6 +367,129 @@
     color: #6b7d95;
 }
 
+.recent-comments-header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.recent-comments-pending-badge {
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    background: rgba(245, 158, 11, 0.14);
+    color: #9a6703;
+    font-weight: 700;
+}
+
+.recent-comments-list {
+    padding: 10px;
+    display: grid;
+    gap: 10px;
+}
+
+.recent-comment-item {
+    border: 1px solid #dfe8f6;
+    border-radius: 14px;
+    background: #ffffff;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.recent-comment-item:hover {
+    border-color: #c8d8f3;
+    box-shadow: 0 10px 20px rgba(16, 47, 92, 0.1);
+    transform: translateY(-1px);
+}
+
+.recent-comment-main {
+    min-width: 0;
+}
+
+.recent-comment-topline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.recent-comment-author {
+    color: #1d2e49;
+    font-size: 14px;
+}
+
+.recent-comment-email {
+    color: #647891;
+    font-size: 12px;
+}
+
+.recent-comment-status {
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid transparent;
+}
+
+.recent-comment-status.is-approved {
+    color: #0f8b5b;
+    background: #e9f8f2;
+    border-color: #b9ebd4;
+}
+
+.recent-comment-status.is-pending {
+    color: #9a6703;
+    background: #fff6df;
+    border-color: #f6db9e;
+}
+
+.recent-comment-message {
+    margin: 7px 0 8px;
+    color: #344b68;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.recent-comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.recent-comment-time,
+.recent-comment-post-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+}
+
+.recent-comment-time {
+    color: #647891;
+}
+
+.recent-comment-post-link {
+    color: #2f5ca8;
+    text-decoration: none;
+}
+
+.recent-comment-post-link:hover {
+    color: #1f4b97;
+}
+
+.recent-comment-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.recent-comment-actions form {
+    margin: 0;
+}
+
 .all-posts-modal-content {
     border: 1px solid #dce6f4;
     border-radius: 16px;
@@ -1013,5 +1136,61 @@
 
 .admin-dark .dashboard-hero-content .dashboard-hero-subtitle {
     color: #e2e8f0 !important;
+}
+
+.admin-dark .recent-comments-pending-badge {
+    color: #fde68a;
+    background: rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.42);
+}
+
+.admin-dark .recent-comment-item {
+    border-color: #334155;
+    background: #0f172a;
+}
+
+.admin-dark .recent-comment-item:hover {
+    border-color: rgba(var(--admin-primary-rgb), 0.55);
+    box-shadow: 0 10px 20px rgba(2, 6, 23, 0.45);
+}
+
+.admin-dark .recent-comment-author {
+    color: #f8fafc;
+}
+
+.admin-dark .recent-comment-email,
+.admin-dark .recent-comment-message,
+.admin-dark .recent-comment-time {
+    color: #cbd5e1;
+}
+
+.admin-dark .recent-comment-status.is-approved {
+    color: #86efac;
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+.admin-dark .recent-comment-status.is-pending {
+    color: #fde68a;
+    background: rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.4);
+}
+
+.admin-dark .recent-comment-post-link {
+    color: #93c5fd;
+}
+
+.admin-dark .recent-comment-post-link:hover {
+    color: #bfdbfe;
+}
+
+@media (max-width: 991.98px) {
+    .recent-comment-item {
+        grid-template-columns: 1fr;
+    }
+
+    .recent-comment-actions {
+        justify-content: flex-start;
+    }
 }
 </style>

@@ -13,6 +13,10 @@
         @include('admin.dashboard.partials.latest-posts-card')
     </div>
 
+    <div class="row g-4 mt-1">
+        @include('admin.dashboard.partials.latest-comments-card')
+    </div>
+
     @include('admin.dashboard.partials.activity-detail-modal')
 @endsection
 

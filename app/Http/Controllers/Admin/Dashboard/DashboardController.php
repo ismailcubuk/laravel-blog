@@ -55,6 +55,12 @@ class DashboardController extends Controller
             ->take(3)
             ->get(['id', 'title', 'slug', 'content', 'image', 'user_id', 'category_id', 'created_at']);
 
+        $recentComments = Comment::query()
+            ->with(['post:id,title,slug'])
+            ->latest()
+            ->take(8)
+            ->get(['id', 'post_id', 'name', 'email', 'message', 'status', 'created_at']);
+
         $activityData = $this->dashboardActivityService->buildWeeklyActivity(7);
 
         return view('admin.dashboard.index', array_merge(
@@ -64,6 +70,7 @@ class DashboardController extends Controller
                 'allCategories' => $allCategories,
                 'allComments' => $allComments,
                 'latestPosts' => $latestPosts,
+                'recentComments' => $recentComments,
                 'totalPosts' => $totalPosts,
                 'totalUsers' => $totalUsers,
                 'totalCategories' => $totalCategories,

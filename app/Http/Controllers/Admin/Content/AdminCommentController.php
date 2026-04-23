@@ -63,6 +63,15 @@ class AdminCommentController extends Controller
             'status' => $validated['status'],
         ]);
 
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'ok' => true,
+                'commentId' => $comment->id,
+                'status' => $comment->status,
+                'message' => 'Comment status updated.',
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Comment status updated.');
     }
 
