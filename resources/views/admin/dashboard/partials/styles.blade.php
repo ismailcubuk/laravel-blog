@@ -822,6 +822,18 @@
     border-color: #334155;
 }
 
+.admin-dark .activity-time-chip {
+    background: rgba(148, 163, 184, 0.16);
+    color: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.34);
+}
+
+.admin-dark .activity-time-chip i,
+.admin-dark .activity-time-chip [data-role="time"] {
+    color: #f8fafc !important;
+    opacity: 1;
+}
+
 .admin-dark .latest-panel .latest-posts-list {
     scrollbar-color: rgba(var(--admin-primary-rgb), 0.82) rgba(148, 163, 184, 0.16);
 }
@@ -962,10 +974,19 @@
     opacity: 0.8;
 }
 
+.admin-dark .activity-modal-dialog .btn-close {
+    filter: invert(1) grayscale(100%) brightness(185%);
+    opacity: 0.92;
+}
+
 .admin-dark .all-posts-modal-content .btn-close:hover,
 .admin-dark .all-users-modal-content .btn-close:hover,
 .admin-dark .all-categories-modal-content .btn-close:hover,
 .admin-dark .all-comments-modal-content .btn-close:hover {
+    opacity: 1;
+}
+
+.admin-dark .activity-modal-dialog .btn-close:hover {
     opacity: 1;
 }
 

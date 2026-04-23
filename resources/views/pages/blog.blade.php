@@ -53,6 +53,10 @@
             flex-direction: column;
             flex: 1;
             padding: 1rem 1rem 1.05rem;
+            border-left: 0 !important;
+            border-right: 0 !important;
+            border-bottom: 0 !important;
+            border-top: 0 !important;
         }
 
         .blog-grid .down-content > span {

@@ -312,6 +312,39 @@
             background: rgba(148, 163, 184, 0.2);
             color: #e2e8f0;
         }
+
+        .front-dark .blog-posts .sidebar-item.submit-comment .sidebar-heading h2 {
+            border-bottom-color: rgba(148, 163, 184, 0.28);
+        }
+
+        .front-dark .blog-posts .submit-comment input,
+        .front-dark .blog-posts .submit-comment textarea {
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(148, 163, 184, 0.34);
+            color: #e2e8f0;
+            text-transform: none;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .front-dark .blog-posts .submit-comment input::placeholder,
+        .front-dark .blog-posts .submit-comment textarea::placeholder {
+            color: #94a3b8;
+            text-transform: none;
+        }
+
+        .front-dark .blog-posts .submit-comment input[readonly] {
+            background: rgba(30, 41, 59, 0.8);
+            color: #cbd5e1;
+            border-color: rgba(148, 163, 184, 0.26);
+        }
+
+        .front-dark .blog-posts .submit-comment input:focus,
+        .front-dark .blog-posts .submit-comment textarea:focus {
+            border-color: var(--front-focus);
+            box-shadow: 0 0 0 4px rgba(var(--front-primary-rgb), 0.15);
+            background: rgba(15, 23, 42, 0.96);
+        }
     </style>
 
     <div class="heading-page header-text">

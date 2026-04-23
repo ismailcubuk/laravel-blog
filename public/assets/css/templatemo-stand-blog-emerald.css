@@ -422,9 +422,7 @@ header .navbar {
 
 .blog-posts .down-content {
 	padding: 40px;
-	border-right: 1px solid #eee;
-	border-left: 1px solid #eee;
-	border-bottom: 1px solid #eee;
+	border: 0;
 }
 
 .blog-posts .down-content span {
@@ -1141,3 +1139,4 @@ footer p a:hover {
 		padding: 24px;
 	}
 }
+
