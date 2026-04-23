@@ -56,10 +56,15 @@ class DashboardController extends Controller
             ->get(['id', 'title', 'slug', 'content', 'image', 'user_id', 'category_id', 'created_at']);
 
         $recentComments = Comment::query()
-            ->with(['post:id,title,slug'])
-            ->latest()
+            ->with([
+                'user:id,name,avatar_path',
+                'post:id,title,slug,image,category_id',
+                'post.category:id,name',
+            ])
+            ->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")
+            ->orderByDesc('created_at')
             ->take(8)
-            ->get(['id', 'post_id', 'name', 'email', 'message', 'status', 'created_at']);
+            ->get(['id', 'post_id', 'user_id', 'name', 'email', 'message', 'reply_message', 'status', 'created_at']);
 
         $activityData = $this->dashboardActivityService->buildWeeklyActivity(7);
 

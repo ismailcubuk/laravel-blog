@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
     'use strict';
 
     function getOrCreateToastHost() {
@@ -13,7 +13,18 @@
         return host;
     }
 
-    function showCountdownToast(type, message, durationMs) {
+    function dismissToast(toast) {
+        if (!toast) {
+            return;
+        }
+
+        toast.classList.remove('is-visible');
+        setTimeout(function () {
+            toast.remove();
+        }, 220);
+    }
+
+    function showCountdownToast(type, message, durationMs, actionLabel, onAction) {
         var host = getOrCreateToastHost();
         var toast = document.createElement('div');
         toast.className = 'auto-alert-toast';
@@ -22,7 +33,29 @@
         var alert = document.createElement('div');
         alert.className = 'alert ' + (type === 'error' ? 'alert-danger' : 'alert-success') + ' is-auto-toast';
         alert.setAttribute('role', 'alert');
-        alert.textContent = message;
+
+        var body = document.createElement('div');
+        body.className = 'd-flex align-items-start justify-content-between gap-2';
+
+        var messageNode = document.createElement('div');
+        messageNode.className = 'fw-semibold';
+        messageNode.textContent = message;
+
+        body.appendChild(messageNode);
+
+        if (actionLabel && typeof onAction === 'function') {
+            var actionButton = document.createElement('button');
+            actionButton.type = 'button';
+            actionButton.className = 'btn btn-sm btn-light';
+            actionButton.textContent = actionLabel;
+            actionButton.addEventListener('click', function () {
+                onAction();
+                dismissToast(toast);
+            });
+            body.appendChild(actionButton);
+        }
+
+        alert.appendChild(body);
 
         var countdown = document.createElement('div');
         countdown.className = 'small mt-1 fw-semibold';
@@ -43,12 +76,12 @@
         var interval = setInterval(function () {
             var elapsed = Date.now() - startedAt;
             var remainSec = Math.max(0, Math.ceil((durationMs - elapsed) / 1000));
-            countdown.textContent = 'Closing in ' + remainSec + 's';
+            countdown.textContent = remainSec + ' sn sonra kapanacak';
         }, 150);
 
         requestAnimationFrame(function () {
             toast.classList.add('is-visible');
-            countdown.textContent = 'Closing in ' + Math.ceil(durationMs / 1000) + 's';
+            countdown.textContent = Math.ceil(durationMs / 1000) + ' sn sonra kapanacak';
             requestAnimationFrame(function () {
                 progressBar.style.width = '0%';
             });
@@ -56,11 +89,10 @@
 
         setTimeout(function () {
             clearInterval(interval);
-            toast.classList.remove('is-visible');
-            setTimeout(function () {
-                toast.remove();
-            }, 220);
+            dismissToast(toast);
         }, durationMs);
+
+        return toast;
     }
 
     function setButtonLoading(button, isLoading) {
@@ -70,7 +102,7 @@
 
         if (isLoading) {
             button.dataset.originalText = button.textContent;
-            button.textContent = 'Saving...';
+            button.textContent = 'Kaydediliyor...';
             button.disabled = true;
             return;
         }
@@ -81,15 +113,11 @@
 
     function updatePendingBadge(nextStatus, previousStatus) {
         var badge = document.getElementById('recentCommentsPendingBadge');
-        if (!badge) {
+        if (!badge || previousStatus === nextStatus) {
             return;
         }
 
         var count = Number(badge.dataset.pendingCount || 0);
-        if (previousStatus === nextStatus) {
-            return;
-        }
-
         if (previousStatus === 'pending' && nextStatus === 'approved') {
             count = Math.max(0, count - 1);
         } else if (previousStatus === 'approved' && nextStatus === 'pending') {
@@ -97,7 +125,7 @@
         }
 
         badge.dataset.pendingCount = String(count);
-        badge.textContent = 'Pending: ' + count;
+        badge.textContent = 'Bekleyen: ' + count;
     }
 
     function applyStatusToItem(item, status) {
@@ -115,10 +143,10 @@
             badge.classList.remove('is-approved', 'is-pending');
             if (status === 'approved') {
                 badge.classList.add('is-approved');
-                badge.textContent = 'Approved';
+                badge.textContent = 'Onaylandi';
             } else {
                 badge.classList.add('is-pending');
-                badge.textContent = 'Pending';
+                badge.textContent = 'Bekliyor';
             }
         }
 
@@ -131,7 +159,42 @@
         }
     }
 
-    function submitStatusForm(form) {
+    function sortAndPrioritizeItems(list) {
+        if (!list) {
+            return;
+        }
+
+        var items = Array.prototype.slice.call(list.querySelectorAll('[data-comment-item]'));
+        items.sort(function (a, b) {
+            var aPending = a.dataset.status === 'pending' ? 0 : 1;
+            var bPending = b.dataset.status === 'pending' ? 0 : 1;
+            if (aPending !== bPending) {
+                return aPending - bPending;
+            }
+
+            var aTs = Number(a.dataset.createdTs || 0);
+            var bTs = Number(b.dataset.createdTs || 0);
+            return bTs - aTs;
+        });
+
+        items.forEach(function (item) {
+            list.appendChild(item);
+        });
+
+        var pendingCount = 0;
+        items.forEach(function (item) {
+            item.classList.remove('is-priority');
+            if (item.dataset.status === 'pending') {
+                pendingCount += 1;
+                if (pendingCount <= 3) {
+                    item.classList.add('is-priority');
+                }
+            }
+        });
+    }
+
+    function submitStatusForm(form, options) {
+        var opts = options || {};
         var item = form.closest('[data-comment-item]');
         var button = form.querySelector('button[type="submit"]');
         var targetStatus = form.getAttribute('data-target-status');
@@ -140,47 +203,195 @@
 
         setButtonLoading(button, true);
 
-        fetch(form.action, {
+        return fetch(form.action, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
+                'X-Requested-With': 'XMLHttpRequest'
             },
-            body: formData,
+            body: formData
         })
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error('Request failed');
                 }
-
                 return response.json();
             })
             .then(function () {
                 applyStatusToItem(item, targetStatus);
                 updatePendingBadge(targetStatus, previousStatus);
-                showCountdownToast('success', 'Comment updated to ' + targetStatus + '.', 3600);
+                sortAndPrioritizeItems(document.getElementById('recentCommentsList'));
+
+                if (!opts.silent) {
+
+                    showCountdownToast(
+                        'success',
+                        targetStatus === 'approved' ? 'Yorum onaylandi.' : 'Yorum incelemeye alindi.',
+                        5000,
+                        'Geri Al',
+                        function () {
+                            var reverseForm = item.querySelector('.js-comment-status-form[data-target-status="' + previousStatus + '"]');
+                            if (!reverseForm) {
+                                return;
+                            }
+
+                            submitStatusForm(reverseForm, { silent: true })
+                                .then(function () {
+                                    showCountdownToast('success', 'Islem geri alindi.', 3200);
+                                })
+                                .catch(function () {
+                                    showCountdownToast('error', 'Geri alma basarisiz oldu.', 4200);
+                                });
+                        }
+                    );
+                }
             })
             .catch(function () {
-                showCountdownToast('error', 'Status update failed. Please try again.', 4600);
+                showCountdownToast('error', 'Durum guncellenemedi. Tekrar deneyin.', 4600);
+                throw new Error('Status update failed');
             })
             .finally(function () {
                 setButtonLoading(button, false);
             });
     }
 
-    function initRecentCommentsActions() {
-        var forms = Array.prototype.slice.call(document.querySelectorAll('.js-comment-status-form'));
-        if (!forms.length) {
+    function applyFilters() {
+        var list = document.getElementById('recentCommentsList');
+        var empty = document.getElementById('recentCommentsFilteredEmpty');
+        var countBadge = document.getElementById('recentCommentsResultCount');
+        var search = document.getElementById('recentCommentsSearch');
+        if (!list || !empty) {
             return;
         }
 
-        forms.forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                submitStatusForm(form);
+        var activeFilterButton = document.querySelector('.recent-filter-btn.is-active');
+        var filter = activeFilterButton ? activeFilterButton.getAttribute('data-filter') : 'all';
+        var query = search ? (search.value || '').toLocaleLowerCase('tr-TR').trim() : '';
+
+        var items = Array.prototype.slice.call(list.querySelectorAll('[data-comment-item]'));
+        if (!items.length) {
+            empty.classList.add('d-none');
+            if (countBadge) {
+                countBadge.textContent = '0 results';
+            }
+            return;
+        }
+
+        var visibleCount = 0;
+        items.forEach(function (item) {
+            var status = item.dataset.status || '';
+            var text = (item.dataset.search || '').toLocaleLowerCase('tr-TR');
+            var statusOk = filter === 'all' || status === filter;
+            var textOk = query === '' || text.indexOf(query) !== -1;
+            var visible = statusOk && textOk;
+            item.classList.toggle('d-none', !visible);
+            if (visible) {
+                visibleCount += 1;
+            }
+        });
+
+        empty.classList.toggle('d-none', visibleCount > 0);
+        if (countBadge) {
+            countBadge.textContent = visibleCount + ' results';
+        }
+    }
+
+    function initFiltersAndSearch() {
+        var search = document.getElementById('recentCommentsSearch');
+        var buttons = Array.prototype.slice.call(document.querySelectorAll('.recent-filter-btn'));
+
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                buttons.forEach(function (item) {
+                    item.classList.remove('is-active');
+                    item.setAttribute('aria-pressed', 'false');
+                });
+
+                button.classList.add('is-active');
+                button.setAttribute('aria-pressed', 'true');
+                applyFilters();
+            });
+        });
+
+        if (search) {
+            search.addEventListener('input', applyFilters);
+        }
+    }
+
+    function initExpandButtons() {
+        Array.prototype.slice.call(document.querySelectorAll('[data-role="expand-btn"]')).forEach(function (button) {
+            button.addEventListener('click', function () {
+                var item = button.closest('[data-comment-item]');
+                if (!item) {
+                    return;
+                }
+
+                var message = item.querySelector('[data-role="message"]');
+                if (!message) {
+                    return;
+                }
+
+                var collapsed = message.classList.contains('is-collapsed');
+                if (collapsed) {
+                    message.classList.remove('is-collapsed');
+                    button.textContent = 'Daha Az Goster';
+                    button.setAttribute('aria-expanded', 'true');
+                } else {
+                    message.classList.add('is-collapsed');
+                    button.textContent = 'Devamini Gor';
+                    button.setAttribute('aria-expanded', 'false');
+                }
             });
         });
     }
 
+    function initRecentCommentsActions() {
+        var list = document.getElementById('recentCommentsList');
+        var loading = document.getElementById('recentCommentsLoading');
+        if (!list) {
+            return;
+        }
+
+        if (loading) {
+            loading.style.display = 'grid';
+        }
+        list.classList.add('is-hydrating');
+
+        sortAndPrioritizeItems(list);
+        initFiltersAndSearch();
+        initExpandButtons();
+
+        Array.prototype.slice.call(document.querySelectorAll('.js-comment-status-form')).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                var targetStatus = form.getAttribute('data-target-status');
+                if (targetStatus === 'pending') {
+                    var confirmed = window.confirm('Yorumu incelemeye almak istiyor musunuz?');
+                    if (!confirmed) {
+                        return;
+                    }
+                }
+
+                submitStatusForm(form)
+                    .then(function () {
+                        applyFilters();
+                    })
+                    .catch(function () {
+                        // Toast is already shown in submitStatusForm.
+                    });
+            });
+        });
+
+        window.setTimeout(function () {
+            list.classList.remove('is-hydrating');
+            if (loading) {
+                loading.style.display = 'none';
+            }
+            applyFilters();
+        }, 350);
+    }
+
     document.addEventListener('DOMContentLoaded', initRecentCommentsActions);
 })();
+
