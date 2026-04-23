@@ -185,7 +185,9 @@
         }
 
         .admin-comments-comment {
-            width: 100%;
+            width: auto;
+            flex: 1 1 auto;
+            min-width: 0;
             max-width: none;
             margin: 0;
             color: #4b5563;
@@ -222,9 +224,10 @@
         }
 
         .admin-comments-comment-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.35rem;
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            align-items: baseline;
+            gap: 0.45rem;
             min-width: 0;
         }
 
@@ -494,12 +497,29 @@
         }
 
         .admin-dark .admin-comments-author-mail,
+        .admin-dark .admin-comments-submitted-date,
         .admin-dark .admin-comments-submitted-time,
         .admin-dark .admin-comment-reply-label,
         .admin-dark .admin-comment-modal-post-info li,
         .admin-dark .admin-comment-modal-post-info a,
         .admin-dark .admin-comments-comment,
         .admin-dark .admin-comment-reply-message {
+            color: #cbd5e1 !important;
+        }
+
+        .admin-dark .admin-comments-comment-label {
+            color: #e2e8f0 !important;
+        }
+
+        .admin-dark .admin-comments-comment-label.admin {
+            color: #34d399 !important;
+        }
+
+        .admin-dark .admin-comments-submitted-date {
+            color: #f8fafc !important;
+        }
+
+        .admin-dark .admin-comments-submitted-time {
             color: #cbd5e1 !important;
         }
 

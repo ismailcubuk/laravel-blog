@@ -14,11 +14,18 @@
             padding: 0.7rem 0;
         }
 
+        .front-navbar .container {
+            display: flex;
+            align-items: center;
+        }
+
         .front-brand {
             display: inline-flex;
             align-items: center;
             gap: 0.7rem;
             min-width: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .front-brand img {
@@ -41,6 +48,7 @@
             color: var(--front-text);
             font-size: 1.03rem;
             font-weight: 800;
+            line-height: 1.1;
             letter-spacing: -0.01em;
             white-space: nowrap;
             overflow: hidden;
@@ -63,6 +71,7 @@
         .front-navbar .navbar-nav {
             gap: 0.32rem;
             align-items: center;
+            min-height: 48px;
         }
 
         .front-navbar .nav-item {
@@ -77,7 +86,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-height: 42px;
+            min-height: 48px;
             padding: 0.52rem 0.96rem !important;
             border-radius: 12px;
             border: 1px solid transparent;
@@ -101,6 +110,10 @@
             width: 44px;
             height: 44px;
             padding: 0;
+        }
+
+        .front-navbar .navbar-collapse {
+            align-items: center;
         }
 
         .front-navbar .navbar-toggler-icon {

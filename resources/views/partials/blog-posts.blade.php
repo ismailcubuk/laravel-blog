@@ -79,6 +79,24 @@
             color: var(--front-muted);
             font-size: 0.82rem;
             font-weight: 700;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .front-post-list .front-post-meta li + li {
+            padding-left: 0.7rem;
+        }
+
+        .front-post-list .front-post-meta li + li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 0.9em;
+            background: var(--front-soft-border);
         }
 
         .front-post-list .front-post-excerpt {
