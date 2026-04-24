@@ -1,114 +1,7 @@
 <footer class="front-footer">
-    <style>
-        .front-footer {
-            margin-top: 2.2rem;
-            border-top: 1px solid var(--front-border);
-            background:
-                radial-gradient(1000px 160px at 50% -25%, rgba(var(--front-primary-rgb), 0.08), transparent 58%),
-                var(--front-surface);
-            padding: 1.2rem 0 1.25rem;
-        }
-
-        .front-footer .footer-wrap {
-            border: 1px solid var(--front-border);
-            border-radius: 14px;
-            background: rgba(var(--front-primary-rgb), 0.03);
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-            padding: 0.85rem 1rem;
-        }
-
-        .front-footer .social-icons {
-            margin: 0;
-            padding: 0;
-            padding-bottom: 0.8rem;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 0;
-        }
-
-        .front-footer .social-icons li {
-            margin: 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .front-footer .social-icons li::before,
-        .front-footer .social-icons li::after {
-            content: none !important;
-            display: none !important;
-        }
-
-        .front-footer .social-icons .social-divider {
-            width: 2rem;
-            justify-content: center;
-            color: var(--front-soft-border);
-            font-weight: 700;
-            user-select: none;
-        }
-
-        .front-footer .social-icons a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.42rem;
-            min-height: 39px;
-            border-radius: 999px;
-            border: 1px solid var(--front-border);
-            background: rgba(var(--front-primary-rgb), 0.04);
-            padding: 0.35rem 0.86rem;
-            color: var(--front-text);
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.01em;
-            transition: all 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-        }
-
-        .front-footer .social-icons a:hover {
-            color: var(--front-primary);
-            border-color: var(--front-soft-border);
-            background: rgba(var(--front-primary-rgb), 0.1);
-            text-decoration: none;
-            transform: translateY(-1px);
-        }
-
-        .front-footer .social-icons i {
-            font-size: 0.92rem;
-            opacity: 0.95;
-        }
-
-        .front-footer .copyright-text {
-            text-align: center;
-            margin-top: 0.8rem;
-            color: var(--front-muted);
-            font-size: 0.82rem;
-            font-weight: 700;
-        }
-
-        .front-footer .copyright-text p {
-            margin: 0;
-            line-height: 1.4;
-        }
-
-        .front-footer .copyright-text a {
-            color: var(--front-primary);
-            font-weight: 700;
-        }
-
-        @media (max-width: 575.98px) {
-            .front-footer .footer-wrap {
-                padding: 0.75rem 0.75rem;
-            }
-
-            .front-footer .social-icons a {
-                min-height: 36px;
-                padding: 0.32rem 0.72rem;
-                font-size: 0.78rem;
-            }
-        }
-    </style>
+    @push('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/extracted/partials-footer.css') }}">
+@endpush
 
     @php($currentYear = now()->year)
     @php(
@@ -178,3 +71,5 @@
         </div>
     </div>
 </footer>
+
+

@@ -1,0 +1,7 @@
+.about-us .about-section-content,
+    .about-us .about-section-content * {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: normal;
+    }

@@ -17,55 +17,9 @@
 @endphp
 
 @push('styles')
-<style>
-    .sort-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: inherit;
-        text-decoration: none;
-        font-weight: 700;
-    }
-
-    .sort-link:hover {
-        color: var(--admin-primary);
-    }
-
-    .categories-table {
-        table-layout: fixed;
-    }
-
-    .category-name-col {
-        width: 34%;
-    }
-
-    .category-slug-col {
-        width: 24%;
-    }
-
-    .category-name-input {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        box-sizing: border-box;
-    }
-
-    .category-slug-value {
-        display: inline-block;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .category-actions {
-        display: inline-flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 0.35rem;
-        flex-wrap: wrap;
-    }
-</style>
+@push('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/extracted/admin-content-categories.css') }}">
+@endpush
 @endpush
 
 <div class="container-fluid py-4">
@@ -291,3 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endsection
+
+
+

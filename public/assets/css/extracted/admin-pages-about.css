@@ -1,0 +1,182 @@
+.section-layout-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .section-layout-btn {
+        border: 1px solid var(--admin-border);
+        background: var(--admin-surface);
+        border-radius: 12px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-align: left;
+        transition: all 0.2s ease;
+    }
+
+    .section-layout-btn:hover {
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        border-color: rgba(var(--admin-primary-rgb), 0.35);
+        transform: translateY(-1px);
+    }
+
+    .section-layout-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        color: var(--admin-primary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+    }
+
+    .section-layout-icon-grid {
+        display: inline-grid;
+        align-items: stretch;
+        justify-items: stretch;
+        gap: 2px;
+        padding: 4px;
+    }
+
+    .section-layout-icon-grid span {
+        display: block;
+        background: var(--admin-primary);
+        border-radius: 2px;
+        min-width: 0;
+    }
+
+    .section-layout-icon-grid-1 {
+        grid-template-columns: 1fr;
+    }
+
+    .section-layout-icon-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-layout-icon-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .section-layout-icon-grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .section-layout-copy {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .section-layout-copy strong {
+        font-size: 0.88rem;
+        color: var(--admin-text);
+    }
+
+    .section-layout-copy small {
+        font-size: 0.75rem;
+        color: var(--admin-muted);
+    }
+
+    .section-entry {
+        border: 1px solid var(--admin-border);
+        background: var(--admin-surface);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .section-entry-header {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--admin-border);
+        background: rgba(var(--admin-primary-rgb), 0.04);
+    }
+
+    .section-editor-body {
+        padding: 12px 14px 14px;
+    }
+
+    .section-entry .section-layout-copy strong {
+        color: var(--admin-text);
+    }
+
+    .section-entry .section-layout-copy small {
+        color: var(--admin-muted);
+    }
+
+    .section-column-shell {
+        padding: 2px;
+    }
+
+    .section-summary-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--admin-border);
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        color: var(--admin-text);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .section-action-btn {
+        border-radius: 999px;
+        min-height: 32px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        border: 1px solid var(--admin-border);
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .section-action-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .section-action-btn-move {
+        color: var(--admin-text);
+    }
+
+    .section-action-btn-move:hover {
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        color: var(--admin-text);
+    }
+
+    .section-action-btn-toggle {
+        color: var(--admin-primary);
+        border-color: rgba(var(--admin-primary-rgb), 0.45);
+        background: rgba(var(--admin-primary-rgb), 0.1);
+    }
+
+    .section-action-btn-toggle:hover {
+        background: rgba(var(--admin-primary-rgb), 0.18);
+        color: var(--admin-primary);
+    }
+
+    .section-action-btn-remove {
+        color: #f87171;
+        border-color: rgba(248, 113, 113, 0.4);
+        background: rgba(248, 113, 113, 0.08);
+    }
+
+    .section-action-btn-remove:hover {
+        background: rgba(248, 113, 113, 0.16);
+        color: #fecaca;
+    }
+
+    @media (max-width: 1199.98px) {
+        .section-layout-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .section-layout-grid {
+            grid-template-columns: 1fr;
+        }
+    }

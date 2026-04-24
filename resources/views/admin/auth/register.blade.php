@@ -132,39 +132,7 @@
 </div>
 
 @push('styles')
-<style>
-    .terms-modal .modal-content {
-        border-radius: 16px;
-        border: 1px solid rgba(148, 163, 184, 0.3);
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94));
-        color: #e2e8f0;
-    }
-    .terms-modal .modal-header {
-        border-bottom: 1px solid rgba(148, 163, 184, 0.26);
-        background: linear-gradient(135deg, rgba(30, 64, 175, 0.28), rgba(15, 23, 42, 0.18));
-    }
-    .terms-modal .modal-title { font-weight: 800; }
-    .terms-modal .modal-header small { color: #94a3b8; }
-    .terms-modal .modal-body { padding: 1rem; }
-    .terms-modal .terms-html { color: #cbd5e1; }
-    .terms-modal .terms-html h2,
-    .terms-modal .terms-html h3,
-    .terms-modal .terms-html h4,
-    .terms-modal .terms-html h5,
-    .terms-modal .terms-html h6 {
-        color: #f8fafc;
-        font-weight: 800;
-        margin-top: 1rem;
-        margin-bottom: 0.4rem;
-    }
-    .terms-modal .terms-html p,
-    .terms-modal .terms-html li {
-        color: #cbd5e1;
-        font-size: 0.94rem;
-        line-height: 1.6;
-    }
-    .terms-modal .terms-html a { color: #93c5fd; }
-    .terms-modal .modal-footer { border-top: 1px solid rgba(148, 163, 184, 0.2); }
-</style>
+<link rel="stylesheet" href="{{ asset('assets/css/admin/auth/terms-modal.css') }}">
 @endpush
 @endsection
+

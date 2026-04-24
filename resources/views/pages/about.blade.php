@@ -4,15 +4,9 @@
 
 @section('content')
 
-  <style>
-    .about-us .about-section-content,
-    .about-us .about-section-content * {
-      max-width: 100%;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-      white-space: normal;
-    }
-  </style>
+  @push('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/extracted/pages-about.css') }}">
+@endpush
 
   <div class="heading-page header-text">
     <section class="page-heading">
@@ -95,3 +89,5 @@
   </section>
 
 @endsection
+
+

@@ -1,0 +1,291 @@
+.users-page {
+        padding-bottom: 0.5rem;
+    }
+
+    .users-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .users-filter-bar {
+        border: 1px solid var(--admin-border);
+        border-radius: 14px;
+        background: rgba(var(--admin-primary-rgb), 0.04);
+        padding: 0.8rem;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .users-filter-main {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: minmax(240px, 1.8fr) minmax(180px, 1fr);
+        flex: 1 1 520px;
+    }
+
+    .users-filter-actions {
+        display: inline-flex;
+        gap: 0.55rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .users-field .form-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .stats-card .card-body {
+        min-height: 94px;
+    }
+
+    .users-table-card {
+        overflow: hidden;
+    }
+
+    .users-table-wrap {
+        overflow: visible;
+    }
+
+    .users-table {
+        --users-row-bg: #ffffff;
+        --users-row-color: #0f172a;
+        --users-row-border: #cfd8e6;
+        --users-row-hover: #f4f7fc;
+    }
+
+    .admin-dark .users-table {
+        --users-row-bg: #0f172a;
+        --users-row-color: #f8fafc;
+        --users-row-border: #334155;
+        --users-row-hover: #111b2f;
+    }
+
+    .users-table > :not(caption) > * > * {
+        background-color: var(--users-row-bg) !important;
+        color: var(--users-row-color) !important;
+        border-color: var(--users-row-border) !important;
+        white-space: nowrap;
+        overflow: visible;
+    }
+
+    .users-table tbody tr:hover > * {
+        background-color: var(--users-row-hover) !important;
+    }
+
+    .users-table thead th {
+        background: rgba(var(--admin-primary-rgb), 0.06);
+        color: var(--admin-text);
+        border-bottom: 1px solid var(--admin-border);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+
+    .sort-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: inherit;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .sort-link:hover {
+        color: var(--admin-primary);
+    }
+
+    .edit-cell-col {
+        width: 110px;
+        text-align: center;
+    }
+
+    .role-cell-col {
+        width: 180px;
+    }
+
+    .role-cell {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 32px;
+    }
+
+    .edit-user-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        min-height: 34px;
+        padding: 0.32rem 0.72rem;
+        border-radius: 999px;
+        border: 1px solid rgba(var(--admin-primary-rgb), 0.35);
+        background: rgba(var(--admin-primary-rgb), 0.08);
+        color: var(--admin-text);
+        font-size: 0.78rem;
+        font-weight: 700;
+        line-height: 1;
+        transition: all 0.18s ease;
+    }
+
+    .edit-user-btn i {
+        font-size: 0.86rem;
+    }
+
+    .edit-user-btn:hover {
+        border-color: rgba(var(--admin-primary-rgb), 0.62);
+        background: rgba(var(--admin-primary-rgb), 0.16);
+        color: var(--admin-text);
+        transform: translateY(-1px);
+    }
+
+    .edit-user-btn:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 0.22rem rgba(var(--admin-primary-rgb), 0.28);
+    }
+
+    .admin-dark .edit-user-btn {
+        border-color: rgba(148, 163, 184, 0.35);
+        background: rgba(148, 163, 184, 0.1);
+        color: #e2e8f0;
+    }
+
+    .admin-dark .edit-user-btn:hover {
+        border-color: rgba(148, 163, 184, 0.62);
+        background: rgba(148, 163, 184, 0.2);
+        color: #f8fafc;
+    }
+
+    .role-name-badge {
+        min-height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.38rem 0.72rem;
+    }
+
+    .users-pagination-wrap {
+        border-top: 1px solid var(--admin-border);
+        background: rgba(var(--admin-primary-rgb), 0.02);
+    }
+
+    .users-pagination-wrap nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .users-pagination-wrap .pagination {
+        margin: 0;
+    }
+
+    .users-pagination-wrap .page-link {
+        border-radius: 10px;
+        border-color: var(--admin-border);
+        background: var(--admin-surface);
+        color: var(--admin-text);
+        font-weight: 700;
+        min-width: 38px;
+        text-align: center;
+    }
+
+    .users-pagination-wrap .page-link:hover {
+        background: rgba(var(--admin-primary-rgb), 0.12);
+        color: var(--admin-text);
+        border-color: rgba(var(--admin-primary-rgb), 0.42);
+    }
+
+    .users-pagination-wrap .page-item.active .page-link {
+        background: var(--admin-primary);
+        border-color: var(--admin-primary);
+        color: #fff;
+    }
+
+    .users-pagination-wrap .page-item.disabled .page-link {
+        color: #8aa0c2;
+        background: #f3f6fb;
+        border-color: var(--admin-border);
+    }
+
+    .admin-dark .users-table .fw-semibold,
+    .admin-dark .users-table td:first-child {
+        color: #f8fafc !important;
+    }
+
+    .admin-dark .users-pagination-wrap {
+        border-top-color: #334155;
+        background: #0b1220;
+    }
+
+    .admin-dark .users-pagination-wrap .page-link {
+        background: rgba(15, 23, 42, 0.86);
+        color: #e2e8f0;
+        border-color: #334155;
+    }
+
+    .admin-dark .users-pagination-wrap .page-link:hover {
+        background: rgba(30, 41, 59, 0.95);
+        color: #f8fafc;
+        border-color: #475569;
+    }
+
+    .admin-dark .users-pagination-wrap .page-item.active .page-link {
+        color: #fff;
+        border-color: var(--admin-primary);
+        background: var(--admin-primary);
+    }
+
+    .admin-dark .users-pagination-wrap .page-item.disabled .page-link {
+        color: #64748b;
+        background: rgba(15, 23, 42, 0.72);
+        border-color: #334155;
+    }
+
+    .users-pagination-wrap svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    @media (max-width: 991.98px) {
+        .users-filter-main {
+            grid-template-columns: 1fr;
+            flex-basis: 100%;
+        }
+
+        .users-filter-actions {
+            width: 100%;
+        }
+
+        .users-filter-actions .btn {
+            flex: 1;
+        }
+
+        .users-pagination-wrap nav {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .edit-cell-col {
+            width: 78px;
+        }
+
+        .edit-user-btn {
+            min-width: 34px;
+            padding: 0.32rem 0.5rem;
+        }
+
+        .edit-user-btn span {
+            display: none;
+        }
+    }
