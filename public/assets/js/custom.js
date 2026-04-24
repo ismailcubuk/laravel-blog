@@ -15,54 +15,7 @@ jQuery( document ).ready(function( $ ) {
         });
         
 
-        var $header = $("header.front-header");
-        var stickyOffset = null;
-        var ticking = false;
-        var thresholdGap = 8;
-
-        function resolveStickyOffset() {
-            var box = $('.header-text').outerHeight() || 0;
-            var headerHeight = $header.outerHeight() || 0;
-            stickyOffset = Math.max(0, box - headerHeight);
-        }
-
-        function updateStickyHeader() {
-            if (!$header.length) {
-                return;
-            }
-
-            if (stickyOffset === null) {
-                resolveStickyOffset();
-            }
-
-            var scroll = $(window).scrollTop();
-            var isActive = $header.hasClass("background-header");
-
-            if (!isActive && scroll >= stickyOffset + thresholdGap) {
-                $header.addClass("background-header");
-            } else if (isActive && scroll <= stickyOffset - thresholdGap) {
-                $header.removeClass("background-header");
-            }
-        }
-
-        updateStickyHeader();
-
-        $(window).on('scroll', function() {
-            if (ticking) {
-                return;
-            }
-
-            ticking = true;
-            window.requestAnimationFrame(function () {
-                updateStickyHeader();
-                ticking = false;
-            });
-        });
-
-        $(window).on('resize', function () {
-            resolveStickyOffset();
-            updateStickyHeader();
-        });
+        $("header.front-header").removeClass("background-header");
 
         if ($('.owl-clients').length) {
             $('.owl-clients').owlCarousel({
