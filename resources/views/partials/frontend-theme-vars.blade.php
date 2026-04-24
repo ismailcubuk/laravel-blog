@@ -24,6 +24,18 @@
             --front-pagination-hover-border: {{ $uiMode === 'dark' ? '#475569' : '#bcd0f5' }};
             --front-pagination-disabled-bg: {{ $uiMode === 'dark' ? 'rgba(15, 23, 42, 0.72)' : '#f3f6fb' }};
             --front-pagination-disabled-color: {{ $uiMode === 'dark' ? '#64748b' : '#8aa0c2' }};
+            --front-header-bg: {{ $uiMode === 'dark' ? 'rgba(2, 6, 23, 0.88)' : 'rgba(255, 255, 255, 0.9)' }};
+            --front-header-shadow: {{ $uiMode === 'dark' ? '0 8px 24px rgba(2, 6, 23, 0.28)' : '0 8px 24px rgba(16, 33, 61, 0.08)' }};
+            --front-nav-link: {{ $uiMode === 'dark' ? '#e2e8f0' : '#1f2e46' }};
+            --front-nav-hover-bg: {{ $uiMode === 'dark' ? 'rgba(148, 163, 184, 0.18)' : 'var(--front-soft-bg)' }};
+            --front-nav-hover-border: {{ $uiMode === 'dark' ? 'rgba(148, 163, 184, 0.3)' : 'var(--front-soft-border)' }};
+            --front-user-chip-text: {{ $uiMode === 'dark' ? '#f8fafc' : '#13243f' }};
+            --front-user-chip-border: {{ $uiMode === 'dark' ? 'rgba(148, 163, 184, 0.32)' : 'var(--front-soft-border)' }};
+            --front-user-chip-bg: {{ $uiMode === 'dark' ? 'rgba(148, 163, 184, 0.16)' : 'var(--front-soft-bg)' }};
+            --front-dropdown-item: {{ $uiMode === 'dark' ? '#e2e8f0' : '#1f2e46' }};
+            --front-dropdown-hover-bg: {{ $uiMode === 'dark' ? 'rgba(148, 163, 184, 0.16)' : 'var(--front-soft-bg)' }};
+            --front-mode-track-bg: {{ $uiMode === 'dark' ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.78)' }};
+            --front-mode-button: {{ $uiMode === 'dark' ? '#cbd5e1' : '#41506a' }};
+            --front-mode-hover-bg: {{ $uiMode === 'dark' ? 'rgba(148, 163, 184, 0.16)' : 'var(--front-soft-bg)' }};
         }
 </style>
-

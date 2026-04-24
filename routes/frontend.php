@@ -24,6 +24,6 @@ Route::get('/profile/email-change/{requestId}', [ProfileController::class, 'veri
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/mode', [ProfileController::class, 'updateMode'])->name('profile.mode');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 });
-

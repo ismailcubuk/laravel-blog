@@ -58,7 +58,6 @@ class ProfileController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'phone' => ['nullable', 'regex:/^\+90 5\d{2} \d{3} \d{2} \d{2}$/'],
             'bio' => ['nullable', 'string', 'max:1000'],
-            'ui_mode' => ['required', 'in:white,dark'],
             'facebook_url' => ['nullable', 'string', 'max:255'],
             'twitter_url' => ['nullable', 'string', 'max:255'],
             'instagram_url' => ['nullable', 'string', 'max:255'],
@@ -145,7 +144,7 @@ class ProfileController extends Controller
 
         $data = $request->validate([
             'current_password' => ['required', 'string'],
-            'new_password' => ['required', 'string', 'min:8', 'confirmed'],
+            'new_password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
         if (!Hash::check($data['current_password'], $user->password)) {
@@ -278,7 +277,6 @@ class ProfileController extends Controller
         }
     }
 }
-
 
 
 

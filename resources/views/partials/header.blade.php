@@ -5,12 +5,12 @@
             position: sticky;
             top: 0;
             z-index: 1030;
-            background: {{ $isDarkMode ? 'rgba(2, 6, 23, 0.88)' : 'rgba(255, 255, 255, 0.9)' }};
+            background: var(--front-header-bg);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--front-border);
             width: 100%;
             height: auto !important;
-            box-shadow: 0 8px 24px {{ $isDarkMode ? 'rgba(2, 6, 23, 0.28)' : 'rgba(16, 33, 61, 0.08)' }};
+            box-shadow: var(--front-header-shadow);
             transition: none;
         }
 
@@ -18,8 +18,8 @@
             position: sticky !important;
             top: 0 !important;
             height: auto !important;
-            background: {{ $isDarkMode ? 'rgba(2, 6, 23, 0.88)' : 'rgba(255, 255, 255, 0.9)' }} !important;
-            box-shadow: 0 8px 24px {{ $isDarkMode ? 'rgba(2, 6, 23, 0.28)' : 'rgba(16, 33, 61, 0.08)' }} !important;
+            background: var(--front-header-bg) !important;
+            box-shadow: var(--front-header-shadow) !important;
         }
 
         .front-navbar {
@@ -102,7 +102,7 @@
         }
 
         .front-navbar .nav-link {
-            color: {{ $isDarkMode ? '#e2e8f0' : '#1f2e46' }} !important;
+            color: var(--front-nav-link) !important;
             font-size: 0.9rem;
             font-weight: 700;
             display: inline-flex;
@@ -121,8 +121,8 @@
         .front-navbar .nav-item.active .nav-link,
         .front-navbar .show > .nav-link {
             color: var(--front-primary) !important;
-            background: {{ $isDarkMode ? 'rgba(148, 163, 184, 0.18)' : 'var(--front-soft-bg)' }};
-            border-color: {{ $isDarkMode ? 'rgba(148, 163, 184, 0.3)' : 'var(--front-soft-border)' }};
+            background: var(--front-nav-hover-bg);
+            border-color: var(--front-nav-hover-border);
             box-shadow: 0 8px 18px rgba(var(--front-primary-rgb), 0.12);
         }
 
@@ -174,13 +174,13 @@
         }
 
         .front-user-chip .nav-link {
-            color: {{ $isDarkMode ? '#f8fafc' : '#13243f' }} !important;
+            color: var(--front-user-chip-text) !important;
             opacity: 1 !important;
             min-height: 48px;
             padding: 0.5rem 1.15rem !important;
             border-radius: 999px;
-            border: 1px solid {{ $isDarkMode ? 'rgba(148, 163, 184, 0.32)' : 'var(--front-soft-border)' }};
-            background: {{ $isDarkMode ? 'rgba(148, 163, 184, 0.16)' : 'var(--front-soft-bg)' }};
+            border: 1px solid var(--front-user-chip-border);
+            background: var(--front-user-chip-bg);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
@@ -197,7 +197,7 @@
         .front-navbar .dropdown-item {
             font-size: 0.9rem;
             font-weight: 700;
-            color: {{ $isDarkMode ? '#e2e8f0' : '#1f2e46' }};
+            color: var(--front-dropdown-item);
             min-height: 40px;
             border-radius: 10px;
             display: flex;
@@ -207,7 +207,7 @@
         }
 
         .front-navbar .dropdown-item:hover {
-            background: {{ $isDarkMode ? 'rgba(148, 163, 184, 0.16)' : 'var(--front-soft-bg)' }};
+            background: var(--front-dropdown-hover-bg);
             color: var(--front-primary);
         }
 
@@ -220,6 +220,49 @@
             border: 0;
             background: transparent;
             text-align: left;
+        }
+
+        .front-mode-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.18rem;
+            min-height: 34px;
+            margin: 0 0.08rem;
+            padding: 0.18rem;
+            border: 1px solid var(--front-border);
+            border-radius: 999px;
+            background: var(--front-mode-track-bg);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .front-mode-switch button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            min-height: 30px;
+            padding: 0;
+            border: 0;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--front-mode-button);
+            font-size: 0.86rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .front-mode-switch button.is-active {
+            background: linear-gradient(135deg, var(--front-primary), var(--front-primary-2));
+            color: #ffffff;
+            box-shadow: 0 8px 18px rgba(var(--front-primary-rgb), 0.22);
+        }
+
+        .front-mode-switch button:not(.is-active):hover {
+            background: var(--front-mode-hover-bg);
+            color: var(--front-primary);
         }
 
         @media (max-width: 991.98px) {
@@ -330,6 +373,21 @@
                     </li>
 
                     @auth
+                        <li class="nav-item">
+                            <form class="front-mode-switch" action="{{ route('profile.mode') }}" method="POST" aria-label="Gorunum modu" data-front-mode-switch>
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" name="ui_mode" value="white" class="{{ !$isDarkMode ? 'is-active' : '' }}" aria-pressed="{{ !$isDarkMode ? 'true' : 'false' }}" title="Light mode">
+                                    <i class="fa fa-sun-o" aria-hidden="true"></i>
+                                    <span class="sr-only">Light mode</span>
+                                </button>
+                                <button type="submit" name="ui_mode" value="dark" class="{{ $isDarkMode ? 'is-active' : '' }}" aria-pressed="{{ $isDarkMode ? 'true' : 'false' }}" title="Dark mode">
+                                    <i class="fa fa-moon-o" aria-hidden="true"></i>
+                                    <span class="sr-only">Dark mode</span>
+                                </button>
+                            </form>
+                        </li>
+
                         <li class="nav-item dropdown front-user-chip">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ Auth::user()->name }}
@@ -356,4 +414,131 @@
             </div>
         </div>
     </nav>
+
+    <script>
+        (() => {
+            const form = document.querySelector('[data-front-mode-switch]');
+            if (!form) {
+                return;
+            }
+
+            const themeValues = {
+                white: {
+                    '--front-bg-a': '#f8fbff',
+                    '--front-bg-b': '#eef3fb',
+                    '--front-surface': '#ffffff',
+                    '--front-border': '#e2e8f4',
+                    '--front-text': '#1a2433',
+                    '--front-muted': '#1f2e46',
+                    '--front-input-bg': '#fbfcff',
+                    '--front-shadow': '0 14px 30px rgba(16, 33, 61, 0.08)',
+                    '--front-sidebar-link': '#41506a',
+                    '--front-pagination-bg': '#ffffff',
+                    '--front-pagination-color': '#35507f',
+                    '--front-page-numbers-color': '#35507f',
+                    '--front-pagination-hover-bg': '#f8fbff',
+                    '--front-pagination-hover-color': '#1f3b63',
+                    '--front-pagination-hover-border': '#bcd0f5',
+                    '--front-pagination-disabled-bg': '#f3f6fb',
+                    '--front-pagination-disabled-color': '#8aa0c2',
+                    '--front-header-bg': 'rgba(255, 255, 255, 0.9)',
+                    '--front-header-shadow': '0 8px 24px rgba(16, 33, 61, 0.08)',
+                    '--front-nav-link': '#1f2e46',
+                    '--front-nav-hover-bg': 'var(--front-soft-bg)',
+                    '--front-nav-hover-border': 'var(--front-soft-border)',
+                    '--front-user-chip-text': '#13243f',
+                    '--front-user-chip-border': 'var(--front-soft-border)',
+                    '--front-user-chip-bg': 'var(--front-soft-bg)',
+                    '--front-dropdown-item': '#1f2e46',
+                    '--front-dropdown-hover-bg': 'var(--front-soft-bg)',
+                    '--front-mode-track-bg': 'rgba(255, 255, 255, 0.78)',
+                    '--front-mode-button': '#41506a',
+                    '--front-mode-hover-bg': 'var(--front-soft-bg)',
+                },
+                dark: {
+                    '--front-bg-a': '#0b1220',
+                    '--front-bg-b': '#111a2e',
+                    '--front-surface': '#0f172a',
+                    '--front-border': '#25324a',
+                    '--front-text': '#e2e8f0',
+                    '--front-muted': '#94a3b8',
+                    '--front-input-bg': '#111b2f',
+                    '--front-shadow': '0 14px 30px rgba(2, 6, 23, 0.45)',
+                    '--front-sidebar-link': '#cbd5e1',
+                    '--front-pagination-bg': 'rgba(15, 23, 42, 0.86)',
+                    '--front-pagination-color': '#cbd5e1',
+                    '--front-page-numbers-color': '#e2e8f0',
+                    '--front-pagination-hover-bg': 'rgba(30, 41, 59, 0.95)',
+                    '--front-pagination-hover-color': '#f8fafc',
+                    '--front-pagination-hover-border': '#475569',
+                    '--front-pagination-disabled-bg': 'rgba(15, 23, 42, 0.72)',
+                    '--front-pagination-disabled-color': '#64748b',
+                    '--front-header-bg': 'rgba(2, 6, 23, 0.88)',
+                    '--front-header-shadow': '0 8px 24px rgba(2, 6, 23, 0.28)',
+                    '--front-nav-link': '#e2e8f0',
+                    '--front-nav-hover-bg': 'rgba(148, 163, 184, 0.18)',
+                    '--front-nav-hover-border': 'rgba(148, 163, 184, 0.3)',
+                    '--front-user-chip-text': '#f8fafc',
+                    '--front-user-chip-border': 'rgba(148, 163, 184, 0.32)',
+                    '--front-user-chip-bg': 'rgba(148, 163, 184, 0.16)',
+                    '--front-dropdown-item': '#e2e8f0',
+                    '--front-dropdown-hover-bg': 'rgba(148, 163, 184, 0.16)',
+                    '--front-mode-track-bg': 'rgba(15, 23, 42, 0.9)',
+                    '--front-mode-button': '#cbd5e1',
+                    '--front-mode-hover-bg': 'rgba(148, 163, 184, 0.16)',
+                },
+            };
+
+            const applyMode = (mode) => {
+                const safeMode = mode === 'dark' ? 'dark' : 'white';
+                const isDark = safeMode === 'dark';
+
+                document.body.classList.toggle('front-dark', isDark);
+                document.body.classList.toggle('front-light', !isDark);
+
+                Object.entries(themeValues[safeMode]).forEach(([name, value]) => {
+                    document.documentElement.style.setProperty(name, value);
+                });
+
+                form.querySelectorAll('button[name="ui_mode"]').forEach((button) => {
+                    const active = button.value === safeMode;
+                    button.classList.toggle('is-active', active);
+                    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+                });
+
+                document.cookie = `ui_mode=${safeMode}; path=/; max-age=31536000; SameSite=Lax`;
+            };
+
+            form.addEventListener('submit', (event) => event.preventDefault());
+
+            form.querySelectorAll('button[name="ui_mode"]').forEach((button) => {
+                button.addEventListener('click', async () => {
+                    const mode = button.value === 'dark' ? 'dark' : 'white';
+                    const previousMode = document.body.classList.contains('front-dark') ? 'dark' : 'white';
+                    const payload = new FormData(form);
+                    payload.set('ui_mode', mode);
+
+                    applyMode(mode);
+
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: payload,
+                            headers: {
+                                Accept: 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                            },
+                            credentials: 'same-origin',
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Mode update failed');
+                        }
+                    } catch (error) {
+                        applyMode(previousMode);
+                    }
+                });
+            });
+        })();
+    </script>
 </header>
