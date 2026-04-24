@@ -79,6 +79,12 @@
             overflow: hidden;
         }
 
+        .contact-us .down-contact {
+            border: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+
         .front-section-title {
             font-size: 1.25rem;
             font-weight: 800;
@@ -465,6 +471,11 @@
 
         .front-dark .contact-us .contact-information ul li h5 {
             color: #f1f5f9 !important;
+        }
+
+        .front-dark .contact-us .contact-form textarea,
+        .front-dark .contact-us .contact-form textarea::placeholder {
+            color: #ffffff !important;
         }
 
         .front-dark #preloader {

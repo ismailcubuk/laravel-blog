@@ -105,8 +105,6 @@
                 <div id="map">
                     @if($page->contact_map_src)
                         <iframe src="{{ $page->contact_map_src }}" width="100%" height="450" frameborder="0" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-                    @else
-                        <p>Harita henuz eklenmedi.</p>
                     @endif
                 </div>
             </div>
