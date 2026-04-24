@@ -57,3 +57,12 @@ const avatarInput = document.getElementById('avatarInput');
 
         phoneInput.value = formatTrPhone(phoneInput.value);
     }
+
+    document.querySelectorAll('.profile-mode-card input[type="radio"]').forEach((input) => {
+        input.addEventListener('change', () => {
+            document.querySelectorAll('.profile-mode-card').forEach((card) => {
+                const radio = card.querySelector('input[type="radio"]');
+                card.classList.toggle('is-selected', Boolean(radio && radio.checked));
+            });
+        });
+    });

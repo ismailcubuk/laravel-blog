@@ -101,6 +101,16 @@
                                                                         </details>
                                                                     @endif
                                                                 </h4>
+                                                                @php($commentUser = $comment->user)
+                                                                @if($commentUser && count($commentUser->socialLinks()) > 0)
+                                                                    <div class="comment-social-links" aria-label="{{ $comment->name }} social links">
+                                                                        @foreach($commentUser->socialLinks() as $social)
+                                                                            <a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" title="{{ $social['label'] }}">
+                                                                                <i class="fa fa-{{ $social['icon'] }}"></i>
+                                                                            </a>
+                                                                        @endforeach
+                                                                    </div>
+                                                                @endif
                                                                 <p>{{ $comment->message }}</p>
 
                                                                 @if($isAdminViewer && !$comment->reply_message)

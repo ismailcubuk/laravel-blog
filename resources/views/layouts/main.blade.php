@@ -7,7 +7,7 @@
     @php($siteName = $settings['site_name'] ?? config('app.name', 'My Website'))
     @php($themeKey = $settings['ui_theme'] ?? 'orange')
     @php($uiTheme = in_array($themeKey, ['orange', 'blue', 'emerald', 'rose', 'violet'], true) ? $themeKey : 'orange')
-    @php($modeKey = $settings['ui_mode'] ?? 'white')
+    @php($modeKey = auth()->check() ? (auth()->user()->ui_mode ?: ($settings['ui_mode'] ?? 'white')) : ($settings['ui_mode'] ?? 'white'))
     @php($uiMode = in_array($modeKey, ['white', 'dark'], true) ? $modeKey : 'white')
     @php($themePalette = [
         'orange' => ['primary' => '#f48840', 'secondary' => '#fb9857', 'softBg' => '#fff1e8', 'softBorder' => '#ffd7bf', 'focus' => '#f5b58a', 'rgb' => '244, 136, 64'],

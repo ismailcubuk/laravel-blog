@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Users;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -19,9 +19,9 @@ class ProfileController extends Controller
 
     public function edit(Request $request)
     {
-        $user = $request->user();
-
-        return view('admin.users.profile', compact('user'));
+        return view('pages.profile.edit', [
+            'user' => $request->user(),
+        ]);
     }
 
     public function update(Request $request)
@@ -29,29 +29,9 @@ class ProfileController extends Controller
         $user = $request->user();
         $currentEmail = (string) $user->email;
 
-        $rawPhone = (string) $request->input('phone', '');
-        $phoneDigits = preg_replace('/\D+/', '', $rawPhone);
-        $normalizedPhone = null;
-
-        if ($phoneDigits !== '') {
-            if (str_starts_with($phoneDigits, '90') && strlen($phoneDigits) === 12) {
-                $phoneDigits = substr($phoneDigits, 2);
-            } elseif (str_starts_with($phoneDigits, '0') && strlen($phoneDigits) === 11) {
-                $phoneDigits = substr($phoneDigits, 1);
-            }
-
-            if (strlen($phoneDigits) === 10 && str_starts_with($phoneDigits, '5')) {
-                $normalizedPhone = sprintf(
-                    '+90 %s %s %s %s',
-                    substr($phoneDigits, 0, 3),
-                    substr($phoneDigits, 3, 3),
-                    substr($phoneDigits, 6, 2),
-                    substr($phoneDigits, 8, 2),
-                );
-            }
-        }
-
-        $request->merge(['phone' => $normalizedPhone]);
+        $request->merge([
+            'phone' => $this->normalizePhone((string) $request->input('phone', '')),
+        ]);
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -102,41 +82,38 @@ class ProfileController extends Controller
             }
         }
 
-        unset($data['email']);
-        unset($data['avatar']);
-
+        unset($data['email'], $data['avatar']);
         $user->update($data);
 
-        if ($emailChanged) {
-            $token = Str::random(64);
-
-            DB::table('email_change_requests')->updateOrInsert(
-                ['user_id' => $user->id],
-                [
-                    'new_email' => $newEmail,
-                    'token' => hash('sha256', $token),
-                    'created_at' => now(),
-                ]
-            );
-
-            $requestRecordId = DB::table('email_change_requests')
-                ->where('user_id', $user->id)
-                ->value('id');
-
-            $verifyUrl = route('admin.users.profile.email.verify', [
-                'requestId' => $requestRecordId,
-                'token' => $token,
-            ]);
-
-            $this->mailWorkflow->sendEmailChangeVerification($user->name, $newEmail, $verifyUrl);
-
-            return back()->with(
-                'success',
-                'Profile updated. We sent a verification email to your new address. Confirm it to complete the email change.'
-            );
+        if (!$emailChanged) {
+            return back()->with('success', 'Profile updated successfully.');
         }
 
-        return back()->with('success', 'Profile updated successfully.');
+        $token = Str::random(64);
+        DB::table('email_change_requests')->updateOrInsert(
+            ['user_id' => $user->id],
+            [
+                'new_email' => $newEmail,
+                'token' => hash('sha256', $token),
+                'created_at' => now(),
+            ]
+        );
+
+        $requestRecordId = DB::table('email_change_requests')
+            ->where('user_id', $user->id)
+            ->value('id');
+
+        $verifyUrl = route('profile.email.verify', [
+            'requestId' => $requestRecordId,
+            'token' => $token,
+        ]);
+
+        $this->mailWorkflow->sendEmailChangeVerification($user->name, $newEmail, $verifyUrl);
+
+        return back()->with(
+            'success',
+            'Profile updated. We sent a verification email to your new address. Confirm it to complete the email change.'
+        );
     }
 
     public function updatePassword(Request $request)
@@ -174,8 +151,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        $createdAt = Carbon::parse($record->created_at);
-        if ($createdAt->addHours(24)->isPast()) {
+        if (Carbon::parse($record->created_at)->addHours(24)->isPast()) {
             DB::table('email_change_requests')->where('id', $requestId)->delete();
 
             return redirect()->route('admin.login')->withErrors([
@@ -201,13 +177,7 @@ class ProfileController extends Controller
         if ($alreadyTaken) {
             DB::table('email_change_requests')->where('id', $requestId)->delete();
 
-            if (auth()->check() && (int) auth()->id() === (int) $user->id) {
-                return redirect()->route('admin.users.profile')->withErrors([
-                    'email' => 'This email address is already in use. Please try another email.',
-                ]);
-            }
-
-            return redirect()->route('admin.login')->withErrors([
+            return $this->redirectAfterEmailVerification($user)->withErrors([
                 'email' => 'This email address is already in use. Please try another email.',
             ]);
         }
@@ -219,16 +189,35 @@ class ProfileController extends Controller
 
         DB::table('email_change_requests')->where('id', $requestId)->delete();
 
-        if (auth()->check() && (int) auth()->id() === (int) $user->id) {
-            return redirect()->route('admin.users.profile')->with('success', 'Email address updated successfully.');
-        }
-
-        return redirect()->route('admin.login')->with('success', 'Email address updated successfully. You can continue with your new email.');
+        return $this->redirectAfterEmailVerification($user)
+            ->with('success', 'Email address updated successfully.');
     }
 
-    private function resolveAvatarDestination(): string
+    private function normalizePhone(string $rawPhone): ?string
     {
-        return base_path('../uploads/profiles');
+        $phoneDigits = preg_replace('/\D+/', '', $rawPhone);
+
+        if ($phoneDigits === '') {
+            return null;
+        }
+
+        if (str_starts_with($phoneDigits, '90') && strlen($phoneDigits) === 12) {
+            $phoneDigits = substr($phoneDigits, 2);
+        } elseif (str_starts_with($phoneDigits, '0') && strlen($phoneDigits) === 11) {
+            $phoneDigits = substr($phoneDigits, 1);
+        }
+
+        if (strlen($phoneDigits) !== 10 || !str_starts_with($phoneDigits, '5')) {
+            return null;
+        }
+
+        return sprintf(
+            '+90 %s %s %s %s',
+            substr($phoneDigits, 0, 3),
+            substr($phoneDigits, 3, 3),
+            substr($phoneDigits, 6, 2),
+            substr($phoneDigits, 8, 2),
+        );
     }
 
     private function normalizeSocialUrl(string $rawValue, string $field): ?string
@@ -259,6 +248,22 @@ class ProfileController extends Controller
         };
     }
 
+    private function redirectAfterEmailVerification(User $user)
+    {
+        if (auth()->check() && (int) auth()->id() === (int) $user->id) {
+            return $user->role === 'admin'
+                ? redirect()->route('admin.users.profile')
+                : redirect()->route('profile.edit');
+        }
+
+        return redirect()->route('admin.login');
+    }
+
+    private function resolveAvatarDestination(): string
+    {
+        return base_path('../uploads/profiles');
+    }
+
     private function deleteOldAvatar(string $avatarPath): void
     {
         if ($avatarPath === '' || !str_starts_with($avatarPath, '/uploads/profiles/')) {
@@ -278,7 +283,3 @@ class ProfileController extends Controller
         }
     }
 }
-
-
-
-

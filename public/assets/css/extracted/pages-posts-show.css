@@ -160,6 +160,36 @@
             color: #997404;
         }
 
+        .comment-social-links {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin: -0.15rem 0 0.55rem;
+            flex-wrap: wrap;
+        }
+
+        .comment-social-links a {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            border: 1px solid var(--front-border);
+            background: rgba(var(--front-primary-rgb), 0.08);
+            color: var(--front-text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+        }
+
+        .comment-social-links a:hover {
+            border-color: var(--front-soft-border);
+            background: rgba(var(--front-primary-rgb), 0.16);
+            color: var(--front-primary);
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
         .comment-status-option.approved-option:hover {
             background: #e8f7ee;
         }

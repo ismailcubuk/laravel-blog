@@ -87,9 +87,58 @@
                             <textarea name="bio" class="form-control profile-textarea" rows="4" placeholder="Short profile summary">{{ old('bio', $user->bio) }}</textarea>
                         </div>
 
+                        @php($selectedMode = old('ui_mode', $user->ui_mode ?: ($settings['ui_mode'] ?? 'white')))
+                        <div class="mb-4">
+                            <label class="profile-label">Personal Interface Mode</label>
+                            <div class="profile-mode-grid">
+                                <label class="profile-mode-card {{ $selectedMode === 'white' ? 'is-selected' : '' }}">
+                                    <input type="radio" name="ui_mode" value="white" {{ $selectedMode === 'white' ? 'checked' : '' }}>
+                                    <span class="profile-mode-preview profile-mode-preview-white"></span>
+                                    <strong>White Mode</strong>
+                                </label>
+                                <label class="profile-mode-card {{ $selectedMode === 'dark' ? 'is-selected' : '' }}">
+                                    <input type="radio" name="ui_mode" value="dark" {{ $selectedMode === 'dark' ? 'checked' : '' }}>
+                                    <span class="profile-mode-preview profile-mode-preview-dark"></span>
+                                    <strong>Dark Mode</strong>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="profile-form-divider">
+                            <h6>Social Accounts</h6>
+                            <p>These links can be shown with your public comments.</p>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="profile-label">Facebook</label>
+                                <input type="text" name="facebook_url" class="form-control profile-input" value="{{ old('facebook_url', $user->facebook_url) }}" placeholder="facebook.com/user">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="profile-label">X / Twitter</label>
+                                <input type="text" name="twitter_url" class="form-control profile-input" value="{{ old('twitter_url', $user->twitter_url) }}" placeholder="@user">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="profile-label">Instagram</label>
+                                <input type="text" name="instagram_url" class="form-control profile-input" value="{{ old('instagram_url', $user->instagram_url) }}" placeholder="@user">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="profile-label">LinkedIn</label>
+                                <input type="text" name="linkedin_url" class="form-control profile-input" value="{{ old('linkedin_url', $user->linkedin_url) }}" placeholder="linkedin.com/in/user">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="profile-label">GitHub</label>
+                                <input type="text" name="github_url" class="form-control profile-input" value="{{ old('github_url', $user->github_url) }}" placeholder="github.com/user">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="profile-label">Website</label>
+                                <input type="text" name="website_url" class="form-control profile-input" value="{{ old('website_url', $user->website_url) }}" placeholder="example.com">
+                            </div>
+                        </div>
+
                         <input type="file" name="avatar" id="avatarInput" class="d-none" accept="image/*">
 
-                        <button type="submit" class="profile-save-btn">Save Profile</button>
+                        <button type="submit" class="profile-save-btn mt-4">Save Profile</button>
                     </form>
                 </div>
             </div>
@@ -138,9 +187,7 @@
 </div>
 
 @push('scripts')
-@push('scripts')
 <script src="{{ asset('assets/js/extracted/admin-users-profile.js') }}"></script>
-@endpush
 @endpush
 @endsection
 

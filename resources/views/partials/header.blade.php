@@ -1,5 +1,5 @@
 <header class="front-header">
-    @php($isDarkMode = ($settings['ui_mode'] ?? 'white') === 'dark')
+    @php($isDarkMode = ($uiMode ?? ($settings['ui_mode'] ?? 'white')) === 'dark')
     <style>
         .front-header {
             position: sticky;
@@ -291,6 +291,9 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 @if(Auth::user()->role === 'admin')
                                     <a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Panel</a>
+                                    <a class="dropdown-item" href="{{ route('admin.users.profile') }}">Profilim</a>
+                                @else
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">Profilim</a>
                                 @endif
                                 <form method="POST" action="{{ route('admin.logout') }}">
                                     @csrf

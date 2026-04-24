@@ -18,6 +18,13 @@ class User extends Authenticatable
         'phone',
         'bio',
         'avatar_path',
+        'ui_mode',
+        'facebook_url',
+        'twitter_url',
+        'instagram_url',
+        'linkedin_url',
+        'github_url',
+        'website_url',
         'email_verified_at',
         'last_login_at',
         'password',
@@ -53,5 +60,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
-}
 
+    public function socialLinks(): array
+    {
+        return array_values(array_filter([
+            ['label' => 'Facebook', 'url' => $this->facebook_url, 'icon' => 'facebook'],
+            ['label' => 'X', 'url' => $this->twitter_url, 'icon' => 'twitter'],
+            ['label' => 'Instagram', 'url' => $this->instagram_url, 'icon' => 'instagram'],
+            ['label' => 'LinkedIn', 'url' => $this->linkedin_url, 'icon' => 'linkedin'],
+            ['label' => 'GitHub', 'url' => $this->github_url, 'icon' => 'github'],
+            ['label' => 'Website', 'url' => $this->website_url, 'icon' => 'globe'],
+        ], fn ($item) => filled($item['url'])));
+    }
+}
