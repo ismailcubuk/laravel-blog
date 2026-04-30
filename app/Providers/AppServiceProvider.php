@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
             'twitter_url' => '',
             'instagram_url' => '',
             'linkedin_url' => '',
+            'github_url' => '',
             'mail_mailer' => env('MAIL_MAILER', 'smtp'),
             'mail_host' => env('MAIL_HOST', '127.0.0.1'),
             'mail_port' => (string) env('MAIL_PORT', 587),

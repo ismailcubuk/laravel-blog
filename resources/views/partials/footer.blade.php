@@ -30,6 +30,7 @@
                 'twitter' => 'https://x.com/' . $raw,
                 'instagram' => 'https://instagram.com/' . $raw,
                 'linkedin' => 'https://linkedin.com/in/' . $raw,
+                'github' => 'https://github.com/' . $raw,
                 default => null,
             };
         }
@@ -38,12 +39,14 @@
     @php($twitterHref = $socialHref($settings['twitter_url'] ?? null, 'twitter'))
     @php($instagramHref = $socialHref($settings['instagram_url'] ?? null, 'instagram'))
     @php($linkedinHref = $socialHref($settings['linkedin_url'] ?? null, 'linkedin'))
+    @php($githubHref = $socialHref($settings['github_url'] ?? null, 'github'))
     @php(
         $socialItems = array_values(array_filter([
             ['label' => 'Facebook', 'href' => $facebookHref, 'icon' => 'facebook'],
             ['label' => 'Twitter', 'href' => $twitterHref, 'icon' => 'twitter'],
             ['label' => 'Instagram', 'href' => $instagramHref, 'icon' => 'instagram'],
             ['label' => 'LinkedIn', 'href' => $linkedinHref, 'icon' => 'linkedin'],
+            ['label' => 'GitHub', 'href' => $githubHref, 'icon' => 'github'],
         ], fn ($item) => !empty($item['href'])))
     )
 

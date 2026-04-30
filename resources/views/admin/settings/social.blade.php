@@ -48,6 +48,13 @@
                     </div>
                 </div>
 
+                <div class="mb-4 row">
+                    <label class="col-sm-2 col-form-label">GitHub</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="github_url" class="form-control" value="{{ old('github_url', $settings['github_url'] ?? '') }}" placeholder="github.com/username">
+                    </div>
+                </div>
+
                 <div class="text-end">
                     <button type="submit" class="btn btn-success btn-lg">Save Social Settings</button>
                 </div>

@@ -35,6 +35,7 @@ class SettingController extends Controller
             'twitter_url' => '',
             'instagram_url' => '',
             'linkedin_url' => '',
+            'github_url' => '',
         ];
 
         $settings = Setting::allAsKeyValue();
@@ -117,6 +118,7 @@ class SettingController extends Controller
             'twitter_url' => ['nullable', 'string', 'max:255'],
             'instagram_url' => ['nullable', 'string', 'max:255'],
             'linkedin_url' => ['nullable', 'string', 'max:255'],
+            'github_url' => ['nullable', 'string', 'max:255'],
         ]);
 
         $fields = [
@@ -124,6 +126,7 @@ class SettingController extends Controller
             'twitter_url',
             'instagram_url',
             'linkedin_url',
+            'github_url',
         ];
 
         foreach ($fields as $field) {
@@ -167,6 +170,7 @@ class SettingController extends Controller
             'twitter_url' => 'https://x.com/' . $value,
             'instagram_url' => 'https://instagram.com/' . $value,
             'linkedin_url' => 'https://linkedin.com/in/' . $value,
+            'github_url' => 'https://github.com/' . $value,
             default => $value,
         };
     }
