@@ -6,7 +6,9 @@ use App\Mail\Auth\PasswordResetRequestMail;
 use App\Mail\Auth\VerifyEmailChangeMail;
 use App\Mail\Auth\VerifyEmailMail;
 use App\Mail\Auth\WelcomeMail;
+use App\Mail\Contact\ContactMessageRepliedMail;
 use App\Mail\Contact\ContactFormSubmittedMail;
+use App\Models\ContactMessage;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -36,5 +38,10 @@ class MailWorkflowService
     public function sendContactFormMessageToSite(string $toEmail, array $payload): void
     {
         Mail::to($toEmail)->send(new ContactFormSubmittedMail($payload));
+    }
+
+    public function sendContactMessageReply(ContactMessage $contactMessage): void
+    {
+        Mail::to($contactMessage->email)->send(new ContactMessageRepliedMail($contactMessage));
     }
 }

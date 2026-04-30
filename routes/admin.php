@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Content\AdminPostController;
 use App\Http\Controllers\Admin\Content\AdminCategoryController;
 use App\Http\Controllers\Admin\Content\AdminCommentController;
+use App\Http\Controllers\Admin\Content\AdminContactMessageController;
 use App\Http\Controllers\Admin\Pages\AdminPageController;
 use App\Http\Controllers\Admin\Settings\SettingController;
 use App\Http\Controllers\Admin\Users\PermissionController;
@@ -49,6 +50,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/comments/{comment}/status', [AdminCommentController::class, 'updateStatus'])->name('content.comments.status');
         Route::delete('/comments/{comment}', [AdminCommentController::class, 'destroy'])->name('content.comments.destroy');
 
+        Route::get('/contact-messages', [AdminContactMessageController::class, 'index'])->name('content.contact-messages.index');
+        Route::post('/contact-messages/{contactMessage}/reply', [AdminContactMessageController::class, 'reply'])->name('content.contact-messages.reply');
+        Route::put('/contact-messages/{contactMessage}/read', [AdminContactMessageController::class, 'markRead'])->name('content.contact-messages.read');
+        Route::put('/contact-messages/{contactMessage}/unread', [AdminContactMessageController::class, 'markUnread'])->name('content.contact-messages.unread');
+        Route::delete('/contact-messages/{contactMessage}', [AdminContactMessageController::class, 'destroy'])->name('content.contact-messages.destroy');
+
         Route::get('/about-us', [AdminPageController::class, 'about'])->name('pages.about');
         Route::put('/about-us', [AdminPageController::class, 'updateAbout'])->name('pages.about.update');
         Route::get('/contact-us', [AdminPageController::class, 'contact'])->name('pages.contact');
@@ -86,7 +93,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/settings/mail', [SettingController::class, 'updateMail'])->name('settings.mail.update');
     });
 });
-
-
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\ContactMessage;
 use App\Models\Page;
 use App\Models\PageSection;
 use App\Models\Post;
@@ -77,6 +78,14 @@ class PageController extends Controller
         $contactPage = Page::firstWhere('slug', 'contact');
         $fallbackEmail = Setting::get('mail_from_address', config('mail.from.address'));
         $toEmail = $contactPage?->contact_email ?: $fallbackEmail;
+
+        ContactMessage::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'user_id' => auth()->id(),
+            'subject' => $data['subject'] ?? null,
+            'message' => $data['message'],
+        ]);
 
         $mailWorkflow->sendContactFormMessageToSite($toEmail, [
             'name' => $data['name'],

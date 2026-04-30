@@ -48,6 +48,13 @@
                         <p>Comments</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.content.contact-messages.index') }}"
+                       class="nav-link {{ request()->routeIs('admin.content.contact-messages.*') ? 'active' : '' }}">
+                        <i class="nav-icon fa-regular fa-envelope-open"></i>
+                        <p>Contact Messages</p>
+                    </a>
+                </li>
 
                 <li class="nav-section-title">Pages</li>
                 <li class="nav-item">
@@ -139,5 +146,4 @@
         </form>
     </div>
 </aside>
-
 
