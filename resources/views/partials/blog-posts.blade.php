@@ -6,7 +6,7 @@
     @forelse($posts as $post)
         <article class="front-post-card">
             <a class="front-post-image" href="{{ route('post.show', $post->slug) }}">
-                <img src="{{ $post->image_url }}" alt="{{ $post->title }}">
+                <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" fetchpriority="{{ $loop->first ? 'high' : 'low' }}" decoding="async">
             </a>
 
             <div class="front-post-content">

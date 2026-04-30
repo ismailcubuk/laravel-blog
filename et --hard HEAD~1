@@ -1,0 +1,285 @@
+[33mcommit 80153c11da643b5f25a36709f9806b5a0d9dbae4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Thu Apr 30 20:50:54 2026 +0300
+
+    update performance
+
+[33mcommit d258b1aba84169ae01514d44ab9aff6a209d6e09[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Thu Apr 30 20:18:39 2026 +0300
+
+    add contact messages section
+
+[33mcommit 213ec5cd3e7c48f3a865584afef2460889b99e62[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Thu Apr 30 19:31:47 2026 +0300
+
+    update social media
+    
+    Co-authored-by: Copilot <copilot@github.com>
+
+[33mcommit 5c37ea6953dbb8f76f41cf745257c45506a3fa8b[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Thu Apr 30 19:27:55 2026 +0300
+
+    delete socail divs
+
+[33mcommit f87298cbc1b45ac6bdd08cef34a50e8d0fd927f8[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Apr 24 18:30:42 2026 +0300
+
+    user dark mode
+
+[33mcommit 40f3ef427f0a25b5b607470da471fd858ee50d83[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Apr 24 18:00:58 2026 +0300
+
+    update navbar
+
+[33mcommit 808a3e1f530704f0fe6fccddfd3cbc3e0e23637a[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Apr 24 17:19:06 2026 +0300
+
+    update user pages
+
+[33mcommit 90642bb95670d4adf5517863c7909208902f5a53[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Apr 24 16:28:23 2026 +0300
+
+    update admin sidebar
+
+[33mcommit 9ea50802b2b0e3cb12b43ff254c7165f5fa878b8[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Apr 24 16:19:09 2026 +0300
+
+    js css php folders update
+
+[33mcommit 8e54e04e691686b31976eadf01bce688597688d0[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Apr 24 09:49:42 2026 +0300
+
+    update non map
+
+[33mcommit 4a31f6a5ec4550a97ce49b359b7440b09a854eeb[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Thu Apr 23 16:33:56 2026 +0300
+
+    update texts
+
+[33mcommit 278f196227409a8b5d2762d726031dad091c3c06[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Thu Apr 23 16:09:03 2026 +0300
+
+    update comments list
+
+[33mcommit c414b8148daccede52798506a8e7cca39bd55d4e[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Thu Apr 23 15:11:17 2026 +0300
+
+    add lastetst comments dashboard
+
+[33mcommit 459f4acf0c63db6e08946c30de5b90fd401a6f06[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Thu Apr 23 14:56:48 2026 +0300
+
+    update blog activity ui and delete borders blogs
+
+[33mcommit 6b8ae8bbc55dde2ec8e52c52a989c830e75d436a[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Tue Apr 21 19:46:14 2026 +0300
+
+    update scroll bar
+
+[33mcommit 14ca9a14e0610c41eaa3dfc889dfb0ce7eeedbd7[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Tue Apr 21 19:20:05 2026 +0300
+
+    update slider & header issues
+
+[33mcommit c4f4902170b0f258f4868eed3ed30933445ac772[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Tue Apr 21 19:07:05 2026 +0300
+
+    update
+
+[33mcommit d78eb8df3120f1e692304de1cc79036a9a369cfe[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Tue Apr 21 18:46:22 2026 +0300
+
+    update footer and social
+
+[33mcommit cc8184670c8b2c18dd3deb7e5e10f7cc685d7e67[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Tue Apr 21 18:15:13 2026 +0300
+
+    update terms and login text colors white mode
+
+[33mcommit 4180dd2520ff39790e682d1a744557e16c8107f8[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Tue Apr 21 17:37:50 2026 +0300
+
+    update remember and remove matinenance
+
+[33mcommit c36d42afa2b78a42fd09101a1445d6e68eac1b3b[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Tue Apr 21 17:10:06 2026 +0300
+
+    Revert "update en to tr"
+    
+    This reverts commit f06bc41fb277b86dc06ad06419f75bb251864a32.
+
+[33mcommit f06bc41fb277b86dc06ad06419f75bb251864a32[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Tue Apr 21 16:49:16 2026 +0300
+
+    update en to tr
+
+[33mcommit 4e80ac6d804cd3f51b1ff9f1d54398155663fa8d[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Mon Apr 20 15:26:05 2026 +0300
+
+    update general settings ui
+
+[33mcommit df24cb6bbec63568615f884dd0e86f470aa52ff7[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Mon Apr 20 14:55:16 2026 +0300
+
+    update admin ui
+
+[33mcommit 03bd51f8fa985001ec64975f7e0dfac10b0a1f5c[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Mon Apr 20 14:36:42 2026 +0300
+
+    update user ui
+
+[33mcommit 82263e96c6584ce74d456943c0254b7b92d038f3[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Mon Apr 20 14:04:13 2026 +0300
+
+    update ui
+
+[33mcommit fd7c6162822caed49e05aa554472baf17903467e[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 19:02:20 2026 +0300
+
+    update profile path
+
+[33mcommit 9d139647c00cb6c053a95e591638f58250dcf757[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 18:57:30 2026 +0300
+
+    update profile picture path
+
+[33mcommit 079cf0907a9750efe35a5bb3c36107fadbab8d52[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 18:51:43 2026 +0300
+
+    profile picture
+
+[33mcommit c68cb61c21e69973b1dd16de2bbaf0d6bb1f859e[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 18:47:41 2026 +0300
+
+    preload theme
+
+[33mcommit 21ac1622e7b7e666358acd48200cad28f11e6ad6[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 18:44:19 2026 +0300
+
+    delete güncel yazılar
+
+[33mcommit cd0072a17c186831c0942d8ea24a7ebb3f936ed6[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 18:41:20 2026 +0300
+
+    update path
+
+[33mcommit 03ae4a96192d3956571cc3126bf4599b071f9afb[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 18:03:24 2026 +0300
+
+    speed up
+
+[33mcommit 8c839cada9ac149157475607fe0992ea45da4f94[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 16:49:39 2026 +0300
+
+    fix
+
+[33mcommit 36fdabbb6d4c8a02a3ca14365201bafa780a00f7[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 16:48:27 2026 +0300
+
+    Update deploy workflow
+
+[33mcommit 752fd4ac7440bd9ce21239f2c0489e6f070e5e74[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 16:45:32 2026 +0300
+
+    deploy
+
+[33mcommit af074b8e4dd0adaa9e71ad8b08d6f8af939a7ae9[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Sat Apr 18 13:44:25 2026 +0300
+
+    dark mode
+
+[33mcommit f23d60dfcae59d2d1a20376cd24ce20446ecd331[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Mon Apr 6 16:03:10 2026 +0300
+
+    update about ui
+
+[33mcommit f268e2df7b179a6f6b97b665e3a25ec0039d3f70[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Mon Apr 6 15:53:47 2026 +0300
+
+    update security
+
+[33mcommit c81c5e46b61c74c1928cb044525415821bf6d085[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Mon Apr 6 15:37:55 2026 +0300
+
+    update texts color and blog activity
+
+[33mcommit dbfb19e25f1c4b1beff57b4903bf10c0fadcd3d4[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Mon Apr 6 15:29:20 2026 +0300
+
+    update blog ui and style
+
+[33mcommit d59dca1d5bf08cacfafce30e907532c05173307f[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Mar 13 19:05:57 2026 +0300
+
+    ui updates and sections builder about us update
+
+[33mcommit bfc94ff9f6836f60c9423fe6c84c92f38c555b35[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Mar 13 17:25:57 2026 +0300
+
+    add hover
+
+[33mcommit b6cb1c55683e329a2b483705a91ba46a2afd98c1[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Mar 13 17:24:16 2026 +0300
+
+    update dashboard ui
+
+[33mcommit 5ed9a4846990a3713cb5be1e202f02c1d6c76838[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Mar 13 16:50:40 2026 +0300
+
+    update mail and shorts
+
+[33mcommit f716b053257f8f463c56e61ffa331c458791b441[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Fri Mar 13 14:41:35 2026 +0300
+
+    update mail and general settings
+
+[33mcommit acd64be91deb7262886b4d45a84d18f432bc49be[m
+Author: ismail çubuk <iismailcubuk@gmail.com>
+Date:   Tue Mar 10 01:49:59 2026 +0300
+
+    comments page u

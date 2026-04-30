@@ -29,7 +29,7 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <article class="blog-post">
                         <div class="blog-thumb">
-                            <img src="{{ $post->image_url }}" alt="{{ $post->title }}">
+                            <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" fetchpriority="{{ $loop->first ? 'high' : 'low' }}" decoding="async">
                         </div>
                         <div class="down-content">
                             <span>{{ optional($post->category)->name ?? 'Genel' }}</span>

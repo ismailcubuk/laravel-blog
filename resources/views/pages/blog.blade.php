@@ -40,7 +40,7 @@
 
                                         {{-- image --}}
                                         <a class="blog-thumb" href="{{ route('post.show', $post->slug) }}">
-                                            <img src="{{ $post->image_url }}" alt="{{ $post->title }}">
+                                            <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" fetchpriority="{{ $loop->first ? 'high' : 'low' }}" decoding="async">
                                         </a>
 
                                         <div class="down-content">

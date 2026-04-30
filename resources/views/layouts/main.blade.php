@@ -39,14 +39,16 @@
     @include('partials.frontend-theme-vars')
     <link rel="stylesheet" href="{{ asset('assets/css/frontend/layout.css') }}">
     @include('partials.global-select-styles')
+    <meta name="pjax-head-start" content="front">
     @stack('styles')
+    <meta name="pjax-head-end" content="front">
 </head>
 
 <body class="front-body {{ $uiMode === 'dark' ? 'front-dark' : 'front-light' }}">
 
     @include('partials.preloader')
     @include('partials.header')
-    <main class="front-main">
+    <main class="front-main" id="front-pjax" data-pjax-container="front">
         @yield('content')
     </main>
 
@@ -59,10 +61,10 @@
     <script src="{{ asset('assets/js/shared/auto-alerts.js') }}"></script>
     <script src="{{ asset('assets/js/shared/form-spellcheck.js') }}"></script>
     @include('partials.global-select-scripts')
+    <script src="{{ asset('assets/js/shared/pjax.js') }}"></script>
+    <script src="{{ asset('assets/js/frontend/navigation-optimizer.js') }}"></script>
     @stack('scripts')
 
 </body>
 
 </html>
-
-

@@ -34,7 +34,9 @@
     @include('admin.partials.theme-vars')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/layout.css') }}">
     @include('partials.global-select-styles')
+    <meta name="pjax-head-start" content="admin">
     @stack('styles')
+    <meta name="pjax-head-end" content="admin">
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-expand-lg layout-fixed {{ $uiMode === 'dark' ? 'admin-dark' : 'admin-light' }}">
@@ -51,7 +53,9 @@
                     <button type="button" class="admin-sidebar-toggle" id="adminSidebarToggle" aria-label="Open sidebar" title="Open sidebar">
                         <i class="fa-solid fa-bars" id="adminSidebarToggleIcon"></i>
                     </button>
-                    @yield('content')
+                    <div id="admin-pjax" data-pjax-container="admin">
+                        @yield('content')
+                    </div>
                 </div>
             </div>
         </main>
@@ -71,14 +75,14 @@
     <script src="{{ asset('assets/js/admin/sidebar.js') }}"></script>
     <script src="{{ asset('assets/js/shared/form-spellcheck.js') }}"></script>
     @include('partials.global-select-scripts')
+    <script src="{{ asset('assets/js/shared/pjax.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/navigation-optimizer.js') }}"></script>
     @yield('scripts')
     @stack('scripts')
 
 </body>
 
 </html>
-
-
 
 
 

@@ -33,7 +33,7 @@
                             <div class="col-lg-12">
                                 <div class="blog-post">
                                     <div class="blog-thumb">
-                                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}">
+                                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="eager" fetchpriority="high" decoding="async">
                                     </div>
 
                                     <div class="down-content">
@@ -73,7 +73,7 @@
                                                     @forelse($post->comments as $comment)
                                                         <li>
                                                             <div class="author-thumb">
-                                                                <img src="{{ optional($comment->user)->avatar_path ? asset($comment->user->avatar_path) : asset('assets/images/comment-author-01.jpg') }}" alt="{{ $comment->name }}">
+                                                                <img src="{{ optional($comment->user)->avatar_path ? asset($comment->user->avatar_path) : asset('assets/images/comment-author-01.jpg') }}" alt="{{ $comment->name }}" loading="lazy" decoding="async">
                                                             </div>
                                                             <div class="right-content">
                                                                 <h4>
@@ -157,7 +157,7 @@
                                                         @if($comment->reply_message)
                                                             <li class="replied">
                                                                 <div class="author-thumb">
-                                                                    <img src="{{ optional($comment->repliedBy)->avatar_path ? asset($comment->repliedBy->avatar_path) : asset('assets/images/comment-author-02.jpg') }}" alt="Admin Reply">
+                                                                    <img src="{{ optional($comment->repliedBy)->avatar_path ? asset($comment->repliedBy->avatar_path) : asset('assets/images/comment-author-02.jpg') }}" alt="Admin Reply" loading="lazy" decoding="async">
                                                                 </div>
                                                                 <div class="right-content">
                                                                     <h4>

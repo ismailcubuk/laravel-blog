@@ -8,7 +8,7 @@
             @foreach($bannerPosts as $post)
                 <div class="item">
                     <a href="{{ route('post.show', $post->slug) }}">
-                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}">
+                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" fetchpriority="{{ $loop->first ? 'high' : 'low' }}" decoding="async">
                     </a>
 
                     <div class="item-content">
@@ -32,5 +32,4 @@
         </div>
     </div>
 </section>
-
 
