@@ -53,7 +53,6 @@
                 <ul class="social-icons">
                     @foreach($socialItems as $item)
                         @if(!$loop->first)
-                            <li class="social-divider" aria-hidden="true">|</li>
                         @endif
                         <li>
                             <a href="{{ $item['href'] }}" target="_blank" rel="noopener" aria-label="{{ $item['label'] }}">
