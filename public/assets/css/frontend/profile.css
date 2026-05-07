@@ -103,6 +103,31 @@
     background: var(--front-primary);
 }
 
+.front-dark .profile-status {
+    border-color: rgba(148, 163, 184, 0.32);
+    background: rgba(15, 23, 42, 0.82);
+    color: #e2e8f0;
+}
+
+.front-dark .profile-heading p:last-child,
+.front-dark .profile-field small,
+.front-dark .profile-section-divider p,
+.front-dark .profile-summary span {
+    color: #cbd5e1;
+}
+
+.front-dark .profile-field label,
+.front-dark .profile-section-divider h3,
+.front-dark .profile-summary strong {
+    color: #f8fafc;
+}
+
+.front-dark .profile-password-wrap button {
+    border-color: #334155;
+    background: #111b2f;
+    color: #f8fafc;
+}
+
 .profile-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
