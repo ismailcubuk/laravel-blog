@@ -11,21 +11,24 @@ class HomeController extends Controller
     public function index()
     {
         $bannerPosts = Post::with('category')
+            ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
             ->take(5)
             ->get();
         $posts = Post::with('category')
+            ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
             ->paginate(6);
         $recentPosts = Post::with('category')
+            ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
             ->take(5)
             ->get();
         $categories = Category::query()
-            ->withCount('posts')
+            ->withCount(['posts' => fn ($query) => $query->published()])
             ->having('posts_count', '>', 0)
             ->orderByDesc('posts_count')
             ->orderBy('name')

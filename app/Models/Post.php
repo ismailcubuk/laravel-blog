@@ -20,7 +20,8 @@ class Post extends Model
         'content',
         'image',
         'category_id',
-        'user_id'
+        'user_id',
+        'status',
     ];
 
     public function category()
@@ -36,6 +37,16 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'published');
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->status === 'published';
     }
 
     public function getImageUrlAttribute(): string

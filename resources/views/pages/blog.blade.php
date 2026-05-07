@@ -57,7 +57,7 @@
 
                                             {{-- info --}}
                                             <ul class="post-info">
-                                                <li><a href="#">Admin</a></li>
+                                                <li><a href="#">{{ $post->user->name ?? 'Admin' }}</a></li>
                                                 <li>
                                                     <a href="#">
                                                         {{ $post->created_at->format('d M Y') }}
@@ -99,7 +99,6 @@
                 <div class="col-lg-4">
                     <div class="sidebar">
                         <div class="row">
-
                             {{-- search --}}
                             <div class="col-lg-12">
                                 <div class="sidebar-item search">

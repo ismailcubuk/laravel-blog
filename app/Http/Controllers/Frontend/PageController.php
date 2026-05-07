@@ -20,7 +20,8 @@ class PageController extends Controller
         $search = trim((string) $request->query('search', ''));
         $categoryId = $request->query('category');
 
-        $posts = Post::with('category')
+        $posts = Post::with(['category', 'user'])
+            ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($inner) use ($search) {
@@ -35,13 +36,14 @@ class PageController extends Controller
             ->paginate(6)
             ->withQueryString();
 
-        $recentPosts = Post::with('category')
+        $recentPosts = Post::with(['category', 'user'])
+            ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
             ->take(5)
             ->get();
         $categories = Category::query()
-            ->withCount('posts')
+            ->withCount(['posts' => fn ($query) => $query->published()])
             ->having('posts_count', '>', 0)
             ->orderByDesc('posts_count')
             ->orderBy('name')

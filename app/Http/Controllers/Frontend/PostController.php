@@ -18,12 +18,14 @@ class PostController extends Controller
     public function index()
     {
         $bannerPosts = Post::with('category')
+            ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
             ->take(5)
             ->get();
 
         $posts = Post::with('category')
+            ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
             ->paginate(6);
@@ -51,7 +53,15 @@ class PostController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
+        abort_unless(
+            $post->isPublished()
+                || $this->isAdminViewer()
+                || (auth()->check() && (int) auth()->id() === (int) $post->user_id),
+            404
+        );
+
         $recentPosts = Post::with('category')
+            ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
             ->take(5)
@@ -66,7 +76,7 @@ class PostController extends Controller
     {
         abort_unless(auth()->check() && auth()->user()->role === 'user', 403);
 
-        $post = Post::where('slug', $slug)->firstOrFail();
+        $post = Post::published()->where('slug', $slug)->firstOrFail();
 
         $validated = $request->validate([
             'message' => 'required|string|min:3|max:2000',

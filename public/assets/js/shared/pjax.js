@@ -380,6 +380,9 @@
             const links = this.scope === 'admin'
                 ? document.querySelectorAll('.admin-sidebar .nav-link[href]')
                 : document.querySelectorAll('.front-navbar .nav-link[href]');
+            const authorTabs = this.scope === 'front'
+                ? document.querySelectorAll('.front-author-tab[href]')
+                : [];
 
             let bestMatch = null;
             let bestScore = -1;
@@ -412,6 +415,11 @@
                     item.classList.add('active');
                 }
             }
+
+            authorTabs.forEach((tab) => {
+                const tabUrl = normalizeUrl(tab.href);
+                tab.classList.toggle('is-active', Boolean(nextUrl && tabUrl && samePath(tabUrl, nextUrl)));
+            });
         }
 
         async runPageScripts(nextDocument) {

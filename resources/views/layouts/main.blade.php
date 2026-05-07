@@ -38,6 +38,8 @@
 
     @include('partials.frontend-theme-vars')
     <link rel="stylesheet" href="{{ asset('assets/css/frontend/layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/frontend/author-dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/frontend/post-create.css') }}">
     @include('partials.global-select-styles')
     <meta name="pjax-head-start" content="front">
     @stack('styles')

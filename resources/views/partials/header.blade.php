@@ -265,6 +265,69 @@
             color: var(--front-primary);
         }
 
+        .front-author-tabs {
+            border-top: 1px solid var(--front-border);
+            background: var(--front-surface);
+        }
+
+        .front-author-tabs .container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            min-height: 46px;
+            padding-top: 0.35rem;
+            padding-bottom: 0.35rem;
+            overflow-x: auto;
+        }
+
+        .front-author-tab {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            min-height: 36px;
+            padding: 0 0.85rem;
+            border: 1px solid var(--front-border);
+            border-radius: 999px;
+            background: var(--front-input-bg);
+            color: var(--front-text);
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .front-author-tab:hover,
+        .front-author-tab.is-active {
+            border-color: var(--front-primary);
+            background: linear-gradient(135deg, var(--front-primary), var(--front-primary-2));
+            color: #ffffff;
+            text-decoration: none;
+            box-shadow: 0 8px 18px rgba(var(--front-primary-rgb), 0.18);
+        }
+
+        .front-author-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 0.35rem;
+            border-radius: 999px;
+            background: var(--front-soft-bg);
+            color: var(--front-primary);
+            font-size: 0.7rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .front-author-tab:hover .front-author-count,
+        .front-author-tab.is-active .front-author-count {
+            background: rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+        }
+
         @media (max-width: 991.98px) {
             .front-navbar .container {
                 flex-wrap: wrap;
@@ -414,6 +477,33 @@
             </div>
         </div>
     </nav>
+
+    @auth
+        @php($authorCounts = [
+            'comments' => \App\Models\Comment::query()->where('user_id', auth()->id())->count(),
+        ])
+        <div class="front-author-tabs" aria-label="Yazar islemleri">
+            <div class="container">
+                <a class="front-author-tab {{ request()->routeIs('user.posts.index') ? 'is-active' : '' }}" href="{{ route('user.posts.index') }}">
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    <span>Yazilarim</span>
+                </a>
+                <a class="front-author-tab {{ request()->routeIs('user.posts.drafts') ? 'is-active' : '' }}" href="{{ route('user.posts.drafts') }}">
+                    <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                    <span>Taslaklar</span>
+                </a>
+                <a class="front-author-tab {{ request()->routeIs('user.posts.comments') ? 'is-active' : '' }}" href="{{ route('user.posts.comments') }}">
+                    <i class="fa fa-comments-o" aria-hidden="true"></i>
+                    <span>Yorumlarim</span>
+                    <span class="front-author-count">{{ $authorCounts['comments'] }}</span>
+                </a>
+                <a class="front-author-tab {{ request()->routeIs('user.posts.create') ? 'is-active' : '' }}" href="{{ route('user.posts.create') }}">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <span>Yeni Post</span>
+                </a>
+            </div>
+        </div>
+    @endauth
 
     <script>
         (() => {

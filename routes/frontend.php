@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\ProfileController;
+use App\Http\Controllers\Frontend\UserPostController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/post/{slug}', [PostController::class, 'show'])->name('post.show');
@@ -22,6 +23,14 @@ Route::get('/profile/email-change/{requestId}', [ProfileController::class, 'veri
     ->name('profile.email.verify');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/blog/my-posts', [UserPostController::class, 'index'])->name('user.posts.index');
+    Route::get('/blog/drafts', [UserPostController::class, 'drafts'])->name('user.posts.drafts');
+    Route::get('/blog/drafts/{post}/edit', [UserPostController::class, 'edit'])->name('user.posts.drafts.edit');
+    Route::put('/blog/drafts/{post}', [UserPostController::class, 'update'])->name('user.posts.drafts.update');
+    Route::put('/blog/drafts/{post}/publish', [UserPostController::class, 'publishDraft'])->name('user.posts.drafts.publish');
+    Route::get('/blog/my-comments', [UserPostController::class, 'comments'])->name('user.posts.comments');
+    Route::get('/blog/create', [UserPostController::class, 'create'])->name('user.posts.create');
+    Route::post('/blog', [UserPostController::class, 'store'])->name('user.posts.store');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/mode', [ProfileController::class, 'updateMode'])->name('profile.mode');
