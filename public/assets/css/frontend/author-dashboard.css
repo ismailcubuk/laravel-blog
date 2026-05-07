@@ -181,7 +181,7 @@
 .author-post-item p,
 .author-empty-state p {
     margin: 0;
-    color: var(--front-muted);
+    color: #53627a;
     font-size: 0.9rem;
     line-height: 1.6;
 }
@@ -191,9 +191,14 @@
     flex-wrap: wrap;
     gap: 0.55rem;
     margin-top: 0.55rem;
-    color: var(--front-muted);
+    color: #53627a;
     font-size: 0.78rem;
     font-weight: 700;
+}
+
+.author-post-meta strong,
+.author-post-meta time {
+    color: #64748b;
 }
 
 .author-empty-state {

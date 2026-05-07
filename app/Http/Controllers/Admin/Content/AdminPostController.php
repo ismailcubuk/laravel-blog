@@ -35,6 +35,7 @@ class AdminPostController extends Controller
             ->leftJoin('categories', 'categories.id', '=', 'posts.category_id')
             ->select('posts.*')
             ->with(['category', 'user'])
+            ->where('posts.status', 'published')
             ->orderBy($sortColumn, $direction)
             ->paginate(10)
             ->withQueryString();

@@ -15,9 +15,10 @@ class DashboardActivityService
         $startDate = Carbon::now()->subDays($days - 1)->startOfDay();
 
         $recentPosts = Post::query()
+            ->with(['user:id,name,avatar_path'])
             ->where('created_at', '>=', $startDate)
             ->orderByDesc('created_at')
-            ->get(['id', 'title', 'slug', 'image', 'content', 'created_at']);
+            ->get(['id', 'title', 'slug', 'image', 'content', 'user_id', 'created_at']);
 
         $recentUsers = User::query()
             ->where('created_at', '>=', $startDate)
@@ -44,6 +45,10 @@ class DashboardActivityService
                             : 'https://picsum.photos/seed/' . $post->id . '/200/200',
                         'time' => optional($post->created_at)->format('H:i'),
                         'url' => route('post.show', $post->slug),
+                        'author_name' => $post->user?->name ?: 'Unknown author',
+                        'author_avatar' => $post->user?->avatar_path
+                            ? asset(ltrim((string) $post->user->avatar_path, '/'))
+                            : asset('adminlte/img/avatar.png'),
                     ];
                 })->values();
             })

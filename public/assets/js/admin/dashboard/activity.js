@@ -125,6 +125,8 @@
             const title = item && item.title ? item.title : 'Untitled';
             const excerpt = item && item.excerpt ? item.excerpt : '';
             const time = item && item.time ? item.time : '--:--';
+            const authorName = item && item.author_name ? item.author_name : 'Unknown author';
+            const authorAvatar = item && item.author_avatar ? item.author_avatar : '';
 
             postItem.setAttribute('href', href);
 
@@ -134,8 +136,15 @@
             }
 
             setText(postItem, '[data-role="title"]', title);
+            setText(postItem, '[data-role="author-name"]', authorName);
             setText(postItem, '[data-role="excerpt"]', excerpt);
             setText(postItem, '[data-role="time"]', time);
+
+            const authorAvatarElement = postItem.querySelector('[data-role="author-avatar"]');
+            if (authorAvatarElement) {
+                authorAvatarElement.setAttribute('src', authorAvatar || 'adminlte/img/avatar.png');
+                authorAvatarElement.setAttribute('alt', authorName);
+            }
 
             list.appendChild(postItem);
         });

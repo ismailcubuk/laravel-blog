@@ -28,18 +28,23 @@
 
 <template id="activityPostItemTemplate">
     <a class="activity-post-item activity-post-link" href="#">
-        <img class="activity-post-thumb" width="78" height="78" alt="Post image">
+        <div class="activity-post-visual">
+            <img class="activity-post-thumb" width="78" height="78" alt="Post image">
+        </div>
 
         <div class="activity-post-content">
+            <div class="activity-post-author">
+                <img data-role="author-avatar" width="24" height="24" alt="Author avatar">
+                <span data-role="author-name"></span>
+            </div>
             <h6 class="activity-post-title mb-1" data-role="title"></h6>
             <p class="activity-post-excerpt mb-2" data-role="excerpt"></p>
-            <div class="activity-post-meta">
-                <span class="activity-time-chip">
-                    <i class="fa fa-clock"></i>
-                    <span data-role="time"></span>
-                </span>
-            </div>
         </div>
+
+        <span class="activity-time-chip activity-post-time">
+            <i class="fa fa-clock"></i>
+            <span data-role="time"></span>
+        </span>
     </a>
 </template>
 
