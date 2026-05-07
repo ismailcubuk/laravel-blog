@@ -35,6 +35,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.content.user-posts.index') }}"
+                       class="nav-link {{ request()->routeIs('admin.content.user-posts.*') ? 'active' : '' }}">
+                        <i class="nav-icon fa-regular fa-newspaper"></i>
+                        <p>User Posts</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.content.categories.index') }}"
                        class="nav-link {{ request()->routeIs('admin.content.categories.*') ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-tags"></i>
@@ -146,4 +153,3 @@
         </form>
     </div>
 </aside>
-

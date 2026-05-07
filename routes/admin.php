@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Content\AdminPostController;
+use App\Http\Controllers\Admin\Content\AdminUserPostController;
 use App\Http\Controllers\Admin\Content\AdminCategoryController;
 use App\Http\Controllers\Admin\Content\AdminCommentController;
 use App\Http\Controllers\Admin\Content\AdminContactMessageController;
@@ -38,6 +39,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('content.posts.edit');
         Route::put('/posts/{post}', [AdminPostController::class, 'update'])->name('content.posts.update');
         Route::delete('/posts/{post}', [AdminPostController::class, 'destroy'])->name('content.posts.destroy');
+
+        Route::get('/user-posts', [AdminUserPostController::class, 'index'])->name('content.user-posts.index');
+        Route::put('/user-posts/{post}/status', [AdminUserPostController::class, 'updateStatus'])->name('content.user-posts.status');
+        Route::delete('/user-posts/{post}', [AdminUserPostController::class, 'destroy'])->name('content.user-posts.destroy');
 
         Route::get('/categories', [AdminCategoryController::class, 'index'])->name('content.categories.index');
         Route::post('/categories', [AdminCategoryController::class, 'store'])->name('content.categories.store');
@@ -93,5 +98,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/settings/mail', [SettingController::class, 'updateMail'])->name('settings.mail.update');
     });
 });
-
 

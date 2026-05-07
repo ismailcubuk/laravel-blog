@@ -66,7 +66,15 @@
                         <h2>{{ $post->title }}</h2>
                         <p>{{ Str::limit(strip_tags((string) $post->content), 150) }}</p>
                         <div class="author-post-meta">
-                            <strong>{{ $mode === 'draft' ? 'Guncellendi' : 'Yayinlandi' }}</strong>
+                            <strong>
+                                @if($mode === 'draft')
+                                    Guncellendi
+                                @elseif($post->status === 'pending')
+                                    Onay bekliyor
+                                @else
+                                    Yayinlandi
+                                @endif
+                            </strong>
                             <time>{{ $post->updated_at->format('d.m.Y H:i') }}</time>
                             @if($mode !== 'draft')
                                 <span>{{ $post->approved_comments_count }} yorum</span>

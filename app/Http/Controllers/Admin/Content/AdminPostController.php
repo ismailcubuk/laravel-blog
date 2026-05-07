@@ -36,6 +36,7 @@ class AdminPostController extends Controller
             ->select('posts.*')
             ->with(['category', 'user'])
             ->where('posts.status', 'published')
+            ->where('users.role', 'admin')
             ->orderBy($sortColumn, $direction)
             ->paginate(10)
             ->withQueryString();

@@ -20,7 +20,7 @@ class UserPostController extends Controller
             ->with(['category'])
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->where('user_id', $request->user()->id)
-            ->where('status', 'published')
+            ->whereIn('status', ['pending', 'published'])
             ->when($filters['search'] !== '', fn ($query) => $query->where(function ($inner) use ($filters) {
                 $inner->where('title', 'like', '%' . $filters['search'] . '%')
                     ->orWhere('content', 'like', '%' . $filters['search'] . '%');
@@ -80,12 +80,12 @@ class UserPostController extends Controller
         abort_unless($post->status === 'draft', 404);
 
         $post->update([
-            'status' => 'published',
+            'status' => 'pending',
         ]);
 
         return redirect()
-            ->route('post.show', $post->slug)
-            ->with('success', 'Taslak yayinlandi.');
+            ->route('user.posts.index')
+            ->with('success', 'Taslak admin onayina gonderildi.');
     }
 
     public function create()
@@ -125,7 +125,7 @@ class UserPostController extends Controller
             'category_id' => $validated['category_id'],
             'content' => $this->normalizeContent($validated['content']),
             'user_id' => $request->user()->id,
-            'status' => $validated['status'],
+            'status' => $validated['status'] === 'published' ? 'pending' : 'draft',
         ]);
 
         if ($request->hasFile('image')) {
@@ -134,10 +134,10 @@ class UserPostController extends Controller
 
         $post->save();
 
-        if ($post->isPublished()) {
+        if ($post->status === 'pending') {
             return redirect()
-                ->route('post.show', $post->slug)
-                ->with('success', 'Yaziniz yayinlandi.');
+                ->route('user.posts.index')
+                ->with('success', 'Yaziniz admin onayina gonderildi.');
         }
 
         return redirect()
@@ -162,7 +162,7 @@ class UserPostController extends Controller
             'title' => trim($validated['title']),
             'category_id' => $validated['category_id'],
             'content' => $this->normalizeContent($validated['content']),
-            'status' => $validated['status'],
+            'status' => $validated['status'] === 'published' ? 'pending' : 'draft',
         ]);
 
         if ($request->hasFile('image')) {
@@ -171,10 +171,10 @@ class UserPostController extends Controller
 
         $post->save();
 
-        if ($post->isPublished()) {
+        if ($post->status === 'pending') {
             return redirect()
-                ->route('post.show', $post->slug)
-                ->with('success', 'Taslak yayinlandi.');
+                ->route('user.posts.index')
+                ->with('success', 'Taslak admin onayina gonderildi.');
         }
 
         return redirect()
