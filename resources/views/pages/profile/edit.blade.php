@@ -141,30 +141,6 @@
             </div>
 
             <aside class="profile-side">
-                <div class="profile-panel">
-                    <div class="profile-panel-header">
-                        <div>
-                            <h2>Gorunum Tercihi</h2>
-                            <p>Bu secim sadece sizin hesabinizda uygulanir.</p>
-                        </div>
-                    </div>
-                    <div class="profile-form">
-                        @php($selectedMode = old('ui_mode', $user->ui_mode ?: ($settings['ui_mode'] ?? 'white')))
-                        <div class="profile-mode-grid">
-                            <label class="profile-mode-card {{ $selectedMode === 'white' ? 'is-selected' : '' }}" for="mode_white">
-                                <input form="profile-preference-form" type="radio" id="mode_white" name="ui_mode" value="white" {{ $selectedMode === 'white' ? 'checked' : '' }}>
-                                <span class="profile-mode-preview profile-mode-preview-white"></span>
-                                <strong>White Mode</strong>
-                            </label>
-                            <label class="profile-mode-card {{ $selectedMode === 'dark' ? 'is-selected' : '' }}" for="mode_dark">
-                                <input form="profile-preference-form" type="radio" id="mode_dark" name="ui_mode" value="dark" {{ $selectedMode === 'dark' ? 'checked' : '' }}>
-                                <span class="profile-mode-preview profile-mode-preview-dark"></span>
-                                <strong>Dark Mode</strong>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="profile-panel password-panel">
                     <div class="profile-panel-header">
                         <div>
