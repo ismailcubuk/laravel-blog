@@ -85,13 +85,6 @@
                         <p>Terms</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.pages.privacy') }}"
-                       class="nav-link {{ request()->routeIs('admin.pages.privacy') ? 'active' : '' }}">
-                        <i class="nav-icon fa-solid fa-shield-halved"></i>
-                        <p>Privacy Policy</p>
-                    </a>
-                </li>
 
                 <li class="nav-section-title">Management</li>
                 <li class="nav-item">

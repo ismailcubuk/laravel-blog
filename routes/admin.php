@@ -67,7 +67,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/contact-us', [AdminPageController::class, 'updateContact'])->name('pages.contact.update');
         Route::get('/terms', [AdminPageController::class, 'terms'])->name('pages.terms');
         Route::put('/terms', [AdminPageController::class, 'updateTerms'])->name('pages.terms.update');
-        Route::view('/privacy-policy', 'admin.pages.privacy')->name('pages.privacy');
 
         Route::get('/users', [UserController::class, 'index'])->name('users.list');
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
@@ -98,4 +97,3 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/settings/mail', [SettingController::class, 'updateMail'])->name('settings.mail.update');
     });
 });
-
