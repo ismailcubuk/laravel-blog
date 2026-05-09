@@ -15,7 +15,7 @@ class AdminCommentController extends Controller
         $postId = $request->query('post');
         $search = trim((string) $request->query('search', ''));
 
-        $comments = Comment::with(['post.category', 'post.user', 'user', 'repliedBy'])
+        $comments = Comment::with(['post.category', 'post.user', 'user', 'repliedBy', 'parent.user'])
             ->when(in_array($status, ['pending', 'approved'], true), function ($query) use ($status) {
                 $query->where('status', $status);
             })

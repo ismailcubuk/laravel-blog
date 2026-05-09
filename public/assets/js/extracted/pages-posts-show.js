@@ -27,6 +27,28 @@ document.addEventListener('click', function (event) {
                 form.classList.add('d-none');
             }
 
+            function toggleCommentReply(commentId, shouldShow) {
+                const trigger = document.getElementById('comment-reply-trigger-' + commentId);
+                const form = document.getElementById('comment-reply-form-' + commentId);
+
+                if (!form || !trigger) {
+                    return;
+                }
+
+                if (shouldShow) {
+                    trigger.classList.add('d-none');
+                    form.classList.remove('d-none');
+                    const textarea = form.querySelector('textarea[name="message"]');
+                    if (textarea) {
+                        textarea.focus();
+                    }
+                    return;
+                }
+
+                trigger.classList.remove('d-none');
+                form.classList.add('d-none');
+            }
+
             function toggleReplyEdit(commentId, shouldEdit) {
                 const replyText = document.getElementById('reply-text-' + commentId);
                 const replyActions = document.getElementById('reply-actions-' + commentId);
@@ -52,3 +74,7 @@ document.addEventListener('click', function (event) {
                 replyActions.classList.remove('d-none');
                 form.classList.add('d-none');
             }
+
+            window.toggleReplyCreate = toggleReplyCreate;
+            window.toggleReplyEdit = toggleReplyEdit;
+            window.toggleCommentReply = toggleCommentReply;

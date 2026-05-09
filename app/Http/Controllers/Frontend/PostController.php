@@ -42,12 +42,6 @@ class PostController extends Controller
         $post = Post::with([
                 'category',
                 'user',
-                'comments' => fn ($query) => $query
-                    ->whereIn('status', $commentStatuses)
-                    ->orderByDesc('created_at')
-                    ->orderByDesc('id'),
-                'comments.user',
-                'comments.repliedBy',
             ])
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->where('slug', $slug)
@@ -59,6 +53,31 @@ class PostController extends Controller
                 || (auth()->check() && (int) auth()->id() === (int) $post->user_id),
             404
         );
+
+        $comments = $post->comments()
+            ->with(['user', 'repliedBy'])
+            ->whereIn('status', $commentStatuses)
+            ->oldest()
+            ->orderBy('id')
+            ->get();
+
+        $commentsByParent = $comments->groupBy(fn (Comment $comment) => $comment->parent_id ?: 0);
+        $attachReplies = function ($items) use (&$attachReplies, $commentsByParent) {
+            return $items->map(function (Comment $comment) use (&$attachReplies, $commentsByParent) {
+                $comment->setRelation('threadReplies', $attachReplies($commentsByParent->get($comment->id, collect())));
+
+                return $comment;
+            });
+        };
+
+        $topLevelComments = $commentsByParent->get(0, collect())
+            ->sort(function (Comment $first, Comment $second) {
+                return $second->created_at->getTimestamp() <=> $first->created_at->getTimestamp() ?: $second->id <=> $first->id;
+            })
+            ->values();
+
+        $post->setRelation('comments', $attachReplies($topLevelComments));
+        $post->setAttribute('visible_comments_count', $comments->count());
 
         $recentPosts = Post::with('category')
             ->published()
@@ -74,25 +93,42 @@ class PostController extends Controller
 
     public function storeComment(Request $request, string $slug)
     {
-        abort_unless(auth()->check() && auth()->user()->role === 'user', 403);
+        abort_unless(auth()->check() && in_array(auth()->user()->role, ['user', 'admin'], true), 403);
 
         $post = Post::published()->where('slug', $slug)->firstOrFail();
 
         $validated = $request->validate([
             'message' => 'required|string|min:3|max:2000',
+            'parent_id' => 'nullable|integer|exists:comments,id',
         ]);
+
+        $parent = null;
+        if (!empty($validated['parent_id'])) {
+            $parentQuery = Comment::query()->where('post_id', $post->id);
+
+            if (auth()->user()->role !== 'admin') {
+                $parentQuery->where('status', 'approved');
+            }
+
+            $parent = $parentQuery->findOrFail($validated['parent_id']);
+        }
 
         Comment::create([
             'post_id' => $post->id,
+            'parent_id' => $parent?->id,
             'user_id' => auth()->id(),
             'name' => auth()->user()->name,
             'email' => auth()->user()->email,
             'message' => $validated['message'],
-            'status' => 'pending',
+            'status' => auth()->user()->role === 'admin' ? 'approved' : 'pending',
         ]);
 
-        return redirect()->to(route('post.show', $post->slug) . '#comment-form')
-            ->with('success', 'Your comment has been submitted and is awaiting moderation.');
+        $message = auth()->user()->role === 'admin'
+            ? 'Reply published successfully.'
+            : 'Your comment has been submitted and is awaiting moderation.';
+
+        return redirect()->to(route('post.show', $post->slug) . '#comments')
+            ->with('success', $message);
     }
 
     public function storeReply(Request $request, string $slug, Comment $comment)

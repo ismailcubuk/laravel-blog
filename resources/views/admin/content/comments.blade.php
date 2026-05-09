@@ -173,8 +173,17 @@
                                         data-comment-author="{{ $comment->name }}"
                                         data-comment-status="{{ $comment->status }}"
                                         data-comment-message="{{ $comment->message }}"
+                                        data-parent-author="{{ $comment->parent?->name }}"
+                                        data-parent-message="{{ $comment->parent?->message }}"
+                                        data-parent-date="{{ $comment->parent?->created_at?->format('d M Y H:i') }}"
                                         data-reply-message="{{ $comment->reply_message }}"
                                     >
+                                        @if($comment->parent)
+                                            <div class="admin-comments-parent-context">
+                                                <span>Reply to {{ $comment->parent->name }}</span>
+                                                <p>{{ \Illuminate\Support\Str::limit($comment->parent->message, 70) }}</p>
+                                            </div>
+                                        @endif
                                         <div class="admin-comments-comment-line">
                                             <div class="admin-comments-comment-row">
                                                 <span class="admin-comments-comment-label">{{ $comment->name }}:</span>
@@ -313,6 +322,14 @@
 
                     <div class="admin-comment-reply-block mb-3">
                         <span class="admin-comment-reply-label">User Comment</span>
+                        <div class="admin-comment-parent-block d-none" id="adminCommentParentBlock">
+                            <span class="admin-comment-reply-label">Replying To</span>
+                            <div class="admin-comment-reply-author-line">
+                                <p class="admin-comment-reply-author" id="adminCommentParentAuthor">-</p>
+                                <span class="admin-comment-parent-date" id="adminCommentParentDate">-</span>
+                            </div>
+                            <p class="admin-comment-reply-message" id="adminCommentParentMessage">-</p>
+                        </div>
                         <div class="admin-comment-reply-author-line">
                             <p class="admin-comment-reply-author" id="adminCommentReplyAuthor">-</p>
                             <span class="admin-comment-reply-status" id="adminCommentReplyStatus">-</span>
@@ -354,5 +371,4 @@
 @endif
 @endpush
 @endsection
-
 

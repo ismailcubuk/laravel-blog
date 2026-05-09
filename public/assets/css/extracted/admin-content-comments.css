@@ -249,6 +249,31 @@
             background: #fbfcfe;
         }
 
+        .admin-comments-parent-context {
+            margin-bottom: 0.65rem;
+            padding: 0.55rem 0.65rem;
+            border-left: 3px solid #0d6efd;
+            border-radius: 10px;
+            background: rgba(13, 110, 253, 0.08);
+        }
+
+        .admin-comments-parent-context span {
+            display: block;
+            color: #0d6efd;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .admin-comments-parent-context p {
+            margin: 0.2rem 0 0;
+            color: #4b5563;
+            font-size: 0.82rem;
+            line-height: 1.45;
+            overflow-wrap: anywhere;
+        }
+
         .admin-comments-comment-trigger {
             text-align: left;
             cursor: pointer;
@@ -378,6 +403,20 @@
             border-radius: 14px;
             padding: 0.9rem;
             background: #fbfcfe;
+        }
+
+        .admin-comment-parent-block {
+            margin-bottom: 0.85rem;
+            padding: 0.75rem;
+            border-left: 3px solid #0d6efd;
+            border-radius: 12px;
+            background: rgba(13, 110, 253, 0.08);
+        }
+
+        .admin-comment-parent-date {
+            color: #6b7280;
+            font-size: 0.76rem;
+            font-weight: 700;
         }
 
         .admin-comment-modal-post {
@@ -557,6 +596,21 @@
 
         .admin-dark .admin-comments-comment-label.admin {
             color: #34d399 !important;
+        }
+
+        .admin-dark .admin-comments-parent-context,
+        .admin-dark .admin-comment-parent-block {
+            background: rgba(59, 130, 246, 0.12);
+            border-left-color: #38bdf8;
+        }
+
+        .admin-dark .admin-comments-parent-context span {
+            color: #7dd3fc;
+        }
+
+        .admin-dark .admin-comments-parent-context p,
+        .admin-dark .admin-comment-parent-date {
+            color: #cbd5e1;
         }
 
         .admin-dark .admin-comments-submitted-date {

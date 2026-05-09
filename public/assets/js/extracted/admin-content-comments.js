@@ -60,6 +60,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const authorTarget = document.getElementById('adminCommentReplyAuthor');
             const statusTarget = document.getElementById('adminCommentReplyStatus');
             const messageTarget = document.getElementById('adminCommentReplyMessage');
+            const parentBlock = document.getElementById('adminCommentParentBlock');
+            const parentAuthorTarget = document.getElementById('adminCommentParentAuthor');
+            const parentDateTarget = document.getElementById('adminCommentParentDate');
+            const parentMessageTarget = document.getElementById('adminCommentParentMessage');
             const inputTarget = document.getElementById('adminCommentReplyInput');
 
             if (replyForm) {
@@ -118,6 +122,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (messageTarget) {
                 messageTarget.textContent = trigger.getAttribute('data-comment-message') || '-';
+            }
+
+            const parentMessage = trigger.getAttribute('data-parent-message') || '';
+            if (parentBlock) {
+                parentBlock.classList.toggle('d-none', parentMessage === '');
+            }
+
+            if (parentAuthorTarget) {
+                parentAuthorTarget.textContent = trigger.getAttribute('data-parent-author') || '-';
+            }
+
+            if (parentDateTarget) {
+                parentDateTarget.textContent = trigger.getAttribute('data-parent-date') || '-';
+            }
+
+            if (parentMessageTarget) {
+                parentMessageTarget.textContent = parentMessage || '-';
             }
 
             if (inputTarget) {
