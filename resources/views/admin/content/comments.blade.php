@@ -15,9 +15,13 @@
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="flash-toast" id="flashToast" role="status" aria-live="polite" aria-atomic="true">
+            <div class="flash-toast-head">
+                <span>{{ session('success') }}</span>
+            </div>
+            <div class="flash-toast-progress" aria-hidden="true">
+                <div class="flash-toast-progress-bar" id="flashProgressBar"></div>
+            </div>
         </div>
     @endif
 
@@ -345,9 +349,10 @@
 
 @push('scripts')
 <script src="{{ asset('assets/js/extracted/admin-content-comments.js') }}"></script>
+@if(session('success'))
+<script src="{{ asset('assets/js/admin/posts/flash-toast.js') }}"></script>
+@endif
 @endpush
 @endsection
-
-
 
 

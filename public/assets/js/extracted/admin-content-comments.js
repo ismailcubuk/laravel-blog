@@ -1,6 +1,46 @@
 document.addEventListener('DOMContentLoaded', function () {
     const replyModalElement = document.getElementById('adminCommentReplyModal');
+
+    const cleanupModalState = function () {
+        document.querySelectorAll('.modal-backdrop').forEach(function (backdrop) {
+            backdrop.remove();
+        });
+
+        if (replyModalElement) {
+            replyModalElement.classList.remove('show');
+            replyModalElement.style.display = 'none';
+            replyModalElement.setAttribute('aria-hidden', 'true');
+            replyModalElement.removeAttribute('aria-modal');
+            replyModalElement.removeAttribute('role');
+        }
+
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('padding-right');
+    };
+
+    cleanupModalState();
+
     if (replyModalElement) {
+        const replyForm = document.getElementById('adminCommentReplyForm');
+        const replyDeleteForm = document.getElementById('adminCommentReplyDeleteForm');
+
+        [replyForm, replyDeleteForm].forEach(function (form) {
+            if (!form) {
+                return;
+            }
+
+            form.addEventListener('submit', function () {
+                const modal = window.bootstrap ? window.bootstrap.Modal.getInstance(replyModalElement) : null;
+
+                if (modal) {
+                    modal.hide();
+                }
+
+                cleanupModalState();
+            });
+        });
+
         replyModalElement.addEventListener('show.bs.modal', function (event) {
             const trigger = event.relatedTarget;
             if (!trigger) {
@@ -113,6 +153,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (inputTarget) {
                 inputTarget.value = '';
             }
+
+            cleanupModalState();
         });
     }
 });

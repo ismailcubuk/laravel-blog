@@ -71,7 +71,7 @@
     <!-- AdminLTE JS -->
     <script src="{{ asset('adminlte/js/adminlte.js') }}"></script>
 
-    <script src="{{ asset('assets/js/shared/auto-alerts.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/auto-alerts.js') }}?v={{ filemtime(public_path('assets/js/shared/auto-alerts.js')) }}"></script>
     <script src="{{ asset('assets/js/admin/sidebar.js') }}"></script>
     <script src="{{ asset('assets/js/shared/form-spellcheck.js') }}"></script>
     @include('partials.global-select-scripts')
@@ -83,6 +83,5 @@
 </body>
 
 </html>
-
 
 

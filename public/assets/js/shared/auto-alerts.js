@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', function () {
+const initAutoAlerts = function () {
     const alerts = Array.from(document.querySelectorAll('.alert'))
-        .filter((node) => !node.closest('.modal') && !node.hasAttribute('data-no-toast'));
+        .filter((node) => !node.closest('.modal') && !node.hasAttribute('data-no-toast') && !node.classList.contains('is-auto-toast'));
 
     if (!alerts.length) {
         return;
@@ -55,4 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dismissToast(toast);
         }, durationMs);
     });
-});
+};
+
+document.addEventListener('DOMContentLoaded', initAutoAlerts);
+document.addEventListener('pjax:load', initAutoAlerts);

@@ -57,9 +57,6 @@
 
         alert.appendChild(body);
 
-        var countdown = document.createElement('div');
-        countdown.className = 'small mt-1 fw-semibold';
-
         var progress = document.createElement('div');
         progress.className = 'auto-alert-progress';
 
@@ -68,27 +65,17 @@
         progress.appendChild(progressBar);
 
         toast.appendChild(alert);
-        toast.appendChild(countdown);
         toast.appendChild(progress);
         host.appendChild(toast);
 
-        var startedAt = Date.now();
-        var interval = setInterval(function () {
-            var elapsed = Date.now() - startedAt;
-            var remainSec = Math.max(0, Math.ceil((durationMs - elapsed) / 1000));
-            countdown.textContent = remainSec + ' sn sonra kapanacak';
-        }, 150);
-
         requestAnimationFrame(function () {
             toast.classList.add('is-visible');
-            countdown.textContent = Math.ceil(durationMs / 1000) + ' sn sonra kapanacak';
             requestAnimationFrame(function () {
                 progressBar.style.width = '0%';
             });
         });
 
         setTimeout(function () {
-            clearInterval(interval);
             dismissToast(toast);
         }, durationMs);
 
