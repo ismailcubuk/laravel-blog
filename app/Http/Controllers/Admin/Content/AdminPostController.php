@@ -77,7 +77,7 @@ class AdminPostController extends Controller
             'slug' => 'required|string|unique:posts,slug',
             'content' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240|dimensions:max_width=5000,max_height=5000'
         ]);
 
         $validated['user_id'] = auth()->id();
@@ -102,7 +102,7 @@ class AdminPostController extends Controller
             'slug' => 'required|string|unique:posts,slug,'.$post->id,
             'content' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240|dimensions:max_width=5000,max_height=5000'
         ]);
 
         $post->update($validated);

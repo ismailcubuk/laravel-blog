@@ -52,16 +52,65 @@
 
                     <div class="post-create-field">
                         <label for="content">Icerik</label>
-                        <textarea
-                            id="content"
-                            name="content"
-                            class="post-create-textarea"
-                            rows="16"
-                            maxlength="20000"
-                            placeholder="Iceriginizi yazin"
-                            required
-                        >{{ old('content', $post->content ?? '') }}</textarea>
-                        <small>En az 20 karakter. Paragraflariniz detay sayfasinda korunur.</small>
+                        <div class="post-editor" data-post-editor>
+                            <div class="post-editor-toolbar" role="toolbar" aria-label="Icerik bicimlendirme araclari">
+                                <button type="button" class="post-editor-tool" data-editor-action="bold" title="Kalin"><i class="fa fa-bold" aria-hidden="true"></i></button>
+                                <button type="button" class="post-editor-tool" data-editor-action="italic" title="Italik"><i class="fa fa-italic" aria-hidden="true"></i></button>
+                                <span class="post-editor-separator" aria-hidden="true"></span>
+                                <button type="button" class="post-editor-tool" data-editor-action="unordered" title="Madde listesi"><i class="fa fa-list-ul" aria-hidden="true"></i></button>
+                                <button type="button" class="post-editor-tool" data-editor-action="ordered" title="Numarali liste"><i class="fa fa-list-ol" aria-hidden="true"></i></button>
+                                <button type="button" class="post-editor-tool" data-editor-action="quote" title="Alinti"><i class="fa fa-paragraph" aria-hidden="true"></i></button>
+                                <span class="post-editor-separator" aria-hidden="true"></span>
+                                <button type="button" class="post-editor-tool" data-editor-action="link" title="Baglanti"><i class="fa fa-link" aria-hidden="true"></i></button>
+                                <button type="button" class="post-editor-tool" data-editor-action="emoji" title="Emoji"><i class="fa fa-smile-o" aria-hidden="true"></i></button>
+                                <button type="button" class="post-editor-tool post-editor-tool-text" data-editor-action="gif" title="GIF">GIF</button>
+                                <button type="button" class="post-editor-tool" data-editor-action="code" title="Kod"><i class="fa fa-code" aria-hidden="true"></i></button>
+                                <span class="post-editor-spacer"></span>
+                                <button type="button" class="post-editor-tool" data-editor-action="clear" title="Temizle"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+                                <button type="button" class="post-editor-tool" data-editor-action="fullscreen" title="Genislet"><i class="fa fa-expand" aria-hidden="true"></i></button>
+                            </div>
+                            <textarea
+                                id="content"
+                                name="content"
+                                class="post-create-textarea post-editor-input"
+                                rows="8"
+                                maxlength="20000"
+                                placeholder="Mesajinizi yaziniz..."
+                                spellcheck="true"
+                                required
+                            >{{ old('content', $post->content ?? '') }}</textarea>
+                            <div class="post-editor-counter">Karakter: <span data-editor-count>0</span></div>
+                        </div>
+
+                        <div class="post-editor-proof">
+                            <div class="post-editor-proof-head">Yazim denetimi:</div>
+                            <label class="post-editor-check">
+                                <input type="checkbox" data-proof-option="punctuation">
+                                <span>
+                                    <strong>Nokta</strong>
+                                    <small>Satir sonlarina nokta eklenir.</small>
+                                </span>
+                            </label>
+                            <label class="post-editor-check">
+                                <input type="checkbox" data-proof-option="capital">
+                                <span>
+                                    <strong>Buyuk harf</strong>
+                                    <small>Hatali buyuk harf kullanimi duzenlenir.</small>
+                                </span>
+                            </label>
+                            <button type="button" class="post-editor-fix" data-proof-fix>
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                Duzelt
+                            </button>
+                        </div>
+
+                        <div class="post-editor-media">
+                            <button type="button" class="post-editor-upload" data-image-upload-trigger>
+                                <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                Gorsel yukle
+                            </button>
+                            <span>Maksimum boyut: 10 MB - 5000x5000</span>
+                        </div>
                     </div>
                 </div>
 
@@ -98,7 +147,7 @@
                                 </span>
                                 <span>
                                     <strong>Gorsel yukle</strong>
-                                    <small>JPG, PNG, WEBP veya GIF. Maksimum 4 MB.</small>
+                                    <small>JPG, PNG, WEBP veya GIF. Maksimum 10 MB, 5000x5000.</small>
                                 </span>
                             </label>
                             <input id="image" type="file" name="image" class="post-create-file" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
@@ -126,6 +175,141 @@
         const imageInput = document.getElementById('image');
         const preview = document.querySelector('[data-image-preview]');
         const previewImage = preview ? preview.querySelector('img') : null;
+        const uploadTrigger = document.querySelector('[data-image-upload-trigger]');
+        const editor = document.querySelector('[data-post-editor]');
+        const contentInput = document.getElementById('content');
+        const count = document.querySelector('[data-editor-count]');
+        const fixButton = document.querySelector('[data-proof-fix]');
+
+        const updateCount = () => {
+            if (count && contentInput) {
+                count.textContent = String(contentInput.value.length);
+            }
+        };
+
+        const wrapSelection = (before, after = before, fallback = '') => {
+            if (!contentInput) {
+                return;
+            }
+
+            const start = contentInput.selectionStart;
+            const end = contentInput.selectionEnd;
+            const selected = contentInput.value.slice(start, end) || fallback;
+            const replacement = `${before}${selected}${after}`;
+            contentInput.setRangeText(replacement, start, end, 'end');
+            contentInput.focus();
+            updateCount();
+        };
+
+        const prefixLines = (prefix) => {
+            if (!contentInput) {
+                return;
+            }
+
+            const start = contentInput.selectionStart;
+            const end = contentInput.selectionEnd;
+            const selected = contentInput.value.slice(start, end) || 'Liste maddesi';
+            const replacement = selected
+                .split('\n')
+                .map((line, index) => prefix.replace('{n}', String(index + 1)) + line.replace(/^\s+/, ''))
+                .join('\n');
+
+            contentInput.setRangeText(replacement, start, end, 'end');
+            contentInput.focus();
+            updateCount();
+        };
+
+        if (contentInput) {
+            contentInput.addEventListener('input', updateCount);
+            updateCount();
+        }
+
+        if (editor) {
+            editor.addEventListener('click', (event) => {
+                const button = event.target.closest('[data-editor-action]');
+
+                if (!button) {
+                    return;
+                }
+
+                const action = button.dataset.editorAction;
+
+                if (action === 'bold') wrapSelection('**', '**', 'kalin metin');
+                if (action === 'italic') wrapSelection('*', '*', 'italik metin');
+                if (action === 'unordered') prefixLines('- ');
+                if (action === 'ordered') prefixLines('{n}. ');
+                if (action === 'quote') prefixLines('> ');
+                if (action === 'link' && contentInput) {
+                    const start = contentInput.selectionStart;
+                    const end = contentInput.selectionEnd;
+                    const selected = contentInput.value.slice(start, end).trim();
+                    const selectedLooksLikeUrl = /^(https?:\/\/|\/|#)/.test(selected);
+                    const defaultUrl = selectedLooksLikeUrl ? selected : 'https://';
+                    const url = prompt('Baglanti adresi', defaultUrl);
+
+                    if (url) {
+                        const text = selected && !selectedLooksLikeUrl ? selected : prompt('Baglanti metni', 'baglanti metni');
+
+                        if (text) {
+                            contentInput.setRangeText(`[${text}](${url})`, start, end, 'end');
+                            contentInput.focus();
+                            updateCount();
+                        }
+                    }
+                }
+                if (action === 'emoji') wrapSelection('', ' :)', '');
+                if (action === 'gif' && contentInput) {
+                    const url = prompt('GIF adresi', 'https://');
+
+                    if (url) {
+                        contentInput.setRangeText(`[GIF: ${url}]`, contentInput.selectionStart, contentInput.selectionEnd, 'end');
+                        contentInput.focus();
+                        updateCount();
+                    }
+                }
+                if (action === 'code') wrapSelection('`', '`', 'kod');
+                if (action === 'clear' && contentInput && confirm('Icerik temizlensin mi?')) {
+                    contentInput.value = '';
+                    contentInput.focus();
+                    updateCount();
+                }
+                if (action === 'fullscreen') {
+                    editor.classList.toggle('is-expanded');
+                    button.querySelector('i')?.classList.toggle('fa-compress');
+                    button.querySelector('i')?.classList.toggle('fa-expand');
+                }
+            });
+        }
+
+        if (fixButton && contentInput) {
+            fixButton.addEventListener('click', () => {
+                const punctuation = document.querySelector('[data-proof-option="punctuation"]')?.checked;
+                const capital = document.querySelector('[data-proof-option="capital"]')?.checked;
+                let value = contentInput.value;
+
+                if (capital) {
+                    value = value.replace(/(^|[.!?]\s+|\n+)([a-z])/g, (match, lead, letter) => lead + letter.toUpperCase());
+                }
+
+                if (punctuation) {
+                    value = value
+                        .split('\n')
+                        .map((line) => {
+                            const trimmed = line.trimEnd();
+                            return trimmed && !/[.!?:;)]$/.test(trimmed) ? `${trimmed}.` : line;
+                        })
+                        .join('\n');
+                }
+
+                contentInput.value = value;
+                contentInput.focus();
+                updateCount();
+            });
+        }
+
+        if (uploadTrigger && imageInput) {
+            uploadTrigger.addEventListener('click', () => imageInput.click());
+        }
 
         if (!imageInput || !preview || !previewImage) {
             return;

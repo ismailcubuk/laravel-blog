@@ -202,11 +202,208 @@
     line-height: 1.65;
 }
 
+.post-editor {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    background: #151718;
+    color: #d8dee5;
+}
+
+.post-editor.is-expanded {
+    position: fixed;
+    inset: 1rem;
+    z-index: 1040;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48);
+}
+
+.post-editor-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-height: 42px;
+    padding: 0.25rem 0.65rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.post-editor-tool {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: #4fb3ee;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.post-editor-tool:hover,
+.post-editor-tool:focus {
+    background: rgba(79, 179, 238, 0.12);
+    color: #7dd3fc;
+    outline: none;
+}
+
+.post-editor-tool-text {
+    width: auto;
+    min-width: 34px;
+    padding: 0 0.4rem;
+    font-size: 0.65rem;
+    font-weight: 900;
+}
+
+.post-editor-separator {
+    width: 1px;
+    height: 20px;
+    margin: 0 0.2rem;
+    background: rgba(148, 163, 184, 0.24);
+}
+
+.post-editor-spacer {
+    flex: 1 1 auto;
+}
+
+.post-editor-input {
+    min-height: 100px;
+    padding-bottom: 2.4rem;
+    border: 0;
+    border-radius: 0;
+    background: #151718;
+    color: #d8dee5;
+    font-size: 0.92rem;
+    font-weight: 500;
+    resize: vertical;
+}
+
+.post-editor.is-expanded .post-editor-input {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.post-editor-input::placeholder {
+    color: #8b949e;
+}
+
+.post-editor-input:focus {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.post-editor-counter {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-height: 30px;
+    padding: 0.45rem 0.6rem;
+    border-top: 1px solid #252a2f;
+    border-left: 1px solid #252a2f;
+    border-radius: 4px 0 0;
+    background: #050607;
+    color: #f8fafc;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.post-editor-proof {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem 1.2rem;
+    padding: 1rem 0 0.9rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.post-editor-proof-head {
+    width: 100%;
+    color: #4fb3ee;
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.post-editor-check {
+    display: inline-flex !important;
+    align-items: flex-start;
+    gap: 0.45rem;
+    margin: 0 !important;
+    color: var(--front-text);
+    cursor: pointer;
+}
+
+.post-editor-check input {
+    width: 14px;
+    height: 14px;
+    margin-top: 0.14rem;
+    accent-color: var(--front-primary);
+}
+
+.post-editor-check strong {
+    display: block;
+    color: var(--front-text);
+    font-size: 0.88rem;
+    line-height: 1.1;
+}
+
+.post-editor-check small {
+    margin-top: 0.16rem;
+}
+
+.post-editor-fix,
+.post-editor-upload {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.38rem;
+    min-height: 34px;
+    border: 0;
+    border-radius: 8px;
+    background: #1e6a9a;
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.post-editor-fix {
+    padding: 0 0.8rem;
+}
+
+.post-editor-upload {
+    padding: 0 0.7rem;
+    border: 1px solid rgba(79, 179, 238, 0.34);
+    background: transparent;
+    color: #4fb3ee;
+}
+
+.post-editor-fix:hover,
+.post-editor-upload:hover {
+    filter: brightness(1.08);
+}
+
+.post-editor-media {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding-top: 0.7rem;
+    color: var(--front-muted);
+    font-size: 0.84rem;
+}
+
 .post-create-input:focus,
 .post-create-select:focus,
 .post-create-textarea:focus {
     border-color: var(--front-primary);
     box-shadow: 0 0 0 4px rgba(var(--front-primary-rgb), 0.12);
+}
+
+.post-editor .post-editor-input:focus {
+    border-color: transparent;
+    box-shadow: none;
 }
 
 .post-create-upload {
@@ -317,6 +514,30 @@
     background: rgba(148, 163, 184, 0.12);
 }
 
+.front-light .post-editor {
+    border-color: #d7dee8;
+    background: #ffffff;
+}
+
+.front-light .post-editor-toolbar {
+    border-bottom-color: #e5e7eb;
+    background: #f8fafc;
+}
+
+.front-light .post-editor-input {
+    background: #ffffff;
+    color: #172033;
+}
+
+.front-light .post-editor-input::placeholder {
+    color: #8a94a6;
+}
+
+.front-light .post-editor-counter {
+    border-color: #d7dee8;
+    background: #111827;
+}
+
 @media (max-width: 991.98px) {
     .post-create-main {
         grid-template-columns: 1fr;
@@ -338,6 +559,25 @@
 
     .post-create-textarea {
         min-height: 320px;
+    }
+
+    .post-editor-input {
+        min-height: 140px;
+    }
+
+    .post-editor-toolbar {
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+
+    .post-editor-spacer {
+        display: none;
+    }
+
+    .post-editor-proof,
+    .post-editor-media {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
     .post-create-edit-state {

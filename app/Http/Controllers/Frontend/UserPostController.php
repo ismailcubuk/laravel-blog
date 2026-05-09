@@ -115,7 +115,7 @@ class UserPostController extends Controller
             'title' => ['required', 'string', 'max:180'],
             'category_id' => ['required', 'exists:categories,id'],
             'content' => ['required', 'string', 'min:20', 'max:20000'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:4096'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:10240', 'dimensions:max_width=5000,max_height=5000'],
             'status' => ['required', 'in:published,draft'],
         ]);
 
@@ -154,7 +154,7 @@ class UserPostController extends Controller
             'title' => ['required', 'string', 'max:180'],
             'category_id' => ['required', 'exists:categories,id'],
             'content' => ['required', 'string', 'min:20', 'max:20000'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:4096'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:10240', 'dimensions:max_width=5000,max_height=5000'],
             'status' => ['required', 'in:published,draft'],
         ]);
 

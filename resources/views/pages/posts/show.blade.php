@@ -46,7 +46,9 @@
                                             <li><a href="#comments">{{ $post->approved_comments_count }} Comments</a></li>
                                         </ul>
 
-                                        <p>{!! nl2br(e($post->content)) !!}</p>
+                                        <div class="post-content-body">
+                                            {!! \App\Support\PostContentFormatter::toHtml($post->content) !!}
+                                        </div>
 
                                         @if(session('success'))
                                             <div class="alert alert-success mt-4">
