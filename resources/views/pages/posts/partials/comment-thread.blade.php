@@ -54,7 +54,26 @@
 
             <p>{{ $comment->message }}</p>
 
-            @if(auth()->check() && in_array(auth()->user()->role, ['user', 'admin'], true))
+            @if($isAdminViewer && !$comment->reply_message)
+                <form
+                    method="POST"
+                    action="{{ route('post.comments.reply', [$post->slug, $comment]) }}"
+                    class="reply-inline-edit post-comment-reply-form"
+                >
+                    @csrf
+                    <textarea
+                        id="admin_reply_message_{{ $comment->id }}"
+                        name="reply_message"
+                        placeholder="Write admin reply"
+                        required
+                    >{{ old('reply_message') }}</textarea>
+                    <div class="reply-inline-edit-actions">
+                        <button type="submit" class="reply-modern-button save">
+                            Reply
+                        </button>
+                    </div>
+                </form>
+            @elseif(auth()->check() && auth()->user()->role === 'user')
                 <div class="post-comment-reply-action" id="comment-reply-trigger-{{ $comment->id }}">
                     <button type="button" class="reply-edit-button" onclick="toggleCommentReply({{ $comment->id }}, true)">
                         Reply

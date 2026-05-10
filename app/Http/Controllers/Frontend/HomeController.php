@@ -29,7 +29,7 @@ class HomeController extends Controller
             ->get();
         $categories = Category::query()
             ->withCount(['posts' => fn ($query) => $query->published()])
-            ->having('posts_count', '>', 0)
+            ->whereHas('posts', fn ($query) => $query->published())
             ->orderByDesc('posts_count')
             ->orderBy('name')
             ->get();

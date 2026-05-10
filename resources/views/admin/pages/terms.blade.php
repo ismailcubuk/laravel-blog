@@ -88,16 +88,12 @@
 @endsection
 
 @push('styles')
-@push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/extracted/admin-pages-terms.css') }}">
-@endpush
 @endpush
 
 @push('scripts')
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-@push('scripts')
 <script src="{{ asset('assets/js/extracted/admin-pages-terms.js') }}"></script>
-@endpush
 @endpush
 
 

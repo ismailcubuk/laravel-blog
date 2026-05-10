@@ -186,9 +186,7 @@
 </div>
 
 @push('styles')
-@push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/extracted/admin-users-list.css') }}">
-@endpush
 @endpush
 @endsection
 

@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Setting;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Throwable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $settings = Setting::allAsKeyValue();
+        $settings = [];
 
         $defaultSettings = [
             'site_name' => 'My Website',
@@ -40,6 +42,12 @@ class AppServiceProvider extends ServiceProvider
             'brand_primary_color' => '#f48840',
             'brand_secondary_color' => '#fb9857',
         ];
+
+        try {
+            $settings = Schema::hasTable('settings') ? Setting::allAsKeyValue() : [];
+        } catch (Throwable) {
+            $settings = [];
+        }
 
         $settings = array_merge($defaultSettings, $settings);
         $settings['mail_password'] = Setting::maybeDecrypt($settings['mail_password']);

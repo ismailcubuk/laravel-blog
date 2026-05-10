@@ -127,7 +127,9 @@ class PostController extends Controller
             ? 'Reply published successfully.'
             : 'Your comment has been submitted and is awaiting moderation.';
 
-        return redirect()->to(route('post.show', $post->slug) . '#comments')
+        $redirectAnchor = auth()->user()->role === 'admin' || $parent ? '#comments' : '#comment-form';
+
+        return redirect()->to(route('post.show', $post->slug) . $redirectAnchor)
             ->with('success', $message);
     }
 

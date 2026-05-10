@@ -87,7 +87,7 @@
                                     </div>
                                 </div>
 
-                                @if(auth()->check() && in_array(auth()->user()->role, ['user', 'admin'], true))
+                                @if(auth()->check() && auth()->user()->role === 'user')
                                             <div class="sidebar-item submit-comment post-comment-form-panel mt-4" id="comment-form">
                                                 <div class="sidebar-heading">
                                                     <h2>Leave a Comment</h2>

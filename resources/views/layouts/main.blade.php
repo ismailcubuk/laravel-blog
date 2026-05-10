@@ -38,6 +38,7 @@
 
     @include('partials.frontend-theme-vars')
     <link rel="stylesheet" href="{{ asset('assets/css/frontend/layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/extracted/partials-header.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/frontend/author-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/frontend/post-create.css') }}">
     @include('partials.global-select-styles')
@@ -65,6 +66,7 @@
     @include('partials.global-select-scripts')
     <script src="{{ asset('assets/js/shared/pjax.js') }}"></script>
     <script src="{{ asset('assets/js/frontend/navigation-optimizer.js') }}"></script>
+    <script src="{{ asset('assets/js/extracted/partials-header-mode-switch.js') }}"></script>
     @stack('scripts')
 
 </body>

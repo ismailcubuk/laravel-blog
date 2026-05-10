@@ -241,15 +241,11 @@
 </div>
 
 @push('styles')
-@push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/extracted/admin-users-edit.css') }}">
-@endpush
 @endpush
 
 @push('scripts')
-@push('scripts')
 <script src="{{ asset('assets/js/extracted/admin-users-edit.js') }}"></script>
-@endpush
 @endpush
 @endsection
 
