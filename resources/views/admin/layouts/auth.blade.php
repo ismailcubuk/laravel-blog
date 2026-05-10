@@ -58,7 +58,9 @@
 
     @yield('content')
 
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/bootstrap-compat.js') }}?v={{ filemtime(public_path('assets/js/admin/bootstrap-compat.js')) }}"></script>
     <script src="{{ asset('adminlte/js/adminlte.min.js') }}"></script>
     @include('partials.global-select-scripts')
     <script src="{{ asset('assets/js/extracted/admin-layouts-auth.js') }}"></script>

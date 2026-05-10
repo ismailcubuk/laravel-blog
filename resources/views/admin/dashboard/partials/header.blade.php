@@ -11,7 +11,7 @@
     </div>
 
     <div class="dashboard-hero-actions">
-        <button type="button" class="btn btn-outline-light dashboard-ghost-btn" data-bs-toggle="modal" data-bs-target="#allBlogPostsModal">
+        <button type="button" class="btn btn-outline-light dashboard-ghost-btn" data-toggle="modal" data-target="#allBlogPostsModal" data-bs-toggle="modal" data-bs-target="#allBlogPostsModal">
             <i class="bi bi-collection me-1"></i> All Posts
         </button>
         <a href="{{ route('admin.content.posts.create') }}" class="btn btn-primary dashboard-primary-btn">

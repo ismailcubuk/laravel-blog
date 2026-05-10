@@ -44,6 +44,8 @@
             class="dashboard-stat-card stat-{{ $stat['theme'] }} is-clickable"
             role="button"
             tabindex="0"
+            data-toggle="modal"
+            data-target="{{ $stat['action']['target'] }}"
             data-bs-toggle="modal"
             data-bs-target="{{ $stat['action']['target'] }}"
         >

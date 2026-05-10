@@ -62,8 +62,10 @@
 
     </div>
 
-    <!-- Bootstrap 5 -->
+    <!-- Bootstrap modal runtime -->
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/bootstrap-compat.js') }}?v={{ filemtime(public_path('assets/js/admin/bootstrap-compat.js')) }}"></script>
 
     <!-- AdminLTE JS -->
     <script src="{{ asset('adminlte/js/adminlte.js') }}"></script>
@@ -80,4 +82,3 @@
 </body>
 
 </html>
-
