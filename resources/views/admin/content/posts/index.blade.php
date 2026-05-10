@@ -22,7 +22,7 @@
 
 <div class="container-fluid py-4">
     <div class="d-flex align-items-center mb-4">
-        <h1 class="mb-0 text-primary">Posts Management</h1>
+        <h1 class="mb-0 text-primary">Yazı Yönetimi</h1>
     </div>
 
     @if(session('success'))
@@ -95,7 +95,7 @@
                                     <tr>
                                         <td>
                                             <img
-                                                src="{{ $post->image ? asset(ltrim($post->image, '/')) : asset('assets/images/blog-post-01.jpg') }}"
+                                                src="{{ $post->image ? asset(ltrim($post->image, '/')) : asset('assets/images/default-post.jpg') }}"
                                                 alt="{{ $post->title }}"
                                                 width="48"
                                                 height="48"
@@ -171,4 +171,3 @@
 @endpush
 @endif
 @endsection
-

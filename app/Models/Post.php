@@ -52,7 +52,7 @@ class Post extends Model
     public function getImageUrlAttribute(): string
     {
         $rawImage = trim((string) $this->image);
-        $fallback = asset('assets/images/blog-post-01.jpg');
+        $fallback = asset('assets/images/default-post.jpg');
 
         if ($rawImage === '') {
             return $fallback;
@@ -85,5 +85,17 @@ class Post extends Model
         }
 
         return asset(ltrim($rawImage, '/'));
+    }
+
+    public function getExcerptAttribute(): string
+    {
+        return Str::limit(trim(strip_tags((string) $this->content)), 170);
+    }
+
+    public function getReadingTimeAttribute(): int
+    {
+        $wordCount = str_word_count(strip_tags((string) $this->content));
+
+        return max(1, (int) ceil($wordCount / 200));
     }
 }

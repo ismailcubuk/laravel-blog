@@ -17,7 +17,8 @@
                 </a>
 
                 <ul class="front-post-meta">
-                    <li>{{ $post->created_at->format('d M Y') }}</li>
+                    <li>{{ $post->created_at->format('d.m.Y') }}</li>
+                    <li>{{ $post->reading_time }} dk okuma</li>
                     <li>{{ $post->approved_comments_count ?? 0 }} yorum</li>
                 </ul>
 
@@ -30,8 +31,8 @@
         </article>
     @empty
         <article class="front-card p-4">
-            <h5 class="mb-2">Henuz yazi bulunmuyor</h5>
-            <p class="mb-0 text-muted">Yeni yazi eklendiginde burada listelenecek.</p>
+            <h5 class="mb-2">Henüz yazı bulunmuyor</h5>
+            <p class="mb-0 text-muted">Yeni yazı eklendiğinde burada listelenecek.</p>
         </article>
     @endforelse
 </div>

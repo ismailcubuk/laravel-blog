@@ -14,7 +14,7 @@
         <div class="col-lg-12">
             <div class="sidebar-item recent-posts">
                 <div class="sidebar-heading">
-                    <h2>Son Yazilar</h2>
+                    <h2>Son Yazılar</h2>
                 </div>
                 <div class="content">
                     <ul>
@@ -40,7 +40,7 @@
                     <ul>
                         @foreach($categories as $category)
                             <li>
-                                <a href="{{ route('blog', ['category' => $category->id]) }}">
+                                <a href="{{ route('blog.category', $category) }}">
                                     {{ $category->name }} ({{ $category->posts_count ?? 0 }})
                                 </a>
                             </li>

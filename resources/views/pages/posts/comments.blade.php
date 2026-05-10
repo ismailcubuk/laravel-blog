@@ -22,7 +22,7 @@
                 <article class="author-comment-item" @if($commentTarget) data-click-url="{{ $commentTarget }}" tabindex="0" role="link" @endif>
                     <div class="author-comment-post">
                         <span class="author-comment-thumb" aria-label="{{ $comment->post->title ?? 'Yazi' }}">
-                            <img src="{{ $comment->post?->image_url ?? asset('assets/images/blog-post-01.jpg') }}" alt="{{ $comment->post->title ?? 'Yazi' }}" loading="lazy" decoding="async">
+                            <img src="{{ $comment->post?->image_url ?? asset('assets/images/default-post.jpg') }}" alt="{{ $comment->post->title ?? 'Yazı' }}" loading="lazy" decoding="async">
                         </span>
                         <h2>{{ $comment->post->title ?? 'Silinmis yazi' }}</h2>
                     </div>
@@ -46,8 +46,8 @@
                 </article>
             @empty
                 <div class="author-empty-state">
-                    <h2>Henuz yorumunuz yok.</h2>
-                    <p>Okudugunuz yazilara yorum biraktikca burada listelenir.</p>
+                    <h2>Henüz yorumunuz yok.</h2>
+                    <p>Okuduğunuz yazılara yorum bıraktıkça burada listelenir.</p>
                     <a href="{{ route('blog') }}">Bloglari Kesfet</a>
                 </div>
             @endforelse

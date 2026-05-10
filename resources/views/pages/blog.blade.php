@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('title', 'Blog')
+@section('meta_description', trim(($search ?? '') . ' ' . optional($activeCategory)->name) ? 'Blog arama ve kategori sonuçları.' : 'Güncel blog yazıları, kategoriler ve son yayınlanan içerikler.')
 
 @section('content')
 
@@ -14,8 +15,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-content">
-                            <h4>Recent Posts</h4>
-                            <h2>Our Recent Blog Entries</h2>
+                            <h4>Blog</h4>
+                            <h2>{{ $activeCategory ? $activeCategory->name : 'Son Yazılar' }}</h2>
                         </div>
                     </div>
                 </div>
@@ -31,9 +32,18 @@
                 {{-- POSTS --}}
                 <div class="col-lg-8">
                     <div class="all-blog-posts">
+                        <div class="blog-results-summary mb-4">
+                            <strong>{{ $resultCount }}</strong> sonuç bulundu
+                            @if($search !== '')
+                                <span>“{{ $search }}” araması için</span>
+                            @endif
+                            @if($activeCategory)
+                                <span>{{ $activeCategory->name }} kategorisinde</span>
+                            @endif
+                        </div>
                         <div class="row blog-grid">
 
-                            @foreach($posts as $post)
+                            @forelse($posts as $post)
 
                                 <div class="col-lg-6 blog-card-col">
                                     <div class="blog-post">
@@ -47,7 +57,7 @@
 
                                             {{-- category --}}
                                             <span>
-                                                {{ $post->category->name ?? 'No Category' }}
+                                                {{ $post->category->name ?? 'Genel' }}
                                             </span>
 
                                             {{-- title --}}
@@ -60,9 +70,10 @@
                                                 <li><a href="#">{{ $post->user->name ?? 'Admin' }}</a></li>
                                                 <li>
                                                     <a href="#">
-                                                        {{ $post->created_at->format('d M Y') }}
+                                                        {{ $post->created_at->format('d.m.Y') }}
                                                     </a>
                                                 </li>
+                                                <li><a href="#">{{ $post->reading_time }} dk okuma</a></li>
                                             </ul>
 
                                             {{-- content --}}
@@ -74,7 +85,7 @@
                                                     <div class="col-lg-12">
                                                         <ul class="post-tags">
                                                             <li><i class="fa fa-tags"></i></li>
-                                                            <li><a href="{{ route('blog', ['category' => $post->category_id]) }}">{{ $post->category->name ?? 'Genel' }}</a></li>
+                                                            <li><a href="{{ $post->category ? route('blog.category', $post->category) : route('blog') }}">{{ $post->category->name ?? 'Genel' }}</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -85,7 +96,11 @@
                                     </div>
                                 </div>
 
-                            @endforeach
+                            @empty
+                                <div class="col-12">
+                                    <div class="alert alert-info">Bu kriterlere uygun yazı bulunamadı.</div>
+                                </div>
+                            @endforelse
 
                             {{-- PAGINATION --}}
                             {{ $posts->links('vendor.pagination.templatemo') }}
@@ -103,7 +118,7 @@
                             <div class="col-lg-12">
                                 <div class="sidebar-item search">
                                     <form method="GET" action="{{ route('blog') }}">
-                                        <input type="text" name="search" class="searchText" placeholder="Search..." value="{{ request('search') }}">
+                                        <input type="text" name="search" class="searchText" placeholder="Yazı ara..." value="{{ request('search') }}">
                                     </form>
                                 </div>
                             </div>
@@ -113,19 +128,19 @@
                             <div class="col-lg-12">
                                 <div class="sidebar-item recent-posts">
                                     <div class="sidebar-heading">
-                                        <h2>Recent Posts</h2>
+                                        <h2>Son Yazılar</h2>
                                     </div>
 
                                     <div class="content">
                                         <ul>
 
-                                            @foreach($posts->take(5) as $recent)
+                                            @foreach($recentPosts as $recent)
 
                                                 <li>
                                                     <a href="{{ route('post.show', $recent->slug) }}">
                                                         <h5>{{ $recent->title }}</h5>
                                                         <span>
-                                                            {{ $recent->created_at->format('d M Y') }}
+                                                            {{ $recent->created_at->format('d.m.Y') }}
                                                         </span>
                                                     </a>
                                                 </li>
@@ -143,7 +158,7 @@
                             <div class="col-lg-12">
                                 <div class="sidebar-item categories">
                                     <div class="sidebar-heading">
-                                        <h2>Categories</h2>
+                                        <h2>Kategoriler</h2>
                                     </div>
 
                                     <div class="content">
@@ -152,7 +167,7 @@
                                             @foreach($categories as $category)
 
                                                 <li>
-                                                    <a href="{{ route('blog', ['category' => $category->id]) }}">
+                                                    <a href="{{ route('blog.category', $category) }}">
                                                         - {{ $category->name }} ({{ $category->posts_count ?? 0 }})
                                                     </a>
                                                 </li>

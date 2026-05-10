@@ -24,18 +24,18 @@
                         <a class="nav-link" href="{{ route('home') }}">Ana Sayfa</a>
                     </li>
                     <li class="nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('about') }}">Hakkimizda</a>
+                        <a class="nav-link" href="{{ route('about') }}">Hakkımızda</a>
                     </li>
                     <li class="nav-item {{ request()->routeIs('blog') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('blog') }}">Blog</a>
                     </li>
                     <li class="nav-item {{ request()->routeIs('contact') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('contact') }}">Iletisim</a>
+                        <a class="nav-link" href="{{ route('contact') }}">İletişim</a>
                     </li>
 
                     @auth
                         <li class="nav-item">
-                            <form class="front-mode-switch" action="{{ route('profile.mode') }}" method="POST" aria-label="Gorunum modu" data-front-mode-switch>
+                            <form class="front-mode-switch" action="{{ route('profile.mode') }}" method="POST" aria-label="Görünüm modu" data-front-mode-switch>
                                 @csrf
                                 @method('PUT')
                                 <button type="submit" name="ui_mode" value="white" class="{{ !$isDarkMode ? 'is-active' : '' }}" aria-pressed="{{ !$isDarkMode ? 'true' : 'false' }}" title="Light mode">
@@ -62,13 +62,13 @@
                                 @endif
                                 <form method="POST" action="{{ route('admin.logout') }}">
                                     @csrf
-                                    <button type="submit" class="dropdown-item">Cikis Yap</button>
+                                    <button type="submit" class="dropdown-item">Çıkış Yap</button>
                                 </form>
                             </div>
                         </li>
                     @else
                         <li class="nav-item {{ request()->routeIs('login') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('login') }}">Giris</a>
+                            <a class="nav-link" href="{{ route('login') }}">Giriş</a>
                         </li>
                     @endauth
                 </ul>
@@ -80,11 +80,11 @@
         @php($authorCounts = [
             'comments' => \App\Models\Comment::query()->where('user_id', auth()->id())->count(),
         ])
-        <div class="front-author-tabs" aria-label="Yazar islemleri">
+        <div class="front-author-tabs" aria-label="Yazar işlemleri">
             <div class="container">
                 <a class="front-author-tab {{ request()->routeIs('user.posts.index') ? 'is-active' : '' }}" href="{{ route('user.posts.index') }}">
                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                    <span>Yazilarim</span>
+                    <span>Yazılarım</span>
                 </a>
                 <a class="front-author-tab {{ request()->routeIs('user.posts.drafts') ? 'is-active' : '' }}" href="{{ route('user.posts.drafts') }}">
                     <i class="fa fa-folder-open-o" aria-hidden="true"></i>
@@ -92,12 +92,12 @@
                 </a>
                 <a class="front-author-tab {{ request()->routeIs('user.posts.comments') ? 'is-active' : '' }}" href="{{ route('user.posts.comments') }}">
                     <i class="fa fa-comments-o" aria-hidden="true"></i>
-                    <span>Yorumlarim</span>
+                    <span>Yorumlarım</span>
                     <span class="front-author-count">{{ $authorCounts['comments'] }}</span>
                 </a>
                 <a class="front-author-tab {{ request()->routeIs('user.posts.create') ? 'is-active' : '' }}" href="{{ route('user.posts.create') }}">
                     <i class="fa fa-plus" aria-hidden="true"></i>
-                    <span>Yeni Post</span>
+                    <span>Yeni Yazı</span>
                 </a>
             </div>
         </div>

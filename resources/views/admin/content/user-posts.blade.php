@@ -10,7 +10,7 @@
 <div class="container-fluid py-4">
     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
         <div>
-            <h1 class="mb-1 text-primary">User Posts Management</h1>
+            <h1 class="mb-1 text-primary">Kullanıcı Yazıları Yönetimi</h1>
             <p class="text-muted mb-0">Review, approve, and inspect posts submitted by users.</p>
         </div>
     </div>

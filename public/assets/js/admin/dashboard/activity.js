@@ -121,7 +121,7 @@
             }
 
             const href = item && item.url ? item.url : '#';
-            const imageSrc = item && item.image ? item.image : '/assets/images/blog-post-01.jpg';
+            const imageSrc = item && item.image ? item.image : '/assets/images/default-post.jpg';
             const title = item && item.title ? item.title : 'Untitled';
             const excerpt = item && item.excerpt ? item.excerpt : '';
             const time = item && item.time ? item.time : '--:--';

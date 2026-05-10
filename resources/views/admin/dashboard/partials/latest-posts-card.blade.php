@@ -9,7 +9,7 @@
             @forelse($latestPosts as $post)
                 <a href="{{ route('post.show', $post->slug) }}" class="latest-post-item">
                     <img
-                        src="{{ $post->image ? asset(ltrim($post->image, '/')) : asset('assets/images/blog-post-01.jpg') }}"
+                        src="{{ $post->image ? asset(ltrim($post->image, '/')) : asset('assets/images/default-post.jpg') }}"
                         alt="{{ $post->title }}"
                         class="latest-post-thumb"
                     >

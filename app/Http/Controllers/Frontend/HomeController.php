@@ -16,7 +16,7 @@ class HomeController extends Controller
             ->latest()
             ->take(5)
             ->get();
-        $posts = Post::with('category')
+        $posts = Post::with(['category', 'user'])
             ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
@@ -33,7 +33,30 @@ class HomeController extends Controller
             ->orderByDesc('posts_count')
             ->orderBy('name')
             ->get();
+        $featuredPost = $bannerPosts->first();
+        $editorPicks = Post::with(['category', 'user'])
+            ->published()
+            ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
+            ->latest()
+            ->skip(1)
+            ->take(3)
+            ->get();
+        $mostCommentedPosts = Post::with(['category', 'user'])
+            ->published()
+            ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
+            ->orderByDesc('approved_comments_count')
+            ->latest()
+            ->take(3)
+            ->get();
 
-        return view('pages.home', compact('bannerPosts', 'posts', 'recentPosts', 'categories'));
+        return view('pages.home', compact(
+            'bannerPosts',
+            'posts',
+            'recentPosts',
+            'categories',
+            'featuredPost',
+            'editorPicks',
+            'mostCommentedPosts'
+        ));
     }
 }

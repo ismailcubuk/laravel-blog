@@ -54,7 +54,7 @@
                         $searchText = mb_strtolower(trim(($comment->name ?? '') . ' ' . ($comment->email ?? '') . ' ' . ($rawMessage ?? '') . ' ' . $postTitle . ' ' . $postCategory));
                         $avatarPath = optional($comment->user)->avatar_path;
                         $avatarUrl = $avatarPath ? asset(ltrim((string) $avatarPath, '/')) : asset('adminlte/img/avatar.png');
-                        $postImageUrl = $comment->post ? $comment->post->image_url : asset('assets/images/blog-post-01.jpg');
+                        $postImageUrl = $comment->post ? $comment->post->image_url : asset('assets/images/default-post.jpg');
                         $hasReply = !empty($comment->reply_message);
                     @endphp
 

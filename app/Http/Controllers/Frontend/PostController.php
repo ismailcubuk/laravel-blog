@@ -87,8 +87,16 @@ class PostController extends Controller
             ->get();
 
         $categories = Category::all();
+        $relatedPosts = Post::with(['category', 'user'])
+            ->published()
+            ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
+            ->whereKeyNot($post->id)
+            ->when($post->category_id, fn ($query) => $query->where('category_id', $post->category_id))
+            ->latest()
+            ->take(3)
+            ->get();
 
-        return view('pages.posts.show', compact('post', 'recentPosts', 'categories'));
+        return view('pages.posts.show', compact('post', 'recentPosts', 'categories', 'relatedPosts'));
     }
 
     public function storeComment(Request $request, string $slug)

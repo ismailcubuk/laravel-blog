@@ -42,7 +42,7 @@ class DashboardActivityService
                         'excerpt' => Str::limit(strip_tags((string) $post->content), 90),
                         'image' => $post->image
                             ? asset(ltrim((string) $post->image, '/'))
-                            : asset('assets/images/blog-post-01.jpg'),
+                            : asset('assets/images/default-post.jpg'),
                         'time' => optional($post->created_at)->format('H:i'),
                         'url' => route('post.show', $post->slug),
                         'author_name' => $post->user?->name ?: 'Unknown author',

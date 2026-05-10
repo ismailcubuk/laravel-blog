@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', $mode === 'draft' ? 'Taslaklar' : 'Yazilarim')
+@section('title', $mode === 'draft' ? 'Taslaklar' : 'Yazılarım')
 
 @section('content')
 <section class="author-dashboard-page">
@@ -8,7 +8,7 @@
         <div class="author-dashboard-header">
             <div>
                 <p>{{ $mode === 'draft' ? 'Taslak alani' : 'Yazar alani' }}</p>
-                <h1>{{ $mode === 'draft' ? 'Taslaklar' : 'Yazilarim' }}</h1>
+                <h1>{{ $mode === 'draft' ? 'Taslaklar' : 'Yazılarım' }}</h1>
             </div>
             <a href="{{ route('user.posts.create') }}">
                 <i class="fa fa-plus" aria-hidden="true"></i>
@@ -99,7 +99,7 @@
                 </article>
             @empty
                 <div class="author-empty-state">
-                    <h2>{{ $mode === 'draft' ? 'Kayitli taslak yok.' : 'Henuz yayinlanmis yaziniz yok.' }}</h2>
+                    <h2>{{ $mode === 'draft' ? 'Kayıtlı taslak yok.' : 'Henüz yayınlanmış yazınız yok.' }}</h2>
                     <p>Yeni bir fikir yazmaya hazir oldugunuzda buradan hizlica baslayabilirsiniz.</p>
                     <a href="{{ route('user.posts.create') }}">Yeni Post Olustur</a>
                 </div>

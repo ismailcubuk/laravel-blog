@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
-@section('title', $page->title ?? 'Contact')
+@section('title', 'İletişim')
+@section('meta_description', 'Sorularınız, önerileriniz ve iş birlikleri için iletişim formunu kullanabilirsiniz.')
 
 @section('content')
 <div class="heading-page header-text">
@@ -9,8 +10,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-content">
-                        <h4>{{ $page->title ?? 'Contact us' }}</h4>
-                        <h2>let's stay in touch!</h2>
+                        <h4>{{ $page->title ?? 'İletişim' }}</h4>
+                        <h2>Bizimle iletişimde kalın</h2>
                     </div>
                 </div>
             </div>
@@ -27,7 +28,7 @@
                         <div class="col-lg-8">
                             <div class="sidebar-item contact-form">
                                 <div class="sidebar-heading">
-                                    <h2>Send us a message</h2>
+                                    <h2>Bize mesaj gönderin</h2>
                                 </div>
 
                                 <div class="content">
@@ -50,23 +51,23 @@
                                         <input type="text" name="website" value="" tabindex="-1" autocomplete="off" class="d-none" aria-hidden="true">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12">
-                                                <input name="name" type="text" placeholder="Your name" value="{{ old('name') }}" required>
+                                                <input name="name" type="text" placeholder="Adınız" value="{{ old('name') }}" required>
                                             </div>
 
                                             <div class="col-md-6 col-sm-12">
-                                                <input name="email" type="email" placeholder="Your email" value="{{ old('email') }}" required>
+                                                <input name="email" type="email" placeholder="E-posta adresiniz" value="{{ old('email') }}" required>
                                             </div>
 
                                             <div class="col-md-12 col-sm-12">
-                                                <input name="subject" type="text" placeholder="Subject" value="{{ old('subject') }}">
+                                                <input name="subject" type="text" placeholder="Konu" value="{{ old('subject') }}">
                                             </div>
 
                                             <div class="col-lg-12">
-                                                <textarea name="message" rows="6" placeholder="Your Message" required>{{ old('message') }}</textarea>
+                                                <textarea name="message" rows="6" placeholder="Mesajınız" required>{{ old('message') }}</textarea>
                                             </div>
 
                                             <div class="col-lg-12">
-                                                <button type="submit" class="main-button">Send Message</button>
+                                                <button type="submit" class="main-button">Mesaj Gönder</button>
                                             </div>
                                         </div>
                                     </form>
@@ -77,22 +78,22 @@
                         <div class="col-lg-4">
                             <div class="sidebar-item contact-information">
                                 <div class="sidebar-heading">
-                                    <h2>CONTACT INFORMATION</h2>
+                                    <h2>İletişim Bilgileri</h2>
                                 </div>
 
                                 <div class="content">
                                     <ul>
                                         <li>
-                                            <h5>{{ !empty($page->contact_phone) ? $page->contact_phone : 'Your phone number' }}</h5>
-                                            <span>PHONE NUMBER</span>
+                                            <h5>{{ !empty($page->contact_phone) ? $page->contact_phone : 'Telefon numaranız' }}</h5>
+                                            <span>Telefon</span>
                                         </li>
                                         <li>
-                                            <h5>{{ !empty($page->contact_email) ? $page->contact_email : 'Your email address' }}</h5>
-                                            <span>EMAIL ADDRESS</span>
+                                            <h5>{{ !empty($page->contact_email) ? $page->contact_email : 'E-posta adresiniz' }}</h5>
+                                            <span>E-posta</span>
                                         </li>
                                         <li>
-                                            <h5>{{ !empty($page->contact_address) ? $page->contact_address : 'Your street address' }}</h5>
-                                            <span>STREET ADDRESS</span>
+                                            <h5>{{ !empty($page->contact_address) ? $page->contact_address : 'Adres bilginiz' }}</h5>
+                                            <span>Adres</span>
                                         </li>
                                     </ul>
                                 </div>

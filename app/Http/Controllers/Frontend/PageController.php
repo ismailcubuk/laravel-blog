@@ -17,8 +17,18 @@ class PageController extends Controller
 {
     public function blog(Request $request)
     {
+        return $this->renderBlog($request);
+    }
+
+    public function category(Request $request, Category $category)
+    {
+        return $this->renderBlog($request, $category);
+    }
+
+    protected function renderBlog(Request $request, ?Category $activeCategory = null)
+    {
         $search = trim((string) $request->query('search', ''));
-        $categoryId = $request->query('category');
+        $categoryId = $activeCategory?->id ?: $request->query('category');
 
         $posts = Post::with(['category', 'user'])
             ->published()
@@ -48,8 +58,10 @@ class PageController extends Controller
             ->orderByDesc('posts_count')
             ->orderBy('name')
             ->get();
+        $resultCount = $posts->total();
+        $activeCategory = $activeCategory ?: ($categoryId ? $categories->firstWhere('id', (int) $categoryId) : null);
 
-        return view('pages.blog', compact('posts', 'recentPosts', 'categories'));
+        return view('pages.blog', compact('posts', 'recentPosts', 'categories', 'search', 'activeCategory', 'resultCount'));
     }
 
     public function contact()
@@ -97,7 +109,7 @@ class PageController extends Controller
             'message' => $data['message'],
         ]);
 
-        return back()->with('success', 'Your message has been sent successfully.');
+        return back()->with('success', 'Mesajınız başarıyla gönderildi.');
     }
 
     public function about()

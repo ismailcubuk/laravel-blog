@@ -5,6 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     @php($siteName = $settings['site_name'] ?? config('app.name', 'My Website'))
+    @php($pageTitle = trim($__env->yieldContent('title')))
+    @php($metaTitle = $pageTitle !== '' ? $siteName . ' | ' . $pageTitle : $siteName)
+    @php($metaDescription = trim($__env->yieldContent('meta_description')) ?: \Illuminate\Support\Str::limit(strip_tags($settings['site_description'] ?? $settings['site_tagline'] ?? 'Güncel yazılar, rehberler ve özenle seçilmiş blog içerikleri.'), 155))
+    @php($canonicalUrl = trim($__env->yieldContent('canonical')) ?: url()->current())
+    @php($ogType = trim($__env->yieldContent('og_type')) ?: 'website')
+    @php($ogImage = trim($__env->yieldContent('og_image')) ?: asset('assets/images/default-post.jpg'))
     @php($themeKey = $settings['ui_theme'] ?? 'orange')
     @php($uiTheme = in_array($themeKey, ['orange', 'blue', 'emerald', 'rose', 'violet'], true) ? $themeKey : 'orange')
     @php($modeKey = session('ui_mode', request()->cookie('ui_mode', $settings['ui_mode'] ?? 'white')))
@@ -23,7 +29,20 @@
         'rose' => 'assets/css/templatemo-stand-blog-rose.css',
         'violet' => 'assets/css/templatemo-stand-blog-violet.css',
     ][$uiTheme])
-    <title>@hasSection('title'){{ $siteName }} @yield('title')@else{{ $siteName }}@endif</title>
+    <title>{{ $metaTitle }}</title>
+    <meta name="description" content="{{ $metaDescription }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+    <meta property="og:locale" content="tr_TR">
+    <meta property="og:type" content="{{ $ogType }}">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:image" content="{{ $ogImage }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDescription }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,6 +63,7 @@
     @include('partials.global-select-styles')
     <meta name="pjax-head-start" content="front">
     @stack('styles')
+    @stack('head')
     <meta name="pjax-head-end" content="front">
 </head>
 
