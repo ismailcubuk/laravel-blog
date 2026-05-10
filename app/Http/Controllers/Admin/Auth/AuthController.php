@@ -133,7 +133,7 @@ class AuthController extends Controller
 
         $this->mailWorkflow->sendRegistrationVerification($user, $verifyUrl);
 
-        return redirect()->route('admin.login')
+        return redirect()->route('login')
             ->with('success', 'Registration successful. Please verify your email from your inbox.');
     }
 
@@ -146,7 +146,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $data['email'])->first();
         if (!$user) {
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Verification link is invalid.',
             ]);
         }
@@ -156,7 +156,7 @@ class AuthController extends Controller
             ->first();
 
         if (!$record || !hash_equals($record->token, hash('sha256', $data['token']))) {
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Verification link is invalid or expired.',
             ]);
         }
@@ -165,7 +165,7 @@ class AuthController extends Controller
         if ($createdAt->addHours(24)->isPast()) {
             DB::table('email_verification_tokens')->where('email', $data['email'])->delete();
 
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Verification link expired. Please register again.',
             ]);
         }
@@ -178,7 +178,7 @@ class AuthController extends Controller
             $this->mailWorkflow->sendWelcomeAfterVerification($user);
         }
 
-        return redirect()->route('admin.login')->with('success', 'Email verified successfully. You can now log in.');
+        return redirect()->route('login')->with('success', 'Email verified successfully. You can now log in.');
     }
 
     public function showForgotForm()
@@ -255,7 +255,7 @@ class AuthController extends Controller
 
         DB::table('password_reset_tokens')->where('email', $data['email'])->delete();
 
-        return redirect()->route('admin.login')->with('success', 'Password updated successfully. You can log in now.');
+        return redirect()->route('login')->with('success', 'Password updated successfully. You can log in now.');
     }
 }
 

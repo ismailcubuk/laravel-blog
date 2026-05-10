@@ -28,7 +28,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.login.post') }}" novalidate>
+            <form method="POST" action="{{ route('login.post') }}" novalidate>
                 @csrf
                 <div class="input-group mb-3">
                     <div class="form-floating">
@@ -69,8 +69,8 @@
                 </div>
             </form>
 
-            <p class="mb-1"><a href="{{ route('admin.password.request') }}">I forgot my password</a></p>
-            <p class="mb-0"><a href="{{ route('admin.register') }}">Create account</a></p>
+            <p class="mb-1"><a href="{{ route('password.request') }}">I forgot my password</a></p>
+            <p class="mb-0"><a href="{{ route('register') }}">Create account</a></p>
         </div>
     </div>
 </div>

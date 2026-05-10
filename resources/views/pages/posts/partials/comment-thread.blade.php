@@ -87,6 +87,7 @@
                     id="comment-reply-form-{{ $comment->id }}"
                 >
                     @csrf
+                    <input type="text" name="website" value="" tabindex="-1" autocomplete="off" class="d-none" aria-hidden="true">
                     <input type="hidden" name="parent_id" value="{{ $comment->id }}">
                     <textarea
                         id="comment_reply_message_{{ $comment->id }}"

@@ -168,7 +168,7 @@ class ProfileController extends Controller
 
         $record = DB::table('email_change_requests')->where('id', $requestId)->first();
         if (!$record || !hash_equals((string) $record->token, hash('sha256', $data['token']))) {
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Email change link is invalid or expired.',
             ]);
         }
@@ -177,7 +177,7 @@ class ProfileController extends Controller
         if ($createdAt->addHours(24)->isPast()) {
             DB::table('email_change_requests')->where('id', $requestId)->delete();
 
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Email change link expired. Please request a new one from profile settings.',
             ]);
         }
@@ -186,7 +186,7 @@ class ProfileController extends Controller
         if (!$user) {
             DB::table('email_change_requests')->where('id', $requestId)->delete();
 
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Email change request is no longer valid.',
             ]);
         }
@@ -206,7 +206,7 @@ class ProfileController extends Controller
                 ]);
             }
 
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'This email address is already in use. Please try another email.',
             ]);
         }
@@ -222,7 +222,7 @@ class ProfileController extends Controller
             return redirect()->route('admin.users.profile')->with('success', 'Email address updated successfully.');
         }
 
-        return redirect()->route('admin.login')->with('success', 'Email address updated successfully. You can continue with your new email.');
+        return redirect()->route('login')->with('success', 'Email address updated successfully. You can continue with your new email.');
     }
 
     private function resolveAvatarDestination(): string
@@ -277,6 +277,5 @@ class ProfileController extends Controller
         }
     }
 }
-
 
 

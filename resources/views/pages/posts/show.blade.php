@@ -95,6 +95,7 @@
                                                 <div class="content">
                                                     <form method="POST" action="{{ route('post.comments.store', $post->slug) }}">
                                                         @csrf
+                                                        <input type="text" name="website" value="" tabindex="-1" autocomplete="off" class="d-none" aria-hidden="true">
                                                         <div class="row">
                                                             <div class="col-md-6 col-sm-12">
                                                                 <input

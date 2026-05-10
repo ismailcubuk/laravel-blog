@@ -31,7 +31,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.password.email') }}" novalidate>
+            <form method="POST" action="{{ route('password.email') }}" novalidate>
                 @csrf
 
                 <div class="input-group mb-3">
@@ -49,8 +49,8 @@
                 <button type="submit" class="btn btn-primary w-100 mb-3">Send Reset Link</button>
             </form>
 
-            <p class="mb-1"><a href="{{ route('admin.login') }}">Login</a></p>
-            <p class="mb-0"><a href="{{ route('admin.register') }}" class="text-center">Register a new membership</a></p>
+            <p class="mb-1"><a href="{{ route('login') }}">Login</a></p>
+            <p class="mb-0"><a href="{{ route('register') }}" class="text-center">Register a new membership</a></p>
         </div>
     </div>
 </div>

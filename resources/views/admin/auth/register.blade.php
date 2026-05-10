@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.register.post') }}" novalidate>
+            <form method="POST" action="{{ route('register.post') }}" novalidate>
                 @csrf
 
                 <div class="input-group mb-3">
@@ -103,7 +103,7 @@
             </form>
 
             <p class="mb-0">
-                <a href="{{ route('admin.login') }}" class="link-primary text-center">I already have a membership</a>
+                <a href="{{ route('login') }}" class="link-primary text-center">I already have a membership</a>
             </p>
         </div>
     </div>
@@ -135,4 +135,3 @@
 <link rel="stylesheet" href="{{ asset('assets/css/admin/auth/terms-modal.css') }}">
 @endpush
 @endsection
-

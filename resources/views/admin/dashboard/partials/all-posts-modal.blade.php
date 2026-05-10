@@ -18,7 +18,7 @@
                         >
                             <div class="d-flex align-items-start">
                                 <img
-                                    src="{{ $post->image ? asset(ltrim($post->image, '/')) : 'https://picsum.photos/seed/' . $post->id . '/80/80' }}"
+                                    src="{{ $post->image ? asset(ltrim($post->image, '/')) : asset('assets/images/blog-post-01.jpg') }}"
                                     alt="{{ $post->title }}"
                                     width="52"
                                     height="52"

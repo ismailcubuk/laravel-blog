@@ -100,6 +100,7 @@ class PostController extends Controller
         $validated = $request->validate([
             'message' => 'required|string|min:3|max:2000',
             'parent_id' => 'nullable|integer|exists:comments,id',
+            'website' => 'nullable|prohibited',
         ]);
 
         $parent = null;

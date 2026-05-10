@@ -12,7 +12,6 @@
 @endphp
 {!! json_encode($dashboardActivityData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ asset('assets/js/admin/dashboard/activity.js') }}"></script>
 <script src="{{ asset('assets/js/admin/dashboard/all-posts-modal.js') }}"></script>
 <script src="{{ asset('assets/js/admin/dashboard/all-users-modal.js') }}"></script>

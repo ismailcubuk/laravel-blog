@@ -17,7 +17,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         titleInput.addEventListener('input', () => syncPreview(bodyInput.value));
 
-        ClassicEditor.create(bodyInput, {
+        if (!window.ClassicEditor) {
+            bodyInput.addEventListener('input', () => syncPreview(bodyInput.value));
+            syncPreview(bodyInput.value);
+            return;
+        }
+
+        window.ClassicEditor.create(bodyInput, {
             toolbar: [
                 'heading', '|',
                 'bold', 'italic', 'link', '|',

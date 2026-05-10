@@ -121,7 +121,7 @@
             }
 
             const href = item && item.url ? item.url : '#';
-            const imageSrc = item && item.image ? item.image : 'https://picsum.photos/seed/default/200/200';
+            const imageSrc = item && item.image ? item.image : '/assets/images/blog-post-01.jpg';
             const title = item && item.title ? item.title : 'Untitled';
             const excerpt = item && item.excerpt ? item.excerpt : '';
             const time = item && item.time ? item.time : '--:--';
@@ -204,7 +204,7 @@
 
     function initLegendToggle(chart) {
         const legend = byId('activityLegend');
-        if (!legend) {
+        if (!legend || !chart) {
             return;
         }
 
@@ -305,7 +305,7 @@
 
     function initDashboardActivityChart() {
         const canvas = byId('blogChart');
-        if (!canvas || !window.Chart) {
+        if (!canvas) {
             return;
         }
 
@@ -334,6 +334,11 @@
         initBlogsWeekCard(modalRefs, newBlogsItemsByDate);
         initUsersWeekCard(modalRefs, newUsersItemsByDate);
         initPeakDayCard(modalRefs, rawNewBlogsData, rawNewUsersData, activityLabels, activityDates, newBlogsItemsByDate, newUsersItemsByDate);
+
+        if (!window.Chart) {
+            renderStaticActivityChart(canvas, rawNewBlogsData, rawNewUsersData, activityLabels, activityDates, modalRefs, newBlogsItemsByDate, newUsersItemsByDate);
+            return;
+        }
 
         const ctx = canvas.getContext('2d');
         const blogsGradient = ctx.createLinearGradient(0, 0, 0, 260);
@@ -467,6 +472,54 @@
         });
 
         initLegendToggle(chart);
+    }
+
+    function renderStaticActivityChart(canvas, rawBlogs, rawUsers, labels, activityDates, modalRefs, newBlogsItemsByDate, newUsersItemsByDate) {
+        const maxValue = Math.max(1, ...rawBlogs, ...rawUsers);
+        const chart = document.createElement('div');
+        chart.className = 'activity-static-chart';
+
+        labels.forEach(function (label, index) {
+            const group = document.createElement('button');
+            group.type = 'button';
+            group.className = 'activity-static-group';
+            group.setAttribute('aria-label', label + ' activity details');
+
+            const bars = document.createElement('span');
+            bars.className = 'activity-static-bars';
+
+            const blogBar = document.createElement('span');
+            blogBar.className = 'activity-static-bar blogs';
+            blogBar.style.height = Math.max(8, (Number(rawBlogs[index] || 0) / maxValue) * 100) + '%';
+
+            const userBar = document.createElement('span');
+            userBar.className = 'activity-static-bar users';
+            userBar.style.height = Math.max(8, (Number(rawUsers[index] || 0) / maxValue) * 100) + '%';
+
+            const text = document.createElement('span');
+            text.className = 'activity-static-label';
+            text.textContent = label;
+
+            bars.append(blogBar, userBar);
+            group.append(bars, text);
+
+            group.addEventListener('click', function () {
+                const dateKey = activityDates[index];
+                const blogItems = newBlogsItemsByDate[dateKey] || [];
+                const userItems = newUsersItemsByDate[dateKey] || [];
+                const isBlog = blogItems.length >= userItems.length;
+                openActivityModal(
+                    modalRefs,
+                    (isBlog ? 'New Blogs' : 'New Users') + ' - ' + label,
+                    isBlog ? blogItems : userItems,
+                    isBlog
+                );
+            });
+
+            chart.appendChild(group);
+        });
+
+        canvas.replaceWith(chart);
     }
 
     document.addEventListener('DOMContentLoaded', initDashboardActivityChart);

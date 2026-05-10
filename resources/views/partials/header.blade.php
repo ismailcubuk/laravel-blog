@@ -67,8 +67,8 @@
                             </div>
                         </li>
                     @else
-                        <li class="nav-item {{ request()->routeIs('admin.login') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('admin.login') }}">Giris</a>
+                        <li class="nav-item {{ request()->routeIs('login') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('login') }}">Giris</a>
                         </li>
                     @endauth
                 </ul>

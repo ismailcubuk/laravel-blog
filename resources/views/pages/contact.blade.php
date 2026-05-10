@@ -47,6 +47,7 @@
 
                                     <form method="POST" action="{{ route('contact.submit') }}">
                                         @csrf
+                                        <input type="text" name="website" value="" tabindex="-1" autocomplete="off" class="d-none" aria-hidden="true">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12">
                                                 <input name="name" type="text" placeholder="Your name" value="{{ old('name') }}" required>

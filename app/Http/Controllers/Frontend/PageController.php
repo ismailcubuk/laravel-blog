@@ -44,7 +44,7 @@ class PageController extends Controller
             ->get();
         $categories = Category::query()
             ->withCount(['posts' => fn ($query) => $query->published()])
-            ->having('posts_count', '>', 0)
+            ->whereHas('posts', fn ($query) => $query->published())
             ->orderByDesc('posts_count')
             ->orderBy('name')
             ->get();
@@ -75,6 +75,7 @@ class PageController extends Controller
             'email' => ['required', 'email', 'max:255'],
             'subject' => ['nullable', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:3000'],
+            'website' => ['nullable', 'prohibited'],
         ]);
 
         $contactPage = Page::firstWhere('slug', 'contact');

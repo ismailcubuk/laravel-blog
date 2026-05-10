@@ -52,7 +52,7 @@ class Post extends Model
     public function getImageUrlAttribute(): string
     {
         $rawImage = trim((string) $this->image);
-        $fallback = 'https://picsum.photos/seed/' . $this->id . '/200/300';
+        $fallback = asset('assets/images/blog-post-01.jpg');
 
         if ($rawImage === '') {
             return $fallback;

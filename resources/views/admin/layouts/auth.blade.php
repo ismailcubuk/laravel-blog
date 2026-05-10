@@ -12,8 +12,9 @@
 
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/icon-shim.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -57,20 +58,11 @@
 
     @yield('content')
 
-    @push('scripts')
-<script src="{{ asset('assets/js/extracted/admin-layouts-auth.js') }}"></script>
-@endpush
-
-    @push('scripts')
-<script src="{{ asset('assets/js/extracted/admin-layouts-auth-2.js') }}"></script>
-@endpush
-
-    <!-- Bootstrap 5 JS (required for modal) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- AdminLTE JS -->
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('adminlte/js/adminlte.min.js') }}"></script>
     @include('partials.global-select-scripts')
+    <script src="{{ asset('assets/js/extracted/admin-layouts-auth.js') }}"></script>
+    <script src="{{ asset('assets/js/extracted/admin-layouts-auth-2.js') }}"></script>
     @stack('scripts')
 </body>
 

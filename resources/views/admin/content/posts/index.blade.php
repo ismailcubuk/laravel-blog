@@ -95,7 +95,7 @@
                                     <tr>
                                         <td>
                                             <img
-                                                src="{{ $post->image ? asset(ltrim($post->image, '/')) : 'https://picsum.photos/seed/' . $post->id . '/60/60' }}"
+                                                src="{{ $post->image ? asset(ltrim($post->image, '/')) : asset('assets/images/blog-post-01.jpg') }}"
                                                 alt="{{ $post->title }}"
                                                 width="48"
                                                 height="48"
@@ -171,5 +171,4 @@
 @endpush
 @endif
 @endsection
-
 

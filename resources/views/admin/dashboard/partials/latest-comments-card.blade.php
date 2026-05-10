@@ -54,7 +54,7 @@
                         $searchText = mb_strtolower(trim(($comment->name ?? '') . ' ' . ($comment->email ?? '') . ' ' . ($rawMessage ?? '') . ' ' . $postTitle . ' ' . $postCategory));
                         $avatarPath = optional($comment->user)->avatar_path;
                         $avatarUrl = $avatarPath ? asset(ltrim((string) $avatarPath, '/')) : asset('adminlte/img/avatar.png');
-                        $postImageUrl = $comment->post ? $comment->post->image_url : 'https://picsum.photos/seed/comment-post-' . $comment->id . '/160/120';
+                        $postImageUrl = $comment->post ? $comment->post->image_url : asset('assets/images/blog-post-01.jpg');
                         $hasReply = !empty($comment->reply_message);
                     @endphp
 

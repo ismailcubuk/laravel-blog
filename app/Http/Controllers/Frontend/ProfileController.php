@@ -165,7 +165,7 @@ class ProfileController extends Controller
 
         $record = DB::table('email_change_requests')->where('id', $requestId)->first();
         if (!$record || !hash_equals((string) $record->token, hash('sha256', $data['token']))) {
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Email change link is invalid or expired.',
             ]);
         }
@@ -173,7 +173,7 @@ class ProfileController extends Controller
         if (Carbon::parse($record->created_at)->addHours(24)->isPast()) {
             DB::table('email_change_requests')->where('id', $requestId)->delete();
 
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Email change link expired. Please request a new one from profile settings.',
             ]);
         }
@@ -182,7 +182,7 @@ class ProfileController extends Controller
         if (!$user) {
             DB::table('email_change_requests')->where('id', $requestId)->delete();
 
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Email change request is no longer valid.',
             ]);
         }
@@ -275,7 +275,7 @@ class ProfileController extends Controller
                 : redirect()->route('profile.edit');
         }
 
-        return redirect()->route('admin.login');
+        return redirect()->route('login');
     }
 
     private function resolveAvatarDestination(): string
