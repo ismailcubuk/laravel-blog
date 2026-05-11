@@ -37,7 +37,8 @@
     @php($isAdminViewer = auth()->check() && auth()->user()->role === 'admin')
 
     @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/extracted/pages-posts-show.css') }}?v={{ filemtime(public_path('assets/css/extracted/pages-posts-show.css')) }}">
+@php($postShowCssPath = public_path('assets/css/extracted/pages-posts-show.css'))
+<link rel="stylesheet" href="{{ asset('assets/css/extracted/pages-posts-show.css') }}{{ file_exists($postShowCssPath) ? '?v=' . filemtime($postShowCssPath) : '' }}">
 @endpush
 
     <div class="heading-page header-text">
