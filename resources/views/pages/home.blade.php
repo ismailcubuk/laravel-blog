@@ -4,7 +4,8 @@
 @section('meta_description', ($settings['site_tagline'] ?? null) ?: 'Öne çıkan yazılar, popüler kategoriler ve güncel blog içerikleri.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/frontend/home.css') }}?v={{ filemtime(public_path('assets/css/frontend/home.css')) }}">
+@php($homeCssPath = public_path('assets/css/frontend/home.css'))
+<link rel="stylesheet" href="{{ asset('assets/css/frontend/home.css') }}{{ file_exists($homeCssPath) ? '?v=' . filemtime($homeCssPath) : '' }}">
 @endpush
 
 @section('content')

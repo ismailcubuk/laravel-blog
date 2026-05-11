@@ -81,7 +81,8 @@
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/owl.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
-    <script src="{{ asset('assets/js/shared/auto-alerts.js') }}?v={{ filemtime(public_path('assets/js/shared/auto-alerts.js')) }}"></script>
+    @php($autoAlertsPath = public_path('assets/js/shared/auto-alerts.js'))
+    <script src="{{ asset('assets/js/shared/auto-alerts.js') }}{{ file_exists($autoAlertsPath) ? '?v=' . filemtime($autoAlertsPath) : '' }}"></script>
     <script src="{{ asset('assets/js/shared/form-spellcheck.js') }}"></script>
     @include('partials.global-select-scripts')
     <script src="{{ asset('assets/js/shared/pjax.js') }}"></script>
