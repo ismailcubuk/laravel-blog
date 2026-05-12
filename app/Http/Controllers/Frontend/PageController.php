@@ -58,10 +58,9 @@ class PageController extends Controller
             ->orderByDesc('posts_count')
             ->orderBy('name')
             ->get();
-        $resultCount = $posts->total();
         $activeCategory = $activeCategory ?: ($categoryId ? $categories->firstWhere('id', (int) $categoryId) : null);
 
-        return view('pages.blog', compact('posts', 'recentPosts', 'categories', 'search', 'activeCategory', 'resultCount'));
+        return view('pages.blog', compact('posts', 'recentPosts', 'categories', 'search', 'activeCategory'));
     }
 
     public function contact()

@@ -32,15 +32,6 @@
                 {{-- POSTS --}}
                 <div class="col-lg-8">
                     <div class="all-blog-posts">
-                        <div class="blog-results-summary mb-4">
-                            <strong>{{ $resultCount }}</strong> sonuç bulundu
-                            @if($search !== '')
-                                <span>“{{ $search }}” araması için</span>
-                            @endif
-                            @if($activeCategory)
-                                <span>{{ $activeCategory->name }} kategorisinde</span>
-                            @endif
-                        </div>
                         <div class="row blog-grid">
 
                             @forelse($posts as $post)
