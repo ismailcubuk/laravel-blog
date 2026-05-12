@@ -230,36 +230,6 @@
         </div>
     </section>
 
-    @if($relatedPosts->isNotEmpty())
-        <section class="blog-posts pt-0">
-            <div class="container">
-                <div class="sidebar-heading mb-4">
-                    <h2>İlgili Yazılar</h2>
-                </div>
-                <div class="row">
-                    @foreach($relatedPosts as $related)
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <article class="blog-post">
-                                <div class="blog-thumb">
-                                    <a href="{{ route('post.show', $related->slug) }}">
-                                        <img src="{{ $related->image_url }}" alt="{{ $related->title }}" loading="lazy" decoding="async">
-                                    </a>
-                                </div>
-                                <div class="down-content">
-                                    <span>{{ $related->category->name ?? 'Genel' }}</span>
-                                    <a href="{{ route('post.show', $related->slug) }}"><h4>{{ $related->title }}</h4></a>
-                                    <ul class="post-info">
-                                        <li><a href="#">{{ $related->reading_time }} dk okuma</a></li>
-                                        <li><a href="#">{{ $related->approved_comments_count ?? 0 }} yorum</a></li>
-                                    </ul>
-                                </div>
-                            </article>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    @endif
 
     @push('scripts')
 <script src="{{ asset('assets/js/extracted/pages-posts-show.js') }}"></script>

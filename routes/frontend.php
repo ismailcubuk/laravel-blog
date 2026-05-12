@@ -31,6 +31,7 @@ Route::post('/reset-password', [PublicAuthController::class, 'resetPassword'])->
 
 Route::get('/profile/email-change/{requestId}', [ProfileController::class, 'verifyEmailChange'])
     ->name('profile.email.verify');
+Route::put('/profile/mode', [ProfileController::class, 'updateMode'])->name('profile.mode');
 
 Route::middleware('auth')->group(function () {
     Route::get('/blog/my-posts', [UserPostController::class, 'index'])->name('user.posts.index');
@@ -43,6 +44,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/blog', [UserPostController::class, 'store'])->name('user.posts.store');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::put('/profile/mode', [ProfileController::class, 'updateMode'])->name('profile.mode');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 });

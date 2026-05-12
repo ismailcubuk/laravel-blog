@@ -33,7 +33,6 @@
                         <a class="nav-link" href="{{ route('contact') }}">İletişim</a>
                     </li>
 
-                    @auth
                         <li class="nav-item">
                             <form class="front-mode-switch" action="{{ route('profile.mode') }}" method="POST" aria-label="Görünüm modu" data-front-mode-switch>
                                 @csrf
@@ -49,6 +48,7 @@
                             </form>
                         </li>
 
+                    @auth
                         <li class="nav-item dropdown front-user-chip">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ Auth::user()->name }}
