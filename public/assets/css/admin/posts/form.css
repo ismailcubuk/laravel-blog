@@ -89,6 +89,19 @@
     background: transparent;
 }
 
+.admin-post-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 1.15rem;
+}
+
+.admin-post-submit {
+    min-width: 180px;
+    min-height: 42px;
+    font-weight: 800;
+}
+
 .admin-post-side-head {
     margin-bottom: 0.8rem;
     color: #e5e7eb;
@@ -351,5 +364,13 @@
     .admin-post-editor-proof {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .admin-post-form-actions {
+        justify-content: stretch;
+    }
+
+    .admin-post-submit {
+        width: 100%;
     }
 }

@@ -107,7 +107,6 @@
                             @endforeach
                         </select>
 
-                        <button class="btn btn-primary w-100 mt-3">{{ isset($post) ? 'Update Post' : 'Create Post' }}</button>
                     </section>
 
                     <section class="admin-post-side-card">
@@ -139,6 +138,9 @@
                         @endif
                     </section>
 
+                    <div class="admin-post-form-actions">
+                        <button class="btn btn-primary admin-post-submit">{{ isset($post) ? 'Update Post' : 'Create Post' }}</button>
+                    </div>
                 </aside>
             </div>
         </form>

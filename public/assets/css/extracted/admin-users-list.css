@@ -187,23 +187,31 @@
     }
 
     .users-pagination-wrap .pagination {
+        gap: 4px;
         margin: 0;
     }
 
     .users-pagination-wrap .page-link {
-        border-radius: 10px;
-        border-color: var(--admin-border);
-        background: var(--admin-surface);
-        color: var(--admin-text);
-        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
         min-width: 38px;
+        height: 34px;
+        padding: 0;
+        border-radius: 10px !important;
+        border-color: var(--admin-border);
+        background: var(--admin-pagination-bg);
+        color: var(--admin-pagination-color) !important;
+        font-weight: 800;
+        line-height: 1;
         text-align: center;
     }
 
     .users-pagination-wrap .page-link:hover {
-        background: rgba(var(--admin-primary-rgb), 0.12);
-        color: var(--admin-text);
-        border-color: rgba(var(--admin-primary-rgb), 0.42);
+        background: var(--admin-pagination-hover-bg);
+        color: var(--admin-pagination-hover-color) !important;
+        border-color: var(--admin-pagination-hover-border);
     }
 
     .users-pagination-wrap .page-item.active .page-link {
@@ -213,8 +221,8 @@
     }
 
     .users-pagination-wrap .page-item.disabled .page-link {
-        color: #8aa0c2;
-        background: #f3f6fb;
+        color: var(--admin-pagination-disabled-color) !important;
+        background: var(--admin-pagination-disabled-bg);
         border-color: var(--admin-border);
     }
 
@@ -228,28 +236,10 @@
         background: #0b1220;
     }
 
-    .admin-dark .users-pagination-wrap .page-link {
-        background: rgba(15, 23, 42, 0.86);
-        color: #e2e8f0;
-        border-color: #334155;
-    }
-
-    .admin-dark .users-pagination-wrap .page-link:hover {
-        background: rgba(30, 41, 59, 0.95);
-        color: #f8fafc;
-        border-color: #475569;
-    }
-
     .admin-dark .users-pagination-wrap .page-item.active .page-link {
         color: #fff;
         border-color: var(--admin-primary);
         background: var(--admin-primary);
-    }
-
-    .admin-dark .users-pagination-wrap .page-item.disabled .page-link {
-        color: #64748b;
-        background: rgba(15, 23, 42, 0.72);
-        border-color: #334155;
     }
 
     .users-pagination-wrap svg {

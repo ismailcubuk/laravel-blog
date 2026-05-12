@@ -272,58 +272,70 @@ body.front-body {
             color: var(--front-primary);
         }
 
-        .pagination .page-link {
-            border-radius: 10px !important;
-            margin: 0 3px;
-            border-color: var(--front-border);
-            background: var(--front-pagination-bg);
-            color: var(--front-pagination-color);
-            font-weight: 700;
-            min-width: 38px;
-            text-align: center;
+        .pagination-holder,
+        .pagination-wrap,
+        nav[role="navigation"] {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
         }
 
-        .pagination .page-link:hover {
-            background: var(--front-pagination-hover-bg);
-            color: var(--front-pagination-hover-color);
-            border-color: var(--front-pagination-hover-border);
+        .pagination {
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 0;
         }
 
-        .pagination .active > .page-link {
-            background: var(--front-primary);
-            border-color: var(--front-primary);
-            color: #fff;
+        .pagination .page-item {
+            margin: 0;
         }
 
-        .pagination .disabled .page-link {
-            background: var(--front-pagination-disabled-bg);
-            color: var(--front-pagination-disabled-color);
-            border-color: var(--front-border);
+        .pagination .page-item:not(:first-child) .page-link {
+            margin-left: 0;
         }
 
+        .pagination .page-link,
         .page-numbers li a {
-            border-radius: 10px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            min-width: 38px;
+            height: 34px;
+            padding: 0;
             border: 1px solid var(--front-border);
+            border-radius: 10px !important;
             background: var(--front-pagination-bg);
-            color: var(--front-page-numbers-color) !important;
-            font-weight: 700;
+            color: var(--front-pagination-color) !important;
+            font-weight: 800;
+            line-height: 1;
+            text-align: center;
+            box-shadow: none;
         }
 
+        .pagination .page-link:hover,
         .page-numbers li a:hover {
             background: var(--front-pagination-hover-bg);
             color: var(--front-pagination-hover-color) !important;
             border-color: var(--front-pagination-hover-border);
         }
 
+        .pagination .active > .page-link,
         .page-numbers li.active a {
-            color: #fff !important;
-            border-color: var(--front-primary) !important;
             background: var(--front-primary) !important;
+            border-color: var(--front-primary) !important;
+            color: #fff !important;
         }
 
+        .pagination .disabled .page-link,
         .page-numbers li.disabled a {
-            color: var(--front-pagination-disabled-color) !important;
             background: var(--front-pagination-disabled-bg) !important;
+            color: var(--front-pagination-disabled-color) !important;
+            border-color: var(--front-border) !important;
+            pointer-events: none;
         }
 
         .text-muted {

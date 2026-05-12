@@ -179,7 +179,7 @@
                 </table>
             </div>
             <div class="p-3 users-pagination-wrap">
-                {{ $users->onEachSide(1)->links('pagination::bootstrap-5') }}
+                {{ $users->onEachSide(1)->links('vendor.pagination.templatemo') }}
             </div>
         </div>
     </div>
