@@ -35,16 +35,22 @@ Route::get('/uploads/{path}', function (string $path) use ($isUnsafePublicFile) 
         abort(404);
     }
 
+    $documentUploadsRoot = isset($_SERVER['DOCUMENT_ROOT'])
+        ? realpath(rtrim((string) $_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'uploads')
+        : false;
     $publicUploadsRoot = realpath(public_path('uploads'));
     $legacyHtdocsUploadsRoot = realpath(base_path('../uploads'));
 
     $candidates = [
+        isset($_SERVER['DOCUMENT_ROOT'])
+            ? rtrim((string) $_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $relativePath
+            : null,
         public_path('uploads/' . $relativePath),
         base_path('../uploads/' . $relativePath),
     ];
 
     foreach ($candidates as $candidate) {
-        if (!is_file($candidate)) {
+        if (!$candidate || !is_file($candidate)) {
             continue;
         }
 
@@ -54,6 +60,7 @@ Route::get('/uploads/{path}', function (string $path) use ($isUnsafePublicFile) 
         }
 
         $allowedRoots = array_filter([
+            $documentUploadsRoot,
             $publicUploadsRoot,
             $legacyHtdocsUploadsRoot,
         ]);

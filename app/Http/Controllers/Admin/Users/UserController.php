@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Users;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\Uploads\AvatarStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
@@ -12,6 +13,10 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    public function __construct(private AvatarStorageService $avatarStorage)
+    {
+    }
+
     public function index(Request $request)
     {
         $search = trim((string) $request->query('q', ''));
@@ -145,17 +150,10 @@ class UserController extends Controller
         }
 
         if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $destination = $this->resolveAvatarDestination();
-
-            if (!is_dir($destination)) {
-                mkdir($destination, 0755, true);
-            }
-
-            $this->deleteOldAvatar((string) $user->avatar_path);
-            $file->move($destination, $filename);
-            $payload['avatar_path'] = '/uploads/profiles/' . $filename;
+            $payload['avatar_path'] = $this->avatarStorage->store(
+                $request->file('avatar'),
+                (string) $user->avatar_path
+            );
         }
 
         $user->update($payload);
@@ -166,27 +164,4 @@ class UserController extends Controller
             ->with('success', 'User updated successfully.');
     }
 
-    private function resolveAvatarDestination(): string
-    {
-        return base_path('../uploads/profiles');
-    }
-
-    private function deleteOldAvatar(string $avatarPath): void
-    {
-        if ($avatarPath === '' || !str_starts_with($avatarPath, '/uploads/profiles/')) {
-            return;
-        }
-
-        $relative = ltrim($avatarPath, '/');
-        $candidates = [
-            base_path('../' . $relative),
-            public_path($relative),
-        ];
-
-        foreach ($candidates as $candidate) {
-            if (is_file($candidate)) {
-                @unlink($candidate);
-            }
-        }
-    }
 }

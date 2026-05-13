@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Users;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\Mail\MailWorkflowService;
+use App\Services\Uploads\AvatarStorageService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +14,10 @@ use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
-    public function __construct(private MailWorkflowService $mailWorkflow)
+    public function __construct(
+        private MailWorkflowService $mailWorkflow,
+        private AvatarStorageService $avatarStorage
+    )
     {
     }
 
@@ -72,17 +76,10 @@ class ProfileController extends Controller
         }
 
         if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $destination = $this->resolveAvatarDestination();
-
-            if (!is_dir($destination)) {
-                mkdir($destination, 0755, true);
-            }
-
-            $this->deleteOldAvatar((string) $user->avatar_path);
-            $file->move($destination, $filename);
-            $data['avatar_path'] = '/uploads/profiles/' . $filename;
+            $data['avatar_path'] = $this->avatarStorage->store(
+                $request->file('avatar'),
+                (string) $user->avatar_path
+            );
         }
 
         $newEmail = strtolower(trim((string) $data['email']));
@@ -225,11 +222,6 @@ class ProfileController extends Controller
         return redirect()->route('login')->with('success', 'Email address updated successfully. You can continue with your new email.');
     }
 
-    private function resolveAvatarDestination(): string
-    {
-        return base_path('../uploads/profiles');
-    }
-
     private function normalizeSocialUrl(string $rawValue, string $field): ?string
     {
         $value = trim($rawValue);
@@ -258,24 +250,5 @@ class ProfileController extends Controller
         };
     }
 
-    private function deleteOldAvatar(string $avatarPath): void
-    {
-        if ($avatarPath === '' || !str_starts_with($avatarPath, '/uploads/profiles/')) {
-            return;
-        }
-
-        $relative = ltrim($avatarPath, '/');
-        $candidates = [
-            base_path('../' . $relative),
-            public_path($relative),
-        ];
-
-        foreach ($candidates as $candidate) {
-            if (is_file($candidate)) {
-                @unlink($candidate);
-            }
-        }
-    }
 }
-
 
