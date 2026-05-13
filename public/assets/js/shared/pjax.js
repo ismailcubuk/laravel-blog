@@ -92,6 +92,8 @@
             this.prefetch = new Map();
             this.pageCache = new Map();
             this.maxCacheEntries = options.maxCacheEntries || 12;
+            this.maxPrefetchEntries = options.maxPrefetchEntries || 4;
+            this.prefetchTimeout = options.prefetchTimeout || 2500;
             this.abortController = null;
             this.isLoading = false;
             this.container = document.querySelector(this.containerSelector);
@@ -171,10 +173,14 @@
         }
 
         prefetchVisibleLinks() {
+            if (!this.shouldPrefetch()) {
+                return;
+            }
+
             const run = () => {
                 Array.from(document.querySelectorAll('a[href]'))
                     .filter((link) => this.eligibleLink(link))
-                    .slice(0, 8)
+                    .slice(0, this.maxPrefetchEntries)
                     .forEach((link) => this.prefetchUrl(link.href));
             };
 
@@ -187,17 +193,47 @@
         }
 
         prefetchUrl(value) {
+            if (!this.shouldPrefetch() || this.prefetch.size >= this.maxPrefetchEntries) {
+                return;
+            }
+
             const url = normalizeUrl(value);
             if (!url || this.prefetch.has(url.href) || this.pageCache.has(url.href)) {
                 return;
             }
 
+            const controller = new AbortController();
+            const timeout = window.setTimeout(() => controller.abort(), this.prefetchTimeout);
             const request = fetch(url.href, {
                 headers: this.headers(),
                 credentials: 'same-origin',
-            }).then((response) => (isHtmlResponse(response) ? response.text() : null)).catch(() => null);
+                signal: controller.signal,
+            }).then((response) => (isHtmlResponse(response) ? response.text() : null)).then((html) => {
+                if (html) {
+                    this.remember(url.href, html);
+                }
+
+                return html;
+            }).catch(() => null).finally(() => {
+                window.clearTimeout(timeout);
+                this.prefetch.delete(url.href);
+            });
 
             this.prefetch.set(url.href, request);
+        }
+
+        shouldPrefetch() {
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+            if (!connection) {
+                return true;
+            }
+
+            if (connection.saveData) {
+                return false;
+            }
+
+            return !['slow-2g', '2g', '3g'].includes(connection.effectiveType);
         }
 
         onSubmit(event) {

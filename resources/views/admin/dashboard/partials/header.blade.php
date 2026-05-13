@@ -15,7 +15,7 @@
             <i class="bi bi-collection me-1"></i> All Posts
         </button>
         <a href="{{ route('admin.content.posts.create') }}" class="btn btn-primary dashboard-primary-btn">
-            <i class="bi bi-plus-lg me-1"></i> New Post
+            <i class="bi bi-plus-lg me-1"></i> Yeni Yazı
         </a>
     </div>
 </section>

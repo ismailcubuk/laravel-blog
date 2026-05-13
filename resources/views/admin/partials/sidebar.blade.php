@@ -4,7 +4,7 @@
     <div class="sidebar-brand">
         <a href="{{ route('home') }}" class="brand-link">
             <span class="brand-text">{{ $settings['site_name'] }}</span>
-            <span class="brand-subtitle">Admin Panel</span>
+            <span class="brand-subtitle">Yönetim Paneli</span>
         </a>
     </div>
 
@@ -17,118 +17,118 @@
             <ul class="nav sidebar-menu flex-column"
                 role="menu">
 
-                <li class="nav-section-title">Main</li>
+                <li class="nav-section-title">Ana Menü</li>
                 <li class="nav-item">
                     <a href="{{ route('admin.dashboard') }}"
                        class="nav-link {{ $currentRoute === 'admin.dashboard' ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-gauge-high"></i>
-                        <p>Home</p>
+                        <p>Ana Sayfa</p>
                     </a>
                 </li>
 
-                <li class="nav-section-title">Content</li>
+                <li class="nav-section-title">İçerik</li>
                 <li class="nav-item">
                     <a href="{{ route('admin.content.posts.index') }}"
                        class="nav-link {{ request()->routeIs('admin.content.posts.*') ? 'active' : '' }}">
                         <i class="nav-icon fa-regular fa-file-lines"></i>
-                        <p>Posts</p>
+                        <p>Yazılar</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.content.user-posts.index') }}"
                        class="nav-link {{ request()->routeIs('admin.content.user-posts.*') ? 'active' : '' }}">
                         <i class="nav-icon fa-regular fa-newspaper"></i>
-                        <p>User Posts</p>
+                        <p>Kullanıcı Yazıları</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.content.categories.index') }}"
                        class="nav-link {{ request()->routeIs('admin.content.categories.*') ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-tags"></i>
-                        <p>Categories</p>
+                        <p>Kategoriler</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.content.comments') }}"
                        class="nav-link {{ request()->routeIs('admin.content.comments*') ? 'active' : '' }}">
                         <i class="nav-icon fa-regular fa-comments"></i>
-                        <p>Comments</p>
+                        <p>Yorumlar</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.content.contact-messages.index') }}"
                        class="nav-link {{ request()->routeIs('admin.content.contact-messages.*') ? 'active' : '' }}">
                         <i class="nav-icon fa-regular fa-envelope-open"></i>
-                        <p>Contact Messages</p>
+                        <p>İletişim Mesajları</p>
                     </a>
                 </li>
 
-                <li class="nav-section-title">Pages</li>
+                <li class="nav-section-title">Sayfalar</li>
                 <li class="nav-item">
                     <a href="{{ route('admin.pages.about') }}"
                        class="nav-link {{ request()->routeIs('admin.pages.about') ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-circle-info"></i>
-                        <p>About Us</p>
+                        <p>Hakkımızda</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.pages.contact') }}"
                        class="nav-link {{ request()->routeIs('admin.pages.contact') ? 'active' : '' }}">
                         <i class="nav-icon fa-regular fa-envelope"></i>
-                        <p>Contact Us</p>
+                        <p>İletişim</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.pages.terms') }}"
                        class="nav-link {{ request()->routeIs('admin.pages.terms') ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-file-contract"></i>
-                        <p>Terms</p>
+                        <p>Şartlar</p>
                     </a>
                 </li>
 
-                <li class="nav-section-title">Management</li>
+                <li class="nav-section-title">Yönetim</li>
                 <li class="nav-item">
                     <a href="{{ route('admin.users.list') }}"
                        class="nav-link {{ request()->routeIs('admin.users.list') ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-user-group"></i>
-                        <p>User List</p>
+                        <p>Kullanıcı Listesi</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.users.roles') }}"
                        class="nav-link {{ request()->routeIs('admin.users.roles*') ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-user-shield"></i>
-                        <p>Roles & Permissions</p>
+                        <p>Rol ve Yetkiler</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.users.profile') }}"
                        class="nav-link {{ request()->routeIs('admin.users.profile*') ? 'active' : '' }}">
                         <i class="nav-icon fa-regular fa-id-badge"></i>
-                        <p>Profile Settings</p>
+                        <p>Profil Ayarları</p>
                     </a>
                 </li>
 
-                <li class="nav-section-title">System</li>
+                <li class="nav-section-title">Sistem</li>
                 <li class="nav-item">
                     <a href="{{ route('admin.settings.general') }}"
                        class="nav-link {{ request()->routeIs('admin.settings.general') ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
-                        <p>General Settings</p>
+                        <p>Genel Ayarlar</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.settings.social') }}"
                        class="nav-link {{ request()->routeIs('admin.settings.social') ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-share-nodes"></i>
-                        <p>Social Media</p>
+                        <p>Sosyal Medya</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.settings.mail') }}"
                        class="nav-link {{ request()->routeIs('admin.settings.mail') ? 'active' : '' }}">
                         <i class="nav-icon fa-regular fa-paper-plane"></i>
-                        <p>Mail Settings</p>
+                        <p>E-posta Ayarları</p>
                     </a>
                 </li>
 
@@ -141,7 +141,7 @@
             @csrf
             <button type="submit" class="admin-logout-btn">
                 <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                <span>Logout</span>
+                <span>Çıkış Yap</span>
             </button>
         </form>
     </div>

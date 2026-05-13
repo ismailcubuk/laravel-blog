@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (replyModalElement) {
         const replyForm = document.getElementById('adminCommentReplyForm');
-        const replyDeleteForm = document.getElementById('adminCommentReplyDeleteForm');
+        const replyDeleteForm = document.getElementById('adminCommentReplyDeleteForm') || document.getElementById('adminCommentReplySilForm');
 
         [replyForm, replyDeleteForm].forEach(function (form) {
             if (!form) {
@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const modalTitleTarget = document.getElementById('adminCommentReplyModalTitle');
             const replyForm = document.getElementById('adminCommentReplyForm');
-            const replyDeleteForm = document.getElementById('adminCommentReplyDeleteForm');
-            const replyDeleteButton = document.getElementById('adminCommentReplyDeleteButton');
+            const replyDeleteForm = document.getElementById('adminCommentReplyDeleteForm') || document.getElementById('adminCommentReplySilForm');
+            const replyDeleteButton = document.getElementById('adminCommentReplyDeleteButton') || document.getElementById('adminCommentReplySilButton');
             const postImageTarget = document.getElementById('adminCommentReplyPostImage');
             const postCategoryTarget = document.getElementById('adminCommentReplyPostCategory');
             const postTarget = document.getElementById('adminCommentReplyPost');
@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (modalTitleTarget) {
                 modalTitleTarget.textContent = trigger.getAttribute('data-modal-mode') === 'edit'
-                    ? 'Edit Reply'
-                    : 'Write Reply';
+                    ? 'Yanıtı Düzenle'
+                    : 'Yanıt Yaz';
             }
 
             if (postImageTarget) {
@@ -106,8 +106,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (postCommentsTarget) {
-                const count = trigger.getAttribute('data-post-comments') || '0';
-                postCommentsTarget.textContent = count + ' Comments';
+                const count = trigger.getAttribute('data-post-comments') || trigger.getAttribute('data-post-yorum') || '0';
+                postCommentsTarget.textContent = count + ' yorum';
             }
 
             if (authorTarget) {
@@ -155,8 +155,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         replyModalElement.addEventListener('hidden.bs.modal', function () {
             const replyForm = document.getElementById('adminCommentReplyForm');
-            const replyDeleteForm = document.getElementById('adminCommentReplyDeleteForm');
-            const replyDeleteButton = document.getElementById('adminCommentReplyDeleteButton');
+            const replyDeleteForm = document.getElementById('adminCommentReplyDeleteForm') || document.getElementById('adminCommentReplySilForm');
+            const replyDeleteButton = document.getElementById('adminCommentReplyDeleteButton') || document.getElementById('adminCommentReplySilButton');
             const inputTarget = document.getElementById('adminCommentReplyInput');
 
             if (replyForm) {

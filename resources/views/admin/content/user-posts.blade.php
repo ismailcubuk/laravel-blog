@@ -1,6 +1,6 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
-@section('title', 'User Posts')
+@section('title', 'Kullanıcı Yazıları')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/extracted/admin-content-user-posts.css') }}">
@@ -11,7 +11,7 @@
     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
         <div>
             <h1 class="mb-1 text-primary">Kullanıcı Yazıları Yönetimi</h1>
-            <p class="text-muted mb-0">Review, approve, and inspect posts submitted by users.</p>
+            <p class="text-muted mb-0">Kullanıcıların gönderdiği yazıları inceleyin ve onaylayın.</p>
         </div>
     </div>
 
@@ -26,27 +26,27 @@
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100 user-posts-stat">
                 <div class="card-body">
-                    <span class="text-muted small text-uppercase">Total</span>
+                    <span class="text-muted small text-uppercase">Toplam</span>
                     <div class="display-6 fw-semibold">{{ $stats['total'] }}</div>
-                    <div class="text-muted small">User submissions</div>
+                    <div class="text-muted small">Kullanıcı gönderileri</div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100 user-posts-stat">
                 <div class="card-body">
-                    <span class="text-muted small text-uppercase">Pending</span>
+                    <span class="text-muted small text-uppercase">Bekliyor</span>
                     <div class="display-6 fw-semibold text-warning">{{ $stats['pending'] }}</div>
-                    <div class="text-muted small">Awaiting approval</div>
+                    <div class="text-muted small">Onay bekliyor</div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100 user-posts-stat">
                 <div class="card-body">
-                    <span class="text-muted small text-uppercase">Approved</span>
+                    <span class="text-muted small text-uppercase">Onaylandı</span>
                     <div class="display-6 fw-semibold text-success">{{ $stats['approved'] }}</div>
-                    <div class="text-muted small">Visible on site</div>
+                    <div class="text-muted small">Sitede görünür</div>
                 </div>
             </div>
         </div>
@@ -54,26 +54,26 @@
 
     <div class="card shadow-sm mb-4 user-posts-filter">
         <div class="card-header">
-            <h5 class="mb-0">Filter User Posts</h5>
+            <h5 class="mb-0">Kullanıcı Yazılarını Filtrele</h5>
         </div>
         <div class="card-body">
             <form method="GET" action="{{ route('admin.content.user-posts.index') }}">
                 <div class="row g-3">
                     <div class="col-md-5">
-                        <label class="form-label">Search</label>
-                        <input type="text" name="search" value="{{ $filters['search'] }}" class="form-control" placeholder="Title, content, author, email">
+                        <label class="form-label">Ara</label>
+                        <input type="text" name="search" value="{{ $filters['search'] }}" class="form-control" placeholder="Başlık, içerik, yazar, e-posta">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Status</label>
+                        <label class="form-label">Durum</label>
                         <select name="status" class="form-select">
-                            <option value="">All statuses</option>
-                            <option value="pending" {{ $filters['status'] === 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="published" {{ $filters['status'] === 'published' ? 'selected' : '' }}>Approved</option>
+                            <option value="">Tüm durumlar</option>
+                            <option value="pending" {{ $filters['status'] === 'pending' ? 'selected' : '' }}>Bekliyor</option>
+                            <option value="published" {{ $filters['status'] === 'published' ? 'selected' : '' }}>Onaylandı</option>
                         </select>
                     </div>
                     <div class="col-md-4 d-flex align-items-end gap-2">
-                        <button type="submit" class="ui-btn ui-btn-primary w-100">Apply</button>
-                        <a href="{{ route('admin.content.user-posts.index') }}" class="ui-btn ui-btn-neutral w-100">Reset</a>
+                        <button type="submit" class="ui-btn ui-btn-primary w-100">Uygula</button>
+                        <a href="{{ route('admin.content.user-posts.index') }}" class="ui-btn ui-btn-neutral w-100">Sıfırla</a>
                     </div>
                 </div>
             </form>
@@ -82,10 +82,10 @@
 
     <div class="card shadow-sm user-posts-card">
         <div class="card-header user-posts-header d-flex align-items-center justify-content-between">
-            <h5 class="mb-0">User Posts List</h5>
+            <h5 class="mb-0">Kullanıcı Yazıları</h5>
             <div class="d-flex align-items-center gap-2">
-                <span class="user-posts-count">{{ $posts->total() }} results</span>
-                <span class="user-posts-pending">Pending: {{ $stats['pending'] }}</span>
+                <span class="user-posts-count">{{ $posts->total() }} sonuç</span>
+                <span class="user-posts-pending">Bekliyor: {{ $stats['pending'] }}</span>
             </div>
         </div>
         <div class="card-body p-0">
@@ -101,87 +101,87 @@
                     </colgroup>
                     <thead>
                         <tr>
-                            <th>Post</th>
-                            <th>Author</th>
-                            <th>Content</th>
-                            <th>Status</th>
-                            <th>Submitted</th>
-                            <th class="text-end">Actions</th>
+                            <th>Yazı</th>
+                            <th>Yazar</th>
+                            <th>İçerik</th>
+                            <th>Durum</th>
+                            <th>Gönderim</th>
+                            <th class="text-end">İşlemler</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($posts as $post)
                             <tr class="{{ $post->status === 'pending' ? 'is-pending' : '' }}">
-                                <td data-label="Post">
+                                <td data-label="Yazı">
                                     <div class="user-posts-post">
                                         <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="user-posts-thumb">
                                         <div>
                                             <a href="{{ route('post.show', $post->slug) }}" target="_blank" class="user-posts-title">
                                                 {{ \Illuminate\Support\Str::limit($post->title, 56) }}
                                             </a>
-                                            <span class="user-posts-category">{{ $post->category->name ?? 'General' }}</span>
+                                            <span class="user-posts-category">{{ $post->category->name ?? 'Genel' }}</span>
                                         </div>
                                     </div>
                                 </td>
-                                <td data-label="Author">
+                                <td data-label="Yazar">
                                     <div class="user-posts-author">
-                                        <img src="{{ $post->user?->avatar_path ? asset($post->user->avatar_path) : asset('adminlte/img/avatar.png') }}" alt="{{ $post->user->name ?? 'User' }}">
+                                        <img src="{{ $post->user?->avatar_path ? asset($post->user->avatar_path) : asset('adminlte/img/avatar.png') }}" alt="{{ $post->user->name ?? 'Kullanıcı' }}">
                                         <div>
-                                            <strong>{{ $post->user->name ?? 'User' }}</strong>
+                                            <strong>{{ $post->user->name ?? 'Kullanıcı' }}</strong>
                                             <span>{{ $post->user->email ?? '-' }}</span>
                                         </div>
                                     </div>
                                 </td>
-                                <td data-label="Content">
+                                <td data-label="İçerik">
                                     <p class="user-posts-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags((string) $post->content), 110) }}</p>
                                 </td>
-                                <td data-label="Status">
+                                <td data-label="Durum">
                                     <span class="user-posts-status {{ $post->status === 'published' ? 'approved' : 'pending' }}">
-                                        {{ $post->status === 'published' ? 'Approved' : 'Pending' }}
+                                        {{ $post->status === 'published' ? 'Onaylandı' : 'Bekliyor' }}
                                     </span>
                                 </td>
-                                <td data-label="Submitted">
+                                <td data-label="Gönderim">
                                     <span class="user-posts-date">{{ $post->created_at->format('d M Y') }}</span>
                                     <span class="user-posts-time">{{ $post->created_at->format('H:i') }}</span>
                                 </td>
-                                <td data-label="Actions" class="text-end">
+                                <td data-label="İşlemler" class="text-end">
                                     <div class="user-posts-actions">
                                         <form method="POST" action="{{ route('admin.content.user-posts.status', $post) }}">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="published">
-                                            <button type="submit" class="ui-btn ui-btn-success ui-btn-sm" {{ $post->status === 'published' ? 'disabled' : '' }}>Approve</button>
+                                            <button type="submit" class="ui-btn ui-btn-success ui-btn-sm" {{ $post->status === 'published' ? 'disabled' : '' }}>Onayla</button>
                                         </form>
                                         <form method="POST" action="{{ route('admin.content.user-posts.status', $post) }}">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="pending">
-                                            <button type="submit" class="ui-btn ui-btn-warning ui-btn-sm" {{ $post->status === 'pending' ? 'disabled' : '' }}>Pending</button>
+                                            <button type="submit" class="ui-btn ui-btn-warning ui-btn-sm" {{ $post->status === 'pending' ? 'disabled' : '' }}>Bekliyor</button>
                                         </form>
                                         <button type="button" class="ui-btn ui-btn-danger ui-btn-sm user-posts-details"
                                             data-bs-toggle="modal"
                                             data-bs-target="#userPostDetailsModal"
                                             data-title="{{ $post->title }}"
-                                            data-author="{{ $post->user->name ?? 'User' }}"
+                                            data-author="{{ $post->user->name ?? 'Kullanıcı' }}"
                                             data-email="{{ $post->user->email ?? '-' }}"
                                             data-avatar="{{ $post->user?->avatar_path ? asset($post->user->avatar_path) : asset('adminlte/img/avatar.png') }}"
                                             data-image="{{ $post->image_url }}"
-                                            data-category="{{ $post->category->name ?? 'General' }}"
-                                            data-status="{{ $post->status === 'published' ? 'Approved' : 'Pending' }}"
+                                            data-category="{{ $post->category->name ?? 'Genel' }}"
+                                            data-status="{{ $post->status === 'published' ? 'Onaylandı' : 'Bekliyor' }}"
                                             data-date="{{ $post->created_at->format('d M Y H:i') }}"
                                             data-content="{{ $post->content }}"
-                                        >Details</button>
-                                        <form method="POST" action="{{ route('admin.content.user-posts.destroy', $post) }}" onsubmit="return confirm('Delete this user post?');">
+                                        >Detaylar</button>
+                                        <form method="POST" action="{{ route('admin.content.user-posts.destroy', $post) }}" onsubmit="return confirm('Bu kullanıcı yazısı silinsin mi?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="ui-btn ui-btn-danger ui-btn-sm">Delete</button>
+                                            <button type="submit" class="ui-btn ui-btn-danger ui-btn-sm">Sil</button>
                                         </form>
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4">No user posts found.</td>
+                                <td colspan="6" class="text-center py-4">Kullanıcı yazısı bulunamadı.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -190,7 +190,7 @@
         </div>
         <div class="card-footer bg-white d-flex flex-column flex-md-row align-items-center justify-content-between">
             <small class="text-muted">
-                Showing {{ $posts->firstItem() ?? 0 }}-{{ $posts->lastItem() ?? 0 }} of {{ $posts->total() }} user posts
+                {{ $posts->total() }} kullanıcı yazısından {{ $posts->firstItem() ?? 0 }}-{{ $posts->lastItem() ?? 0 }} arası gösteriliyor
             </small>
             {{ $posts->links() }}
         </div>
@@ -202,7 +202,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div>
-                    <h5 class="modal-title">User Post Details</h5>
+                    <h5 class="modal-title">Kullanıcı Yazısı Detayları</h5>
                     <small class="text-muted" id="userPostDetailDate">-</small>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -220,7 +220,7 @@
                                 <small id="userPostDetailEmail">-</small>
                             </div>
                         </div>
-                        <span class="user-posts-status pending" id="userPostDetailStatus">-</span>
+                        <span class="user-posts-status pending" id="userPostDetailDurum">-</span>
                     </div>
                 </div>
                 <div class="user-post-modal-content" id="userPostDetailContent"></div>

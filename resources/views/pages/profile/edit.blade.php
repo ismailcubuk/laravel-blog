@@ -177,7 +177,7 @@
                         </div>
 
                         <div class="profile-actions">
-                            <button type="submit" class="front-btn profile-danger-btn">Sifreyi Guncelle</button>
+                            <button type="submit" class="front-btn profile-danger-btn">Şifreyi Güncelle</button>
                         </div>
                     </form>
                 </div>

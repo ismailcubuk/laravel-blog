@@ -10,13 +10,15 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $bannerPosts = Post::with('category')
+        $bannerPosts = Post::query()
+            ->withAvailableRelations(['category', 'tags'])
             ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
             ->take(5)
             ->get();
-        $posts = Post::with(['category', 'user'])
+        $posts = Post::query()
+            ->withAvailableRelations(['category', 'user', 'tags'])
             ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
@@ -33,12 +35,24 @@ class HomeController extends Controller
             ->orderByDesc('posts_count')
             ->orderBy('name')
             ->get();
-        $featuredPost = $bannerPosts->first();
-        $editorPicks = Post::with(['category', 'user'])
+        $featuredPostQuery = Post::query()
+            ->withAvailableRelations(['category', 'user', 'tags'])
+            ->published()
+            ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()]);
+
+        if (Post::featuredColumnsExist()) {
+            $featuredPostQuery->where('is_featured', true)->orderByDesc('featured_at');
+        } else {
+            $featuredPostQuery->whereRaw('1 = 0');
+        }
+
+        $featuredPost = $featuredPostQuery->latest()->first() ?: $bannerPosts->first();
+        $editorPicks = Post::query()
+            ->withAvailableRelations(['category', 'user', 'tags'])
             ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
+            ->when($featuredPost, fn ($query) => $query->whereKeyNot($featuredPost->id))
             ->latest()
-            ->skip(1)
             ->take(3)
             ->get();
         $mostCommentedPosts = Post::with(['category', 'user'])

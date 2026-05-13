@@ -2,9 +2,9 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content all-users-modal-content">
             <div class="modal-header all-users-modal-header">
-                <h5 class="modal-title mb-0">All Users</h5>
+                <h5 class="modal-title mb-0">Tüm Kullanıcılar</h5>
                 <div class="ms-auto me-2" style="width: 320px; max-width: 50vw;">
-                    <input type="text" id="allUsersSearchInput" class="form-control form-control-sm" placeholder="Search users...">
+                    <input type="text" id="allUsersSearchInput" class="form-control form-control-sm" placeholder="Kullanıcı ara...">
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -37,11 +37,11 @@
                             </div>
                         </div>
                     @empty
-                        <div class="p-4 text-center text-muted">No users found.</div>
+                        <div class="p-4 text-center text-muted">Kullanıcı bulunamadı.</div>
                     @endforelse
                 </div>
                 <div id="allUsersEmptyState" class="p-4 text-center text-muted d-none">
-                    No users match your search.
+                    Aramanıza uygun kullanıcı bulunamadı.
                 </div>
             </div>
         </div>

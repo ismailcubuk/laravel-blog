@@ -40,9 +40,9 @@
         <div class="col-lg-12">
             <div class="card shadow-sm">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="mb-0">Posts List</h5>
+                    <h5 class="mb-0">Yazı Listesi</h5>
                     <a href="{{ route('admin.content.posts.create') }}" class="ui-btn ui-btn-success ui-btn-sm ms-auto">
-                        <i class="bi bi-plus-lg"></i> New Post
+                        <i class="bi bi-plus-lg"></i> Yeni Yazı
                     </a>
                 </div>
                 <div class="card-body p-0">
@@ -50,13 +50,13 @@
                         <table class="table table-hover table-striped align-middle mb-0">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
+                                    <th>Görsel</th>
                                     <th>
                                         <a
                                             href="{{ route('admin.content.posts.index', array_merge(request()->except('page'), ['sort' => 'title', 'direction' => $nextDirection('title')])) }}"
                                             class="sort-link"
                                         >
-                                            Name
+                                            Başlık
                                             <i class="bi {{ $sortIcon('title') }}"></i>
                                         </a>
                                     </th>
@@ -65,7 +65,7 @@
                                             href="{{ route('admin.content.posts.index', array_merge(request()->except('page'), ['sort' => 'author', 'direction' => $nextDirection('author')])) }}"
                                             class="sort-link"
                                         >
-                                            Author
+                                            Yazar
                                             <i class="bi {{ $sortIcon('author') }}"></i>
                                         </a>
                                     </th>
@@ -74,7 +74,7 @@
                                             href="{{ route('admin.content.posts.index', array_merge(request()->except('page'), ['sort' => 'category', 'direction' => $nextDirection('category')])) }}"
                                             class="sort-link"
                                         >
-                                            Category
+                                            Kategori
                                             <i class="bi {{ $sortIcon('category') }}"></i>
                                         </a>
                                     </th>
@@ -83,11 +83,11 @@
                                             href="{{ route('admin.content.posts.index', array_merge(request()->except('page'), ['sort' => 'created_at', 'direction' => $nextDirection('created_at')])) }}"
                                             class="sort-link"
                                         >
-                                            Created At
+                                            Oluşturulma
                                             <i class="bi {{ $sortIcon('created_at') }}"></i>
                                         </a>
                                     </th>
-                                    <th class="text-center">Actions</th>
+                                    <th class="text-center">İşlemler</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -95,7 +95,7 @@
                                     <tr>
                                         <td>
                                             <img
-                                                src="{{ $post->image ? asset(ltrim($post->image, '/')) : asset('assets/images/default-post.jpg') }}"
+                                                src="{{ $post->image_url }}"
                                                 alt="{{ $post->title }}"
                                                 width="48"
                                                 height="48"
@@ -108,23 +108,23 @@
                                                 {{ $post->title }}
                                             </a>
                                         </td>
-                                        <td>{{ $post->user->name ?? 'Unknown Admin' }}</td>
-                                        <td>{{ $post->category->name ?? 'N/A' }}</td>
+                                        <td>{{ $post->user->name ?? 'Admin' }}</td>
+                                        <td>{{ $post->category->name ?? 'Kategori yok' }}</td>
                                         <td>{{ $post->created_at->format('d M Y') }}</td>
                                         <td class="text-center">
                                             <div class="posts-actions">
-                                                <a href="{{ route('admin.content.posts.edit', $post) }}" class="ui-btn ui-btn-warning ui-btn-sm">Edit</a>
+                                                <a href="{{ route('admin.content.posts.edit', $post) }}" class="ui-btn ui-btn-warning ui-btn-sm">Düzenle</a>
                                                 <form action="{{ route('admin.content.posts.destroy', $post) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="ui-btn ui-btn-danger ui-btn-sm" onclick="return confirm('Delete this post?')">Delete</button>
+                                                    <button class="ui-btn ui-btn-danger ui-btn-sm" onclick="return confirm('Bu yazı silinsin mi?')">Sil</button>
                                                 </form>
                                             </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-3">No posts found</td>
+                                        <td colspan="6" class="text-center py-3">Yazı bulunamadı</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -132,7 +132,7 @@
                     </div>
                     <div class="p-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
                         <small class="text-muted">
-                            Showing {{ $posts->firstItem() ?? 0 }}-{{ $posts->lastItem() ?? 0 }} of {{ $posts->total() }} posts
+                            {{ $posts->total() }} yazıdan {{ $posts->firstItem() ?? 0 }}-{{ $posts->lastItem() ?? 0 }} arası gösteriliyor
                         </small>
 
                         @if ($posts->hasPages())

@@ -342,6 +342,68 @@ body.front-body {
             color: var(--front-muted) !important;
         }
 
+        .author-public-hero {
+            padding: 3rem 0 1.5rem;
+            background: linear-gradient(135deg, var(--front-soft-bg), transparent 70%);
+        }
+
+        .author-public-card {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1.25rem;
+            border: 1px solid var(--front-border);
+            border-radius: 14px;
+            background: var(--front-surface);
+            box-shadow: var(--front-shadow);
+        }
+
+        .author-public-card img {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-public-card span {
+            color: var(--front-primary);
+            font-size: 0.78rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .author-public-card h1 {
+            margin: 0.2rem 0 0.35rem;
+            color: var(--front-text);
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .author-public-card p {
+            margin: 0;
+            color: var(--front-muted);
+        }
+
+        .author-public-socials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.85rem;
+        }
+
+        .author-public-socials a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 32px;
+            padding: 0 0.75rem;
+            border: 1px solid var(--front-soft-border);
+            border-radius: 999px;
+            background: var(--front-soft-bg);
+            color: var(--front-primary);
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
         @media (max-width: 991.98px) {
             .front-main {
                 padding-top: 0;

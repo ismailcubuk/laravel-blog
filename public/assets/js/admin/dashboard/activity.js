@@ -88,11 +88,11 @@
         const usersTotal = sum(rawUsers);
 
         if (blogsTotalElement) {
-            blogsTotalElement.textContent = formatCount(blogsTotal, 'blog', 'blogs');
+            blogsTotalElement.textContent = blogsTotal + ' yazı';
         }
 
         if (usersTotalElement) {
-            usersTotalElement.textContent = formatCount(usersTotal, 'user', 'users');
+            usersTotalElement.textContent = usersTotal + ' kullanıcı';
         }
 
         if (peakDayElement) {
@@ -100,7 +100,7 @@
             if (!peakDayInfo) {
                 peakDayElement.textContent = '-';
             } else {
-                peakDayElement.textContent = peakDayInfo.label + ' - ' + formatCount(peakDayInfo.value, 'action', 'actions');
+                peakDayElement.textContent = peakDayInfo.label + ' - ' + peakDayInfo.value + ' işlem';
             }
         }
     }
@@ -122,10 +122,10 @@
 
             const href = item && item.url ? item.url : '#';
             const imageSrc = item && item.image ? item.image : '/assets/images/default-post.jpg';
-            const title = item && item.title ? item.title : 'Untitled';
+            const title = item && item.title ? item.title : 'Başlıksız';
             const excerpt = item && item.excerpt ? item.excerpt : '';
             const time = item && item.time ? item.time : '--:--';
-            const authorName = item && item.author_name ? item.author_name : 'Unknown author';
+            const authorName = item && item.author_name ? item.author_name : 'Bilinmeyen yazar';
             const authorAvatar = item && item.author_avatar ? item.author_avatar : '';
 
             postItem.setAttribute('href', href);
@@ -162,7 +162,7 @@
                 return;
             }
 
-            const name = item && item.name ? item.name : 'Unknown';
+            const name = item && item.name ? item.name : 'Bilinmeyen kullanıcı';
             const email = item && item.email ? item.email : '-';
             const time = item && item.time ? item.time : '--:--';
             const avatar = name.charAt(0).toUpperCase();
@@ -239,7 +239,7 @@
 
         const open = function () {
             const items = flattenItemsByDate(newBlogsItemsByDate);
-            openActivityModal(modalRefs, 'New Blogs - This Week', items, true);
+            openActivityModal(modalRefs, 'Yeni Yazılar - Bu Hafta', items, true);
         };
 
         blogsWeekCard.addEventListener('click', open);
@@ -259,7 +259,7 @@
 
         const open = function () {
             const items = flattenItemsByDate(newUsersItemsByDate);
-            openActivityModal(modalRefs, 'New Users - This Week', items, false);
+            openActivityModal(modalRefs, 'Yeni Kullanıcılar - Bu Hafta', items, false);
         };
 
         usersWeekCard.addEventListener('click', open);
@@ -280,7 +280,7 @@
         const open = function () {
             const peakDayInfo = getPeakDayInfo(rawBlogs, rawUsers, labels, activityDates);
             if (!peakDayInfo) {
-                openActivityModal(modalRefs, 'Peak Day', [], true);
+                openActivityModal(modalRefs, 'En Yoğun Gün', [], true);
                 return;
             }
 
@@ -288,9 +288,9 @@
             const userItems = peakDayInfo.dateKey ? (newUsersItemsByDate[peakDayInfo.dateKey] || []) : [];
 
             if (blogItems.length >= userItems.length) {
-                openActivityModal(modalRefs, 'Peak Day - New Blogs - ' + peakDayInfo.label, blogItems, true);
+                openActivityModal(modalRefs, 'En Yoğun Gün - Yeni Yazılar - ' + peakDayInfo.label, blogItems, true);
             } else {
-                openActivityModal(modalRefs, 'Peak Day - New Users - ' + peakDayInfo.label, userItems, false);
+                openActivityModal(modalRefs, 'En Yoğun Gün - Yeni Kullanıcılar - ' + peakDayInfo.label, userItems, false);
             }
         };
 
@@ -355,7 +355,7 @@
                 labels: activityLabels,
                 datasets: [
                     {
-                        label: 'New Blogs',
+                        label: 'Yeni Yazılar',
                         data: rawNewBlogsData,
                         backgroundColor: blogsGradient,
                         borderColor: '#2e7bff',
@@ -366,7 +366,7 @@
                         barPercentage: 0.9,
                     },
                     {
-                        label: 'New Users',
+                        label: 'Yeni Kullanıcılar',
                         data: rawNewUsersData,
                         backgroundColor: usersGradient,
                         borderColor: '#20b26b',
@@ -418,7 +418,7 @@
 
                     const dateKey = activityDates[dataIndex];
                     const dateLabel = activityLabels[dataIndex] || '';
-                    const modalLabel = (isBlog ? 'New Blogs' : 'New Users') + ' - ' + dateLabel;
+                    const modalLabel = (isBlog ? 'Yeni Yazılar' : 'Yeni Kullanıcılar') + ' - ' + dateLabel;
                     const items = isBlog
                         ? (newBlogsItemsByDate[dateKey] || [])
                         : (newUsersItemsByDate[dateKey] || []);
@@ -483,7 +483,7 @@
             const group = document.createElement('button');
             group.type = 'button';
             group.className = 'activity-static-group';
-            group.setAttribute('aria-label', label + ' activity details');
+            group.setAttribute('aria-label', label + ' aktivite detayları');
 
             const bars = document.createElement('span');
             bars.className = 'activity-static-bars';
@@ -510,7 +510,7 @@
                 const isBlog = blogItems.length >= userItems.length;
                 openActivityModal(
                     modalRefs,
-                    (isBlog ? 'New Blogs' : 'New Users') + ' - ' + label,
+                    (isBlog ? 'Yeni Yazılar' : 'Yeni Kullanıcılar') + ' - ' + label,
                     isBlog ? blogItems : userItems,
                     isBlog
                 );

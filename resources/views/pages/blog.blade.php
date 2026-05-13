@@ -1,7 +1,7 @@
-@extends('layouts.main')
+﻿@extends('layouts.main')
 
 @section('title', 'Blog')
-@section('meta_description', trim(($search ?? '') . ' ' . optional($activeCategory)->name) ? 'Blog arama ve kategori sonuçları.' : 'Güncel blog yazıları, kategoriler ve son yayınlanan içerikler.')
+@section('meta_description', trim(($search ?? '') . ' ' . optional($activeCategory)->name) ? 'Blog arama ve kategori sonuÃ§larÄ±.' : 'GÃ¼ncel blog yazÄ±larÄ±, kategoriler ve son yayÄ±nlanan iÃ§erikler.')
 
 @section('content')
 
@@ -16,7 +16,7 @@
                     <div class="col-lg-12">
                         <div class="text-content">
                             <h4>Blog</h4>
-                            <h2>{{ $activeCategory ? $activeCategory->name : 'Son Yazılar' }}</h2>
+                            <h2>{{ $activeTag ? '#' . $activeTag->name : ($activeCategory ? $activeCategory->name : 'Son Yazılar') }}</h2>
                         </div>
                     </div>
                 </div>
@@ -32,6 +32,13 @@
                 {{-- POSTS --}}
                 <div class="col-lg-8">
                     <div class="all-blog-posts">
+                        @if($search !== '' && $resultCount !== null)
+                            <div class="blog-results-summary mb-4">
+                                <strong>{{ $resultCount }}</strong> sonuç bulundu
+                                <span>“{{ $search }}” araması için</span>
+                            </div>
+                        @endif
+
                         <div class="row blog-grid">
 
                             @forelse($posts as $post)
@@ -76,7 +83,12 @@
                                                     <div class="col-lg-12">
                                                         <ul class="post-tags">
                                                             <li><i class="fa fa-tags"></i></li>
-                                                            <li><a href="{{ $post->category ? route('blog.category', $post->category) : route('blog') }}">{{ $post->category->name ?? 'Genel' }}</a></li>
+                                                            @php($postTags = $post->relationLoaded('tags') ? $post->tags : collect())
+                                                            @forelse($postTags as $tag)
+                                                                <li><a href="{{ route('blog.tag', $tag) }}">{{ $tag->name }}</a></li>
+                                                            @empty
+                                                                <li><a href="{{ $post->category ? route('blog.category', $post->category) : route('blog') }}">{{ $post->category->name ?? 'Genel' }}</a></li>
+                                                            @endforelse
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -89,7 +101,7 @@
 
                             @empty
                                 <div class="col-12">
-                                    <div class="alert alert-info">Bu kriterlere uygun yazı bulunamadı.</div>
+                                    <div class="alert alert-info">Bu kriterlere uygun yazÄ± bulunamadÄ±.</div>
                                 </div>
                             @endforelse
 
@@ -109,7 +121,7 @@
                             <div class="col-lg-12">
                                 <div class="sidebar-item search">
                                     <form method="GET" action="{{ route('blog') }}">
-                                        <input type="text" name="search" class="searchText" placeholder="Yazı ara..." value="{{ request('search') }}">
+                                        <input type="text" name="search" class="searchText" placeholder="YazÄ± ara..." value="{{ request('search') }}">
                                     </form>
                                 </div>
                             </div>
@@ -119,7 +131,7 @@
                             <div class="col-lg-12">
                                 <div class="sidebar-item recent-posts">
                                     <div class="sidebar-heading">
-                                        <h2>Son Yazılar</h2>
+                                        <h2>Son YazÄ±lar</h2>
                                     </div>
 
                                     <div class="content">
@@ -171,6 +183,27 @@
                                 </div>
                             </div>
 
+                            @if($tags->isNotEmpty())
+                                <div class="col-lg-12">
+                                    <div class="sidebar-item tags">
+                                        <div class="sidebar-heading">
+                                            <h2>Etiketler</h2>
+                                        </div>
+                                        <div class="content">
+                                            <ul>
+                                                @foreach($tags as $tag)
+                                                    <li>
+                                                        <a href="{{ route('blog.tag', $tag) }}">
+                                                            #{{ $tag->name }} ({{ $tag->posts_count ?? 0 }})
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
 
                         </div>
                     </div>
@@ -182,5 +215,4 @@
     </section>
 
 @endsection
-
 

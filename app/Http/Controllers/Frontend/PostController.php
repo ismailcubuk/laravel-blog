@@ -17,14 +17,16 @@ class PostController extends Controller
 
     public function index()
     {
-        $bannerPosts = Post::with('category')
+        $bannerPosts = Post::query()
+            ->withAvailableRelations(['category', 'user', 'tags'])
             ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
             ->take(5)
             ->get();
 
-        $posts = Post::with('category')
+        $posts = Post::query()
+            ->withAvailableRelations(['category', 'user', 'tags'])
             ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->latest()
@@ -39,9 +41,11 @@ class PostController extends Controller
             ? ['approved', 'pending']
             : ['approved'];
 
-        $post = Post::with([
+        $post = Post::query()
+            ->withAvailableRelations([
                 'category',
                 'user',
+                'tags',
             ])
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->where('slug', $slug)
@@ -86,9 +90,29 @@ class PostController extends Controller
             ->take(5)
             ->get();
 
-        $categories = Category::all();
+        $categories = Category::query()
+            ->withCount(['posts' => fn ($query) => $query->published()])
+            ->whereHas('posts', fn ($query) => $query->published())
+            ->orderByDesc('posts_count')
+            ->orderBy('name')
+            ->get();
+        $postTags = $post->relationLoaded('tags') ? $post->tags : collect();
+        $relatedPosts = Post::query()
+            ->withAvailableRelations(['category', 'user', 'tags'])
+            ->published()
+            ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
+            ->whereKeyNot($post->id)
+            ->when($post->category_id || $postTags->isNotEmpty(), function ($query) use ($post, $postTags) {
+                $query->where(function ($inner) use ($post, $postTags) {
+                    $inner->when($post->category_id, fn ($categoryQuery) => $categoryQuery->where('category_id', $post->category_id))
+                        ->when($postTags->isNotEmpty() && Post::tagsTableExists(), fn ($tagQuery) => $tagQuery->orWhereHas('tags', fn ($tagInner) => $tagInner->whereIn('tags.id', $postTags->pluck('id'))));
+                });
+            })
+            ->latest()
+            ->take(3)
+            ->get();
 
-        return view('pages.posts.show', compact('post', 'recentPosts', 'categories'));
+        return view('pages.posts.show', compact('post', 'recentPosts', 'categories', 'relatedPosts'));
     }
 
     public function storeComment(Request $request, string $slug)

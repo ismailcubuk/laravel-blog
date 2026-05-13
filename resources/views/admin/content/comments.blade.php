@@ -1,6 +1,6 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
-@section('title', ' Comments')
+@section('title', ' Yorums')
 
 @section('content')
 <div class="container-fluid py-4">
@@ -10,7 +10,7 @@
 
     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
         <div>
-            <h1 class="mb-1 text-primary">Comments Management</h1>
+            <h1 class="mb-1 text-primary">Yorum Yönetimi</h1>
         </div>
     </div>
 
@@ -39,27 +39,27 @@
         <div class="col-md-6 col-xl-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <span class="text-muted small text-uppercase">Total</span>
+                    <span class="text-muted small text-uppercase">Toplam</span>
                     <div class="display-6 fw-semibold">{{ $stats['total'] }}</div>
-                    <div class="text-muted small">All comments</div>
+                    <div class="text-muted small">Tüm yorumlar</div>
                 </div>
             </div>
         </div>
         <div class="col-md-6 col-xl-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <span class="text-muted small text-uppercase">Pending</span>
+                    <span class="text-muted small text-uppercase">Bekliyor</span>
                     <div class="display-6 fw-semibold text-warning">{{ $stats['pending'] }}</div>
-                    <div class="text-muted small">Awaiting review</div>
+                    <div class="text-muted small">İnceleme bekliyor</div>
                 </div>
             </div>
         </div>
         <div class="col-md-6 col-xl-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <span class="text-muted small text-uppercase">Approved</span>
+                    <span class="text-muted small text-uppercase">Onaylandı</span>
                     <div class="display-6 fw-semibold text-success">{{ $stats['approved'] }}</div>
-                    <div class="text-muted small">Visible on posts</div>
+                    <div class="text-muted small">Yazılarda görünür</div>
                 </div>
             </div>
         </div>
@@ -67,27 +67,27 @@
 
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">Filter Comments</h5>
+            <h5 class="mb-0">Filter Yorums</h5>
         </div>
         <div class="card-body">
             <form method="GET" action="{{ route('admin.content.comments') }}">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label">Search</label>
-                        <input type="text" name="search" value="{{ $filters['search'] }}" class="form-control" placeholder="Author, email, content, post title">
+                        <label class="form-label">Ara</label>
+                        <input type="text" name="search" value="{{ $filters['search'] }}" class="form-control" placeholder="Yazar, e-posta, içerik, yazı başlığı">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Status</label>
+                        <label class="form-label">Durum</label>
                         <select name="status" class="form-select">
-                            <option value="">All statuses</option>
-                            <option value="pending" {{ $filters['status'] === 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="approved" {{ $filters['status'] === 'approved' ? 'selected' : '' }}>Approved</option>
+                            <option value="">Tüm durumlar</option>
+                            <option value="pending" {{ $filters['status'] === 'pending' ? 'selected' : '' }}>Bekliyor</option>
+                            <option value="approved" {{ $filters['status'] === 'approved' ? 'selected' : '' }}>Onaylandı</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Post</label>
+                        <label class="form-label">Yazı</label>
                         <select name="post" class="form-select">
-                            <option value="">All posts</option>
+                            <option value="">Tüm yazılar</option>
                             @foreach($posts as $post)
                                 <option value="{{ $post->id }}" {{ (string) $filters['post'] === (string) $post->id ? 'selected' : '' }}>
                                     {{ $post->title }}
@@ -96,8 +96,8 @@
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end gap-2">
-                        <button type="submit" class="ui-btn ui-btn-primary w-100">Apply</button>
-                        <a href="{{ route('admin.content.comments') }}" class="ui-btn ui-btn-neutral w-100">Reset</a>
+                        <button type="submit" class="ui-btn ui-btn-primary w-100">Uygula</button>
+                        <a href="{{ route('admin.content.comments') }}" class="ui-btn ui-btn-neutral w-100">Sıfırla</a>
                     </div>
                 </div>
             </form>
@@ -106,8 +106,8 @@
 
     <div class="card shadow-sm">
         <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between">
-            <h5 class="mb-0">Comments List</h5>
-            <span class="badge bg-light text-dark">{{ $comments->total() }} results</span>
+            <h5 class="mb-0">Yorum Listesi</h5>
+            <span class="badge bg-light text-dark">{{ $comments->total() }} sonuç</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive admin-comments-wrap">
@@ -123,19 +123,19 @@
                     </colgroup>
                     <thead class="table-dark">
                         <tr>
-                            <th>Post</th>
-                            <th>Author</th>
-                            <th>Comment</th>
-                            <th>Reply</th>
-                            <th>Status</th>
-                            <th>Submitted</th>
-                            <th class="text-end">Actions</th>
+                            <th>Yazı</th>
+                            <th>Yazar</th>
+                            <th>Yorum</th>
+                            <th>Yanıt</th>
+                            <th>Durum</th>
+                            <th>Gönderim</th>
+                            <th class="text-end">İşlemler</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($comments as $comment)
                             <tr>
-                                <td data-label="Post">
+                                <td data-label="Yazı">
                                     @if($comment->post)
                                         <div class="admin-comments-post">
                                             <img
@@ -143,19 +143,19 @@
                                                 alt="{{ $comment->post->title }}"
                                                 class="admin-comments-post-thumb"
                                             >
-                                            <a href="{{ route('post.show', $comment->post->slug) }}#comments" target="_blank" class="admin-comments-post-title">
+                                            <a href="{{ route('post.show', $comment->post->slug) }}#yorum" target="_blank" class="admin-comments-post-title">
                                                 {{ \Illuminate\Support\Str::limit($comment->post->title, 55) }}
                                             </a>
                                         </div>
                                     @else
-                                        <span class="text-muted">Deleted post</span>
+                                        <span class="text-muted">Silinmiş yazı</span>
                                     @endif
                                 </td>
-                                <td data-label="Author">
+                                <td data-label="Yazar">
                                     <div class="admin-comments-author-name">{{ $comment->name }}</div>
                                     <div class="admin-comments-author-mail">{{ $comment->email }}</div>
                                 </td>
-                                <td data-label="Comment">
+                                <td data-label="Yorum">
                                     <button
                                         type="button"
                                         class="admin-comments-comment-card admin-comments-comment-trigger"
@@ -165,11 +165,11 @@
                                         data-reply-action="{{ route('admin.content.comments.reply', $comment) }}?{{ http_build_query(request()->query()) }}"
                                         data-reply-delete-action="{{ $comment->reply_message ? route('admin.content.comments.reply.destroy', $comment) . '?' . http_build_query(request()->query()) : '' }}"
                                         data-post-image="{{ $comment->post?->image_url }}"
-                                        data-post-category="{{ $comment->post->category->name ?? 'No Category' }}"
-                                        data-post-title="{{ $comment->post->title ?? 'Deleted post' }}"
+                                        data-post-category="{{ $comment->post->category->name ?? 'Kategori yok' }}"
+                                        data-post-title="{{ $comment->post->title ?? 'Silinmiş yazı' }}"
                                         data-post-author="{{ $comment->post->user->name ?? 'Admin' }}"
                                         data-post-date="{{ $comment->post->created_at?->format('d M Y') }}"
-                                        data-post-comments="{{ $comment->post ? $comment->post->comments()->approved()->count() : 0 }}"
+                                        data-post-yorum="{{ $comment->post ? $comment->post->comments()->approved()->count() : 0 }}"
                                         data-comment-author="{{ $comment->name }}"
                                         data-comment-status="{{ $comment->status }}"
                                         data-comment-message="{{ $comment->message }}"
@@ -180,7 +180,7 @@
                                     >
                                         @if($comment->parent)
                                             <div class="admin-comments-parent-context">
-                                                <span>Reply to {{ $comment->parent->name }}</span>
+                                                <span>Yanıtlanan {{ $comment->parent->name }}</span>
                                                 <p>{{ \Illuminate\Support\Str::limit($comment->parent->message, 70) }}</p>
                                             </div>
                                         @endif
@@ -200,40 +200,40 @@
                                         @endif
                                     </button>
                                 </td>
-                                <td data-label="Reply">
+                                <td data-label="Yanıt">
                                     @if($comment->reply_message)
                                         <span class="admin-comments-reply-badge replied">
-                                            Replied
+                                            Yanıtlandı
                                         </span>
                                     @elseif($comment->post)
                                         <span class="admin-comments-reply-badge pending">
-                                            No reply
+                                            Yanıt yok
                                         </span>
                                     @else
-                                        <span class="admin-comments-reply-badge pending">No reply</span>
+                                        <span class="admin-comments-reply-badge pending">Yanıt yok</span>
                                     @endif
                                 </td>
-                                <td data-label="Status" class="admin-comments-status">
+                                <td data-label="Durum" class="admin-comments-status">
                                     @php
                                         $badgeClass = match ($comment->status) {
                                             'approved' => 'bg-success',
                                             default => 'bg-warning text-dark',
                                         };
                                     @endphp
-                                    <span class="badge {{ $badgeClass }}">{{ ucfirst($comment->status) }}</span>
+                                    <span class="badge {{ $badgeClass }}">{{ $comment->status === 'approved' ? 'Onaylandı' : 'Bekliyor' }}</span>
                                 </td>
-                                <td data-label="Submitted">
+                                <td data-label="Gönderim">
                                     <span class="admin-comments-submitted-date">{{ $comment->created_at->format('d M Y') }}</span>
                                     <span class="admin-comments-submitted-time">{{ $comment->created_at->format('H:i') }}</span>
                                 </td>
-                                <td data-label="Actions" class="text-end">
+                                <td data-label="İşlemler" class="text-end">
                                     <div class="admin-comments-actions">
                                         <form method="POST" action="{{ route('admin.content.comments.status', $comment) }}" class="d-inline">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="approved">
                                             <button type="submit" class="ui-btn ui-btn-success ui-btn-sm" {{ $comment->status === 'approved' ? 'disabled' : '' }}>
-                                                Approve
+                                                Onayla
                                             </button>
                                         </form>
                                         <form method="POST" action="{{ route('admin.content.comments.status', $comment) }}" class="d-inline">
@@ -241,14 +241,14 @@
                                             @method('PUT')
                                             <input type="hidden" name="status" value="pending">
                                             <button type="submit" class="ui-btn ui-btn-warning ui-btn-sm" {{ $comment->status === 'pending' ? 'disabled' : '' }}>
-                                                Pending
+                                                Bekliyor
                                             </button>
                                         </form>
-                                        <form method="POST" action="{{ route('admin.content.comments.destroy', $comment) }}" class="d-inline" onsubmit="return confirm('Delete this comment?');">
+                                        <form method="POST" action="{{ route('admin.content.comments.destroy', $comment) }}" class="d-inline" onsubmit="return confirm('Bu yorum silinsin mi?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="ui-btn ui-btn-danger ui-btn-sm">
-                                                Delete
+                                                Sil
                                             </button>
                                         </form>
                                     </div>
@@ -256,7 +256,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4">No comments found.</td>
+                                <td colspan="7" class="text-center py-4">Yorum bulunamadı.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -265,14 +265,14 @@
         </div>
         <div class="card-footer bg-white d-flex flex-column flex-md-row align-items-center justify-content-between admin-comments-footer">
             <small class="text-muted">
-                Showing {{ $comments->firstItem() ?? 0 }}-{{ $comments->lastItem() ?? 0 }} of {{ $comments->total() }} comments
+                Gösterilen {{ $comments->firstItem() ?? 0 }}-{{ $comments->lastItem() ?? 0 }} of {{ $comments->total() }} yorum
             </small>
 
             @if ($comments->hasPages())
-                <nav aria-label="Comments pagination">
+                <nav aria-label="Yorum sayfaları">
                     <ul class="pagination pagination-sm mb-0">
                         <li class="page-item {{ $comments->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $comments->previousPageUrl() ?? '#' }}" aria-label="Previous">
+                            <a class="page-link" href="{{ $comments->previousPageUrl() ?? '#' }}" aria-label="Önceki">
                                 &laquo;
                             </a>
                         </li>
@@ -284,7 +284,7 @@
                         @endforeach
 
                         <li class="page-item {{ $comments->hasMorePages() ? '' : 'disabled' }}">
-                            <a class="page-link" href="{{ $comments->nextPageUrl() ?? '#' }}" aria-label="Next">
+                            <a class="page-link" href="{{ $comments->nextPageUrl() ?? '#' }}" aria-label="Sonraki">
                                 &raquo;
                             </a>
                         </li>
@@ -299,7 +299,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="adminCommentReplyModalTitle">Write Reply</h5>
+                <h5 class="modal-title" id="adminCommentReplyModalTitle">Yanıt Yaz</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" id="adminCommentReplyForm">
@@ -321,9 +321,9 @@
                     </div>
 
                     <div class="admin-comment-reply-block mb-3">
-                        <span class="admin-comment-reply-label">User Comment</span>
+                        <span class="admin-comment-reply-label">Kullanıcı yorumu</span>
                         <div class="admin-comment-parent-block d-none" id="adminCommentParentBlock">
-                            <span class="admin-comment-reply-label">Replying To</span>
+                            <span class="admin-comment-reply-label">Yanıtlanan yorum</span>
                             <div class="admin-comment-reply-author-line">
                                 <p class="admin-comment-reply-author" id="adminCommentParentAuthor">-</p>
                                 <span class="admin-comment-parent-date" id="adminCommentParentDate">-</span>
@@ -338,25 +338,25 @@
                     </div>
 
                     <div>
-                        <label for="adminCommentReplyInput" class="admin-comment-reply-label">Admin Reply</label>
+                        <label for="adminCommentReplyInput" class="admin-comment-reply-label">Admin yanıtı</label>
                         <textarea
                             id="adminCommentReplyInput"
                             name="reply_message"
                             class="form-control admin-comment-reply-textarea"
-                            placeholder="Write admin reply"
+                            placeholder="Admin yanıtını yazın"
                             required
                         ></textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="ui-btn ui-btn-neutral" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="ui-btn ui-btn-neutral" data-bs-dismiss="modal">Vazgeç</button>
                     <div class="d-flex align-items-center gap-2">
-                        <button type="submit" form="adminCommentReplyDeleteForm" id="adminCommentReplyDeleteButton" class="ui-btn ui-btn-danger d-none" onclick="return confirm('Delete this reply?')">Delete Reply</button>
-                        <button type="submit" class="ui-btn ui-btn-primary">Publish Reply</button>
+                        <button type="submit" form="adminCommentReplySilForm" id="adminCommentReplySilButton" class="ui-btn ui-btn-danger d-none" onclick="return confirm('Sil this reply?')">Yanıtı Sil</button>
+                        <button type="submit" class="ui-btn ui-btn-primary">Yanıtı Yayınla</button>
                     </div>
                 </div>
             </form>
-            <form method="POST" id="adminCommentReplyDeleteForm" class="d-none">
+            <form method="POST" id="adminCommentReplySilForm" class="d-none">
                 @csrf
                 @method('DELETE')
             </form>

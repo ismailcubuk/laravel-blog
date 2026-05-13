@@ -29,13 +29,13 @@
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="status" value="approved">
-                                <button type="submit" class="comment-status-option approved-option {{ $comment->status === 'approved' ? 'is-current' : '' }}">Approved</button>
+                                <button type="submit" class="comment-status-option approved-option {{ $comment->status === 'approved' ? 'is-current' : '' }}">Onayla</button>
                             </form>
                             <form method="POST" action="{{ route('admin.content.comments.status', $comment) }}">
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="status" value="pending">
-                                <button type="submit" class="comment-status-option pending-option {{ $comment->status === 'pending' ? 'is-current' : '' }}">Pending</button>
+                                <button type="submit" class="comment-status-option pending-option {{ $comment->status === 'pending' ? 'is-current' : '' }}">Beklemede</button>
                             </form>
                         </div>
                     </details>
@@ -64,19 +64,19 @@
                     <textarea
                         id="admin_reply_message_{{ $comment->id }}"
                         name="reply_message"
-                        placeholder="Write admin reply"
+                        placeholder="Admin yanıtı yaz"
                         required
                     >{{ old('reply_message') }}</textarea>
                     <div class="reply-inline-edit-actions">
                         <button type="submit" class="reply-modern-button save">
-                            Reply
+                            Yanıtla
                         </button>
                     </div>
                 </form>
             @elseif(auth()->check() && auth()->user()->role === 'user')
                 <div class="post-comment-reply-action" id="comment-reply-trigger-{{ $comment->id }}">
                     <button type="button" class="reply-edit-button" onclick="toggleCommentReply({{ $comment->id }}, true)">
-                        Reply
+                        Yanıtla
                     </button>
                 </div>
 
@@ -92,15 +92,15 @@
                     <textarea
                         id="comment_reply_message_{{ $comment->id }}"
                         name="message"
-                        placeholder="Write a reply"
+                        placeholder="Yanıt yaz"
                         required
                     >{{ old('message') }}</textarea>
                     <div class="reply-inline-edit-actions">
                         <button type="button" class="reply-modern-button cancel" onclick="toggleCommentReply({{ $comment->id }}, false)">
-                            Cancel
+                            İptal
                         </button>
                         <button type="submit" class="reply-modern-button save">
-                            Reply
+                            Yanıtla
                         </button>
                     </div>
                 </form>
@@ -113,7 +113,7 @@
                             <div class="post-comment-row">
                                 <div class="post-comment-gutter">
                                     <div class="author-thumb">
-                                        <img src="{{ optional($comment->repliedBy)->avatar_path ? asset($comment->repliedBy->avatar_path) : asset('assets/images/comment-author-02.jpg') }}" alt="Admin Reply" loading="lazy" decoding="async">
+                                        <img src="{{ optional($comment->repliedBy)->avatar_path ? asset($comment->repliedBy->avatar_path) : asset('assets/images/comment-author-02.jpg') }}" alt="Admin yanıtı" loading="lazy" decoding="async">
                                     </div>
                                 </div>
                                 <div class="right-content post-comment-body">
@@ -145,20 +145,20 @@
                                             <textarea
                                                 id="reply_edit_message_{{ $comment->id }}"
                                                 name="reply_message"
-                                                placeholder="Write admin reply"
+                                                placeholder="Admin yanıtı yaz"
                                                 required
                                             >{{ $comment->reply_message }}</textarea>
                                             <div class="reply-inline-edit-actions">
                                                 <button type="button" class="reply-modern-button cancel" onclick="toggleReplyEdit({{ $comment->id }}, false)">
-                                                    Iptal
+                                                    İptal
                                                 </button>
                                                 <button
                                                     type="submit"
                                                     form="reply-delete-{{ $comment->id }}"
                                                     class="reply-modern-button delete"
-                                                    onclick="return confirm('Delete this reply?')"
+                                                    onclick="return confirm('Bu yanıt silinsin mi?')"
                                                 >
-                                                    Delete
+                                                    Sil
                                                 </button>
                                                 <button type="submit" class="reply-modern-button save">
                                                     Kaydet

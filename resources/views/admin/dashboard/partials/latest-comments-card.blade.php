@@ -1,10 +1,10 @@
 <div class="col-12">
     <section class="dashboard-panel recent-comments-panel recent-comments-table-panel" id="recentCommentsPanel">
         <header class="dashboard-panel-header recent-comments-table-header">
-            <h3 class="dashboard-panel-title">Comments List</h3>
+            <h3 class="dashboard-panel-title">Yorum Listesi</h3>
             <div class="recent-comments-header-actions">
-                <span class="badge recent-comments-result-badge" id="recentCommentsResultCount">{{ $recentComments->count() }} results</span>
-                <span class="badge recent-comments-pending-badge" id="recentCommentsPendingBadge" data-pending-count="{{ $pendingComments }}">Pending: {{ $pendingComments }}</span>
+                <span class="badge recent-comments-result-badge" id="recentCommentsResultCount">{{ $recentComments->count() }} sonuç</span>
+                <span class="badge recent-comments-pending-badge" id="recentCommentsPendingBadge" data-pending-count="{{ $pendingComments }}">Beklemede: {{ $pendingComments }}</span>
             </div>
         </header>
 
@@ -19,13 +19,13 @@
         </div>
 
         <div class="recent-comments-table-head" role="row">
-            <span>POST</span>
-            <span>AUTHOR</span>
-            <span>COMMENT</span>
-            <span>REPLY</span>
-            <span>STATUS</span>
-            <span>SUBMITTED</span>
-            <span class="text-end">ACTIONS</span>
+            <span>YAZI</span>
+            <span>YAZAR</span>
+            <span>YORUM</span>
+            <span>YANIT</span>
+            <span>DURUM</span>
+            <span>GÖNDERİM</span>
+            <span class="text-end">İŞLEMLER</span>
         </div>
 
         <div class="recent-comments-list" id="recentCommentsList">
@@ -34,7 +34,7 @@
             @endphp
 
             @if($recentComments->isEmpty())
-                <div class="latest-post-empty p-3" id="recentCommentsBaseEmptyState">No comments found yet.</div>
+                <div class="latest-post-empty p-3" id="recentCommentsBaseEmptyState">Henüz yorum yok.</div>
             @else
                 @foreach($recentComments as $comment)
                     @php
@@ -50,7 +50,7 @@
                         $isSuspicious = $highlightedMessage !== $safeMessage;
                         $isLongMessage = \Illuminate\Support\Str::length($rawMessage) > 130;
                         $postTitle = optional($comment->post)->title ?? '';
-                        $postCategory = optional(optional($comment->post)->category)->name ?? 'Uncategorized';
+                        $postCategory = optional(optional($comment->post)->category)->name ?? 'Kategorisiz';
                         $searchText = mb_strtolower(trim(($comment->name ?? '') . ' ' . ($comment->email ?? '') . ' ' . ($rawMessage ?? '') . ' ' . $postTitle . ' ' . $postCategory));
                         $avatarPath = optional($comment->user)->avatar_path;
                         $avatarUrl = $avatarPath ? asset(ltrim((string) $avatarPath, '/')) : asset('adminlte/img/avatar.png');
@@ -72,7 +72,7 @@
                         data-created-ts="{{ optional($comment->created_at)->timestamp ?? 0 }}"
                         data-search="{{ e($searchText) }}"
                     >
-                        <div class="rc-cell rc-post recent-comment-post-col" data-label="Post">
+                        <div class="rc-cell rc-post recent-comment-post-col" data-label="Yazı">
                             @if($comment->post)
                                 <div class="recent-comment-post-inline">
                                     <a href="{{ route('post.show', $comment->post->slug) }}" class="recent-comment-post-cover" target="_blank" rel="noopener">
@@ -84,11 +84,11 @@
                                     </div>
                                 </div>
                             @else
-                                <span class="recent-comment-post-missing">Post removed</span>
+                                <span class="recent-comment-post-missing">Yazı kaldırıldı</span>
                             @endif
                         </div>
 
-                        <div class="rc-cell rc-author recent-comment-user-col" data-label="Author">
+                        <div class="rc-cell rc-author recent-comment-user-col" data-label="Yazar">
                             <div class="recent-comment-author-inline">
                                 <img src="{{ $avatarUrl }}" alt="{{ $comment->name }}" class="recent-comment-avatar">
                                 <div class="recent-comment-author-stack">
@@ -98,48 +98,48 @@
                             </div>
                         </div>
 
-                        <div class="rc-cell rc-comment" data-label="Comment">
+                        <div class="rc-cell rc-comment" data-label="Yorum">
                             <p class="recent-comment-message {{ $isLongMessage ? 'is-collapsed' : '' }}" data-role="message">{!! $highlightedMessage !!}</p>
                             @if($isLongMessage)
                                 <div class="recent-comment-expand-wrap">
-                                    <button type="button" class="recent-comment-expand" data-role="expand-btn" aria-expanded="false">Devamini Gor</button>
+                                    <button type="button" class="recent-comment-expand" data-role="expand-btn" aria-expanded="false">Devamını Gör</button>
                                 </div>
                             @endif
                         </div>
 
-                        <div class="rc-cell rc-reply" data-label="Reply">
-                            <span class="badge {{ $hasReply ? 'recent-reply-badge yes' : 'recent-reply-badge no' }}">{{ $hasReply ? 'Replied' : 'No reply' }}</span>
+                        <div class="rc-cell rc-reply" data-label="Yanıt">
+                            <span class="badge {{ $hasReply ? 'recent-reply-badge yes' : 'recent-reply-badge no' }}">{{ $hasReply ? 'Yanıtlandı' : 'Yanıt yok' }}</span>
                         </div>
 
-                        <div class="rc-cell rc-status" data-label="Status">
-                            <span class="badge recent-comment-status {{ $comment->status === 'approved' ? 'is-approved' : 'is-pending' }}" data-role="status-badge">{{ $comment->status === 'approved' ? 'Approved' : 'Pending' }}</span>
+                        <div class="rc-cell rc-status" data-label="Durum">
+                            <span class="badge recent-comment-status {{ $comment->status === 'approved' ? 'is-approved' : 'is-pending' }}" data-role="status-badge">{{ $comment->status === 'approved' ? 'Onaylandı' : 'Beklemede' }}</span>
                             @if($isSuspicious)
-                                <span class="badge recent-comment-alert">Suspicious</span>
+                                <span class="badge recent-comment-alert">Şüpheli</span>
                             @endif
                         </div>
 
-                        <div class="rc-cell rc-submitted" data-label="Submitted">
+                        <div class="rc-cell rc-submitted" data-label="Gönderim">
                             <span class="recent-comment-submitted-date">{{ optional($comment->created_at)->format('d M Y') }}</span>
                             <span class="recent-comment-submitted-time">{{ optional($comment->created_at)->format('H:i') }}</span>
                         </div>
 
-                        <div class="rc-cell rc-actions" data-label="Actions">
+                        <div class="rc-cell rc-actions" data-label="İşlemler">
                             <div class="recent-comment-actions">
                                 <form method="POST" action="{{ route('admin.content.comments.status', $comment) }}" class="js-comment-status-form {{ $comment->status === 'approved' ? 'd-none' : '' }}" data-target-status="approved">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="status" value="approved">
-                                    <button type="submit" class="btn btn-sm btn-success" data-role="approve-btn">Approve</button>
+                                    <button type="submit" class="btn btn-sm btn-success" data-role="approve-btn">Onayla</button>
                                 </form>
 
                                 <form method="POST" action="{{ route('admin.content.comments.status', $comment) }}" class="js-comment-status-form {{ $comment->status === 'pending' ? 'd-none' : '' }}" data-target-status="pending">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="status" value="pending">
-                                    <button type="submit" class="btn btn-sm btn-warning" data-role="pending-btn">Pending</button>
+                                    <button type="submit" class="btn btn-sm btn-warning" data-role="pending-btn">Beklet</button>
                                 </form>
 
-                                <a href="{{ route('admin.content.comments', ['search' => $comment->email]) }}" class="btn btn-sm btn-outline-primary">Details</a>
+                                <a href="{{ route('admin.content.comments', ['search' => $comment->email]) }}" class="btn btn-sm btn-outline-primary">Detaylar</a>
                             </div>
                         </div>
                     </article>
@@ -147,6 +147,6 @@
             @endif
         </div>
 
-        <div id="recentCommentsFilteredEmpty" class="latest-post-empty p-3 d-none">No comments match your filter.</div>
+        <div id="recentCommentsFilteredEmpty" class="latest-post-empty p-3 d-none">Filtreye uygun yorum bulunamadı.</div>
     </section>
 </div>

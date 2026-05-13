@@ -95,7 +95,7 @@
                     }
                 }
                 if (action === 'code') wrapSelection('`', '`', 'kod');
-                if (action === 'clear' && contentInput && confirm('Icerik temizlensin mi?')) {
+                if (action === 'clear' && contentInput && confirm('İçerik temizlensin mi?')) {
                     contentInput.value = '';
                     contentInput.focus();
                     updateCount();

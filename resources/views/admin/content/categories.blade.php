@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
 @section('content')
 @php
@@ -52,14 +52,14 @@
         <div class="col-lg-12">
             <div class="card shadow-sm">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="mb-0">Category List</h5>
+                    <h5 class="mb-0">Kategori Listesi</h5>
                     <button
                         type="button"
                         class="ui-btn ui-btn-success ui-btn-sm ms-auto"
                         data-bs-toggle="modal"
                         data-bs-target="#newCategoryModal"
                     >
-                        <i class="bi bi-plus-lg me-1"></i> New Category
+                        <i class="bi bi-plus-lg me-1"></i> Yeni Kategori
                     </button>
                 </div>
                 <div class="card-body p-0">
@@ -141,17 +141,17 @@
                                                 id="cancelCategoryBtn-{{ $category->id }}"
                                                 onclick="toggleCategoryEdit({{ $category->id }}, false)"
                                             >
-                                                Cancel
+                                                Vazgeç
                                             </button>
                                             <form
                                                 action="{{ route('admin.content.categories.destroy', $category) }}"
                                                 method="POST"
                                                 class="d-inline"
-                                                onsubmit="return confirm('Are you sure you want to delete this category?');"
+                                                onsubmit="return confirm('Bu kategori silinsin mi?');"
                                             >
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="ui-btn ui-btn-danger ui-btn-sm">Delete</button>
+                                                <button type="submit" class="ui-btn ui-btn-danger ui-btn-sm">Sil</button>
                                             </form>
                                             </div>
                                         </td>
@@ -177,20 +177,20 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">New Category</h5>
+                <h5 class="modal-title">Yeni Kategori</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('admin.content.categories.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-0">
-                        <label class="form-label">Category Name</label>
+                        <label class="form-label">Kategori Adı</label>
                         <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="ui-btn ui-btn-neutral" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="ui-btn ui-btn-success">Save Category</button>
+                    <button type="button" class="ui-btn ui-btn-neutral" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="ui-btn ui-btn-success">Kategoriyi Kaydet</button>
                 </div>
             </form>
         </div>
@@ -200,7 +200,4 @@
 <script src="{{ asset('assets/js/extracted/admin-content-categories.js') }}"></script>
 @endpush
 @endsection
-
-
-
 

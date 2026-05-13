@@ -1,17 +1,17 @@
 @extends('layouts.main')
 
-@section('title', $post->title)
-@section('meta_description', \Illuminate\Support\Str::limit(strip_tags((string) $post->content), 155))
-@section('canonical', route('post.show', $post->slug))
+@section('title', $post->seo_title)
+@section('meta_description', $post->seo_description)
+@section('canonical', $post->canonical_url ?: route('post.show', $post->slug))
 @section('og_type', 'article')
-@section('og_image', $post->image_url)
+@section('og_image', $post->seo_image_url)
 
 @php($postSchema = [
         '@context' => 'https://schema.org',
         '@type' => 'BlogPosting',
-        'headline' => $post->title,
-        'description' => \Illuminate\Support\Str::limit(strip_tags((string) $post->content), 155),
-        'image' => $post->image_url,
+        'headline' => $post->seo_title,
+        'description' => $post->seo_description,
+        'image' => $post->seo_image_url,
         'datePublished' => optional($post->created_at)->toIso8601String(),
         'dateModified' => optional($post->updated_at)->toIso8601String(),
         'author' => [
@@ -73,7 +73,7 @@
                                         <h4>{{ $post->title }}</h4>
 
                                         <ul class="post-info">
-                                            <li><a href="#">{{ $post->user->name ?? 'Admin' }}</a></li>
+                                            <li><a href="{{ $post->user ? route('author.show', $post->user) : '#' }}">{{ $post->user->name ?? 'Admin' }}</a></li>
                                             <li><a href="#">{{ $post->created_at->format('d.m.Y') }}</a></li>
                                             <li><a href="#">{{ $post->reading_time }} dk okuma</a></li>
                                             <li><a href="#comments">{{ $post->approved_comments_count }} yorum</a></li>
@@ -82,6 +82,16 @@
                                         <div class="post-content-body">
                                             {!! \App\Support\PostContentFormatter::toHtml($post->content) !!}
                                         </div>
+
+                                        @php($postTags = $post->relationLoaded('tags') ? $post->tags : collect())
+                                        @if($postTags->isNotEmpty())
+                                            <ul class="post-tags mt-4">
+                                                <li><i class="fa fa-tags" aria-hidden="true"></i></li>
+                                                @foreach($postTags as $tag)
+                                                    <li><a href="{{ route('blog.tag', $tag) }}">{{ $tag->name }}</a></li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
 
                                         @if(session('success'))
                                             <div class="alert alert-success mt-4">
@@ -215,10 +225,12 @@
                                     </div>
                                     <div class="content">
                                         <ul>
-                                            <li><a href="#">Laravel</a></li>
-                                            <li><a href="#">PHP</a></li>
-                                            <li><a href="#">Web</a></li>
-                                            <li><a href="#">Geliştirme</a></li>
+                                            @php($postTags = $post->relationLoaded('tags') ? $post->tags : collect())
+                                            @forelse($postTags as $tag)
+                                                <li><a href="{{ route('blog.tag', $tag) }}">{{ $tag->name }}</a></li>
+                                            @empty
+                                                <li><a href="{{ $post->category ? route('blog.category', $post->category) : route('blog') }}">{{ $post->category->name ?? 'Genel' }}</a></li>
+                                            @endforelse
                                         </ul>
                                     </div>
                                 </div>
@@ -229,6 +241,37 @@
             </div>
         </div>
     </section>
+
+    @if($relatedPosts->isNotEmpty())
+        <section class="blog-posts pt-0">
+            <div class="container">
+                <div class="sidebar-heading mb-4">
+                    <h2>İlgili Yazılar</h2>
+                </div>
+                <div class="row">
+                    @foreach($relatedPosts as $related)
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <article class="blog-post">
+                                <div class="blog-thumb">
+                                    <a href="{{ route('post.show', $related->slug) }}">
+                                        <img src="{{ $related->image_url }}" alt="{{ $related->title }}" loading="lazy" decoding="async">
+                                    </a>
+                                </div>
+                                <div class="down-content">
+                                    <span>{{ $related->category->name ?? 'Genel' }}</span>
+                                    <a href="{{ route('post.show', $related->slug) }}"><h4>{{ $related->title }}</h4></a>
+                                    <ul class="post-info">
+                                        <li><a href="#">{{ $related->reading_time }} dk okuma</a></li>
+                                        <li><a href="#">{{ $related->approved_comments_count ?? 0 }} yorum</a></li>
+                                    </ul>
+                                </div>
+                            </article>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
 
 
     @push('scripts')

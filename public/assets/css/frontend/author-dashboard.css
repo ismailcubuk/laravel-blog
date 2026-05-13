@@ -170,6 +170,26 @@
     padding: 0.22rem 0.52rem;
 }
 
+.author-post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0.2rem 0 0.55rem;
+}
+
+.author-post-tags a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 0.55rem;
+    border-radius: 999px;
+    background: var(--front-input-bg);
+    color: var(--front-primary);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
 .author-post-item h2,
 .author-empty-state h2 {
     margin: 0.45rem 0 0.35rem;

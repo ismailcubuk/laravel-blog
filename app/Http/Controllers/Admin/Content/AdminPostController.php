@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin\Content;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminPostController extends Controller
 {
@@ -34,7 +36,7 @@ class AdminPostController extends Controller
             ->leftJoin('users', 'users.id', '=', 'posts.user_id')
             ->leftJoin('categories', 'categories.id', '=', 'posts.category_id')
             ->select('posts.*')
-            ->with(['category', 'user'])
+            ->withAvailableRelations(['category', 'user', 'tags'])
             ->where('posts.status', 'published')
             ->where('users.role', 'admin')
             ->orderBy($sortColumn, $direction)
@@ -52,9 +54,11 @@ class AdminPostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Post::tagsTableExists() ? Tag::query()->orderBy('name')->get() : collect();
 
         return view('admin.content.posts.create', [
-            'categories' => $categories
+            'categories' => $categories,
+            'tags' => $tags,
         ]);
     }
 
@@ -62,10 +66,17 @@ class AdminPostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
+        $post->loadMissing(['category', 'user']);
+        if (Post::tagsTableExists()) {
+            $post->loadMissing('tags');
+        }
+
+        $tags = Post::tagsTableExists() ? Tag::query()->orderBy('name')->get() : collect();
 
         return view('admin.content.posts.edit', [
             'post' => $post,
-            'categories' => $categories
+            'categories' => $categories,
+            'tags' => $tags,
         ]);
     }
 
@@ -76,11 +87,30 @@ class AdminPostController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'required|string|unique:posts,slug',
             'content' => 'required|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
+            'canonical_url' => 'nullable|url|max:255',
+            'og_image' => 'nullable|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240|dimensions:max_width=5000,max_height=5000'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240|dimensions:max_width=5000,max_height=5000',
+            'tags' => 'nullable|string|max:500',
+            'is_featured' => 'nullable|boolean',
         ]);
 
         $validated['user_id'] = auth()->id();
+        if (Post::featuredColumnsExist()) {
+            $validated['is_featured'] = $request->boolean('is_featured');
+            $validated['featured_at'] = $validated['is_featured'] ? now() : null;
+        } else {
+            unset($validated['is_featured']);
+        }
+
+        if (!Post::seoColumnsExist()) {
+            unset($validated['meta_title'], $validated['meta_description'], $validated['canonical_url'], $validated['og_image']);
+        }
+
+        $tagInput = $validated['tags'] ?? '';
+        unset($validated['tags']);
 
         $post = new Post($validated);
 
@@ -89,9 +119,10 @@ class AdminPostController extends Controller
         }
 
         $post->save();
+        $this->syncTags($post, $tagInput);
 
         return redirect()->route('admin.content.posts.index')
-            ->with('success', 'Post created successfully');
+            ->with('success', 'Yazı başarıyla oluşturuldu.');
     }
 
     // Update
@@ -101,11 +132,34 @@ class AdminPostController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'required|string|unique:posts,slug,'.$post->id,
             'content' => 'required|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
+            'canonical_url' => 'nullable|url|max:255',
+            'og_image' => 'nullable|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240|dimensions:max_width=5000,max_height=5000'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240|dimensions:max_width=5000,max_height=5000',
+            'tags' => 'nullable|string|max:500',
+            'is_featured' => 'nullable|boolean',
         ]);
 
+        if (Post::featuredColumnsExist()) {
+            $validated['is_featured'] = $request->boolean('is_featured');
+            $validated['featured_at'] = $validated['is_featured']
+                ? ($post->featured_at ?: now())
+                : null;
+        } else {
+            unset($validated['is_featured']);
+        }
+
+        if (!Post::seoColumnsExist()) {
+            unset($validated['meta_title'], $validated['meta_description'], $validated['canonical_url'], $validated['og_image']);
+        }
+
+        $tagInput = $validated['tags'] ?? '';
+        unset($validated['tags']);
+
         $post->update($validated);
+        $this->syncTags($post, $tagInput);
 
         if ($request->hasFile('image')) {
             $this->deleteStorageAsset($post->image);
@@ -114,7 +168,7 @@ class AdminPostController extends Controller
         }
 
         return redirect()->route('admin.content.posts.index')
-            ->with('success', 'Post updated successfully');
+            ->with('success', 'Yazı başarıyla güncellendi.');
     }
 
     // Delete
@@ -124,7 +178,34 @@ class AdminPostController extends Controller
         $post->delete();
 
         return redirect()->route('admin.content.posts.index')
-            ->with('success', 'Post deleted successfully');
+            ->with('success', 'Yazı silindi.');
+    }
+
+    private function syncTags(Post $post, string $tagInput): void
+    {
+        if (!Post::tagsTableExists()) {
+            return;
+        }
+
+        $tagIds = collect(preg_split('/[,;\n]+/', $tagInput) ?: [])
+            ->map(fn ($tag) => trim($tag))
+            ->filter()
+            ->unique(fn ($tag) => Str::lower($tag))
+            ->take(12)
+            ->map(function (string $name) {
+                $slug = Str::slug($name) ?: Str::slug(Str::limit($name, 30, ''));
+
+                if ($slug === '') {
+                    return null;
+                }
+
+                return Tag::firstOrCreate(['slug' => $slug], ['name' => $name])->id;
+            })
+            ->filter()
+            ->values()
+            ->all();
+
+        $post->tags()->sync($tagIds);
     }
 
     private function deleteStorageAsset(?string $assetPath): void

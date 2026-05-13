@@ -8,7 +8,7 @@
             document.getElementById('userPostDetailCategory').textContent = button.dataset.category || '-';
             document.getElementById('userPostDetailDate').textContent = button.dataset.date || '-';
             document.getElementById('userPostDetailStatus').textContent = button.dataset.status || '-';
-            document.getElementById('userPostDetailStatus').className = 'user-posts-status ' + (button.dataset.status === 'Approved' ? 'approved' : 'pending');
+            document.getElementById('userPostDetailStatus').className = 'user-posts-status ' + (button.dataset.status === 'Onaylandı' ? 'approved' : 'pending');
             document.getElementById('userPostDetailContent').textContent = button.dataset.content || '';
         });
     });

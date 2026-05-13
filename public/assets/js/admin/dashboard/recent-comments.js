@@ -112,7 +112,7 @@
         }
 
         badge.dataset.pendingCount = String(count);
-        badge.textContent = 'Bekleyen: ' + count;
+        badge.textContent = 'Beklemede: ' + count;
     }
 
     function applyStatusToItem(item, status) {
@@ -130,10 +130,10 @@
             badge.classList.remove('is-approved', 'is-pending');
             if (status === 'approved') {
                 badge.classList.add('is-approved');
-                badge.textContent = 'Onaylandi';
+                badge.textContent = 'Onaylandı';
             } else {
                 badge.classList.add('is-pending');
-                badge.textContent = 'Bekliyor';
+                badge.textContent = 'Beklemede';
             }
         }
 
@@ -213,7 +213,7 @@
 
                     showCountdownToast(
                         'success',
-                        targetStatus === 'approved' ? 'Yorum onaylandi.' : 'Yorum incelemeye alindi.',
+                        targetStatus === 'approved' ? 'Yorum onaylandı.' : 'Yorum incelemeye alındı.',
                         5000,
                         'Geri Al',
                         function () {
@@ -224,17 +224,17 @@
 
                             submitStatusForm(reverseForm, { silent: true })
                                 .then(function () {
-                                    showCountdownToast('success', 'Islem geri alindi.', 3200);
+                                    showCountdownToast('success', 'İşlem geri alındı.', 3200);
                                 })
                                 .catch(function () {
-                                    showCountdownToast('error', 'Geri alma basarisiz oldu.', 4200);
+                                    showCountdownToast('error', 'Geri alma başarısız oldu.', 4200);
                                 });
                         }
                     );
                 }
             })
             .catch(function () {
-                showCountdownToast('error', 'Durum guncellenemedi. Tekrar deneyin.', 4600);
+                showCountdownToast('error', 'Durum güncellenemedi. Tekrar deneyin.', 4600);
                 throw new Error('Status update failed');
             })
             .finally(function () {
@@ -259,7 +259,7 @@
         if (!items.length) {
             empty.classList.add('d-none');
             if (countBadge) {
-                countBadge.textContent = '0 results';
+                countBadge.textContent = '0 sonuç';
             }
             return;
         }
@@ -279,7 +279,7 @@
 
         empty.classList.toggle('d-none', visibleCount > 0);
         if (countBadge) {
-            countBadge.textContent = visibleCount + ' results';
+            countBadge.textContent = visibleCount + ' sonuç';
         }
     }
 
@@ -321,11 +321,11 @@
                 var collapsed = message.classList.contains('is-collapsed');
                 if (collapsed) {
                     message.classList.remove('is-collapsed');
-                    button.textContent = 'Daha Az Goster';
+                    button.textContent = 'Daha Az Göster';
                     button.setAttribute('aria-expanded', 'true');
                 } else {
                     message.classList.add('is-collapsed');
-                    button.textContent = 'Devamini Gor';
+                    button.textContent = 'Devamını Gör';
                     button.setAttribute('aria-expanded', 'false');
                 }
             });

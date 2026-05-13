@@ -17,10 +17,22 @@
                 </a>
 
                 <ul class="front-post-meta">
+                    @if($post->user)
+                        <li><a href="{{ route('author.show', $post->user) }}">{{ $post->user->name }}</a></li>
+                    @endif
                     <li>{{ $post->created_at->format('d.m.Y') }}</li>
                     <li>{{ $post->reading_time }} dk okuma</li>
                     <li>{{ $post->approved_comments_count ?? 0 }} yorum</li>
                 </ul>
+
+                @php($postTags = $post->relationLoaded('tags') ? $post->tags : collect())
+                @if($postTags->isNotEmpty())
+                    <div class="front-post-tags">
+                        @foreach($postTags->take(3) as $tag)
+                            <a href="{{ route('blog.tag', $tag) }}">{{ $tag->name }}</a>
+                        @endforeach
+                    </div>
+                @endif
 
                 <p class="front-post-excerpt">{{ Str::limit(strip_tags($post->content), 170) }}</p>
 

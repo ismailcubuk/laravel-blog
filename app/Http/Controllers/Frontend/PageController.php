@@ -9,6 +9,8 @@ use App\Models\Page;
 use App\Models\PageSection;
 use App\Models\Post;
 use App\Models\Setting;
+use App\Models\Tag;
+use App\Models\User;
 use App\Services\Mail\MailWorkflowService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,12 +27,42 @@ class PageController extends Controller
         return $this->renderBlog($request, $category);
     }
 
-    protected function renderBlog(Request $request, ?Category $activeCategory = null)
+    public function tag(Request $request, Tag $tag)
+    {
+        abort_unless(Post::tagsTableExists(), 404);
+
+        return $this->renderBlog($request, null, $tag);
+    }
+
+    public function author(Request $request, User $user)
+    {
+        $posts = Post::query()
+            ->withAvailableRelations(['category', 'user', 'tags'])
+            ->published()
+            ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->paginate(6)
+            ->withQueryString();
+
+        $recentPosts = Post::with(['category', 'user'])
+            ->published()
+            ->latest()
+            ->take(5)
+            ->get();
+        $categories = $this->publishedCategories();
+        $tags = $this->publishedTags();
+
+        return view('pages.author', compact('user', 'posts', 'recentPosts', 'categories', 'tags'));
+    }
+
+    protected function renderBlog(Request $request, ?Category $activeCategory = null, ?Tag $activeTag = null)
     {
         $search = trim((string) $request->query('search', ''));
         $categoryId = $activeCategory?->id ?: $request->query('category');
 
-        $posts = Post::with(['category', 'user'])
+        $posts = Post::query()
+            ->withAvailableRelations(['category', 'user', 'tags'])
             ->published()
             ->withCount(['comments as approved_comments_count' => fn ($query) => $query->approved()])
             ->when($search !== '', function ($query) use ($search) {
@@ -42,6 +74,9 @@ class PageController extends Controller
             ->when($categoryId, function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
             })
+            ->when($activeTag && Post::tagsTableExists(), function ($query) use ($activeTag) {
+                $query->whereHas('tags', fn ($tagQuery) => $tagQuery->whereKey($activeTag->id));
+            })
             ->latest()
             ->paginate(6)
             ->withQueryString();
@@ -52,15 +87,37 @@ class PageController extends Controller
             ->latest()
             ->take(5)
             ->get();
-        $categories = Category::query()
+        $categories = $this->publishedCategories();
+        $tags = $this->publishedTags();
+        $activeCategory = $activeCategory ?: ($categoryId ? $categories->firstWhere('id', (int) $categoryId) : null);
+        $resultCount = $search !== '' ? $posts->total() : null;
+
+        return view('pages.blog', compact('posts', 'recentPosts', 'categories', 'tags', 'search', 'activeCategory', 'activeTag', 'resultCount'));
+    }
+
+    private function publishedCategories()
+    {
+        return Category::query()
             ->withCount(['posts' => fn ($query) => $query->published()])
             ->whereHas('posts', fn ($query) => $query->published())
             ->orderByDesc('posts_count')
             ->orderBy('name')
             ->get();
-        $activeCategory = $activeCategory ?: ($categoryId ? $categories->firstWhere('id', (int) $categoryId) : null);
+    }
 
-        return view('pages.blog', compact('posts', 'recentPosts', 'categories', 'search', 'activeCategory'));
+    private function publishedTags()
+    {
+        if (!Post::tagsTableExists()) {
+            return collect();
+        }
+
+        return Tag::query()
+            ->withCount(['posts' => fn ($query) => $query->published()])
+            ->whereHas('posts', fn ($query) => $query->published())
+            ->orderByDesc('posts_count')
+            ->orderBy('name')
+            ->take(20)
+            ->get();
     }
 
     public function contact()

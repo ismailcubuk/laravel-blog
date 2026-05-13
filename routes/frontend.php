@@ -17,6 +17,8 @@ Route::post('/post/{slug}/comments/{comment}/reply', [PostController::class, 'st
 Route::delete('/post/{slug}/comments/{comment}/reply', [PostController::class, 'destroyReply'])->name('post.comments.reply.destroy');
 Route::get('/blog', [PageController::class, 'blog'])->name('blog');
 Route::get('/blog/kategori/{category:slug}', [PageController::class, 'category'])->name('blog.category');
+Route::get('/blog/etiket/{tag:slug}', [PageController::class, 'tag'])->name('blog.tag');
+Route::get('/yazar/{user}', [PageController::class, 'author'])->name('author.show');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'submitContact'])->middleware('throttle:3,1')->name('contact.submit');
