@@ -20,18 +20,20 @@ class AvatarStorageService
         $filename = $this->makeFilename($file);
         $file->move($destination, $filename);
 
-        return '/uploads/profiles/' . $filename;
+        return 'uploads/profiles/' . $filename;
     }
 
     public function delete(?string $avatarPath): void
     {
         $avatarPath = (string) $avatarPath;
 
-        if ($avatarPath === '' || !str_starts_with($avatarPath, '/uploads/profiles/')) {
+        $avatarPath = ltrim($avatarPath, '/');
+
+        if ($avatarPath === '' || !str_starts_with($avatarPath, 'uploads/profiles/')) {
             return;
         }
 
-        $relative = ltrim($avatarPath, '/');
+        $relative = $avatarPath;
 
         foreach ($this->candidateBasePaths() as $basePath) {
             $candidate = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $relative;
@@ -66,12 +68,12 @@ class AvatarStorageService
      */
     private function candidateBasePaths(): array
     {
-        $paths = [
-            env('AVATAR_UPLOAD_ROOT'),
-            $_SERVER['DOCUMENT_ROOT'] ?? null,
-            public_path(),
-            base_path('../'),
-        ];
+        $paths = [env('AVATAR_UPLOAD_ROOT'), public_path()];
+
+        $documentRoot = $_SERVER['DOCUMENT_ROOT'] ?? null;
+        if ($documentRoot && realpath($documentRoot) === realpath(public_path())) {
+            $paths[] = $documentRoot;
+        }
 
         return array_values(array_unique(array_filter(array_map(
             static fn ($path) => $path ? rtrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, (string) $path), DIRECTORY_SEPARATOR) : null,

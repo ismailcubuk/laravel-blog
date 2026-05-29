@@ -23,10 +23,19 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $avatars = [
+            'assets/images/avatars/emma-carter.png',
+            'assets/images/avatars/noah-bennett.png',
+            'assets/images/avatars/mia-brooks.png',
+            'assets/images/avatars/reader-one.png',
+            'assets/images/avatars/reader-two.png',
+        ];
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
+            'avatar_path' => fake()->randomElement($avatars),
             'remember_token' => Str::random(10),
         ];
     }

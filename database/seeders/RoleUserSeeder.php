@@ -18,21 +18,23 @@ class RoleUserSeeder extends Seeder
             return;
         }
 
-        $admin = User::query()->firstOrCreate(
+        $admin = User::query()->updateOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin',
                 'password' => 'password',
                 'role' => 'admin',
+                'avatar_path' => 'assets/images/avatars/admin-profile.png',
             ]
         );
 
-        $user = User::query()->firstOrCreate(
+        $user = User::query()->updateOrCreate(
             ['email' => 'user@example.com'],
             [
                 'name' => 'User',
                 'password' => 'password',
                 'role' => 'user',
+                'avatar_path' => 'assets/images/avatars/reader-one.png',
             ]
         );
 
@@ -59,10 +61,31 @@ class RoleUserSeeder extends Seeder
                 'email' => $permanentAdminEmail,
                 'password' => 'asdasd',
                 'role' => 'admin',
+                'avatar_path' => 'assets/images/avatars/admin-profile.png',
             ]
         );
 
         // Force role relation to admin for the permanent account.
         $permanentAdmin->roles()->sync([$adminRole->id]);
+
+        $avatars = [
+            'assets/images/avatars/admin-profile.png',
+            'assets/images/avatars/emma-carter.png',
+            'assets/images/avatars/noah-bennett.png',
+            'assets/images/avatars/mia-brooks.png',
+            'assets/images/avatars/reader-one.png',
+            'assets/images/avatars/reader-two.png',
+        ];
+
+        User::query()
+            ->whereNull('avatar_path')
+            ->orWhere('avatar_path', '')
+            ->orderBy('id')
+            ->get()
+            ->each(function (User $seedUser, int $index) use ($avatars) {
+                $seedUser->update([
+                    'avatar_path' => $avatars[$index % count($avatars)],
+                ]);
+            });
     }
 }
