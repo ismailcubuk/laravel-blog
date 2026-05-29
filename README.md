@@ -99,6 +99,15 @@ Email: admin@admin.com
 Password: admin
 ```
 
+## Demo User
+
+You can create your own user account from the register page and start using the blog as a regular member.
+
+```text
+Register: [/register](https://ismail.lovestoblog.com/register)
+Login: [/login](https://ismail.lovestoblog.com/login)
+```
+
 ## Main Routes
 
 - `/` - Homepage
